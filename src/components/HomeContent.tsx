@@ -1,326 +1,310 @@
-// HomeContent.tsx — 800+ word SEO article + 7-FAQ schema block
-// Placed at the bottom of the home page.
-
-const FAQ_ITEMS = [
-  {
-    question: "Are these fancy fonts compatible with Android and iOS?",
-    answer:
-      "Yes. GoFancyFont uses Unicode characters that are natively supported by both Android and iOS operating systems. Because the styled letters are actual Unicode code points — not images or font files — they display correctly in any text field on any modern smartphone or tablet, including Samsung Galaxy, Google Pixel, iPhone, and iPad. No app installation is required.",
-  },
-  {
-    question: "Why do some characters appear as boxes or question marks [?]?",
-    answer:
-      "Boxes or question marks appear when the device or app does not have a font installed that covers those specific Unicode code points. This typically happens on older devices, certain niche apps, or some gaming clients. For the broadest compatibility, use the Bold Serif, Italic Serif, Aesthetic (Full-Width), or Small Caps styles — these ranges are supported by virtually all modern fonts including the default system fonts on iOS, Android, Windows, and macOS.",
-  },
-  {
-    question:
-      "Can I use these fancy fonts in my gaming username on Free Fire, PUBG, or other games?",
-    answer:
-      "Many popular mobile games including Free Fire, PUBG Mobile, Mobile Legends, and Genshin Impact allow Unicode characters in player names and clan tags. Simply generate your styled name on GoFancyFont.com, copy it, and paste it into the name-change field in your game. Note that some games filter specific Unicode ranges, so if one style is rejected, try another — Bold Serif and Circled styles tend to have the widest acceptance in gaming contexts.",
-  },
-  {
-    question:
-      "Will fancy fonts affect my character count on Instagram or Twitter?",
-    answer:
-      "Each Unicode character counts as exactly one character, the same as a standard letter. So a 150-character bio written in Bold Script uses exactly 150 characters — the same as plain text. Instagram's 150-character bio limit and Twitter's 160-character bio limit apply equally to Unicode styled text. This means fancy fonts do not reduce or increase your usable character budget.",
-  },
-  {
-    question:
-      "Can search engines read and index my fancy Unicode text?",
-    answer:
-      "Partially. Google's crawler can technically read many Unicode mathematical characters, but these characters are not treated as equivalent to their standard Latin counterparts for keyword matching purposes. A bio written in Bold Script is unlikely to rank for its keywords in the same way plain text would. For SEO-sensitive content (page copy, headings, blog posts), always use standard text. Reserve fancy Unicode fonts for decorative UI elements, usernames, and social media bios where discoverability is not the primary concern.",
-  },
-  {
-    question: "Is GoFancyFont.com free to use? Are there any limits?",
-    answer:
-      "GoFancyFont.com is 100% free with no usage limits, no account required, and no watermarks on the output. All 22+ font styles are available to every visitor without any paywall or subscription. The tool runs entirely in your browser — no text is sent to any server — so you can use it as frequently as you like for personal or commercial projects.",
-  },
-  {
-    question:
-      "How is this different from simply changing the font in Microsoft Word or Google Docs?",
-    answer:
-      "When you change the font in Word or Google Docs, you are selecting a font file that controls how standard code points (A, B, C...) are visually rendered on your screen. That visual rendering does not travel with the text when you copy and paste it elsewhere — so pasting 'bold' Word text into an Instagram bio produces plain text. GoFancyFont works differently: it replaces each standard letter with a different Unicode character that was designed to look bold, italic, or decorative. Because the character itself is different, the visual style is embedded in the text and preserved wherever it is pasted.",
-  },
-];
+// HomeContent.tsx — 1,000+ word SEO article (Server Component)
+// Placed at the bottom of the home page above FAQSection.
 
 export default function HomeContent() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ_ITEMS.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
   return (
-    <>
-      {/* JSON-LD FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+    <div className="w-full border-t border-surface-600 bg-surface-800/30">
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <article className="space-y-12 text-slate-300 leading-relaxed">
 
-      <div className="w-full border-t border-surface-600 bg-surface-800/30">
-        <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">
-
-          {/* ── SEO Article ─────────────────────────────── */}
-          <article className="space-y-10">
-
-            <header>
-              <p className="text-xs text-brand-400 font-semibold tracking-widest uppercase mb-2">
-                In-Depth Guide · 2026
-              </p>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-                Why GoFancyFont Is the Best Aesthetic Text Tool
-                for Social Media in 2026
-              </h2>
-              <p className="mt-3 text-slate-400 leading-relaxed">
-                Social media profiles are your digital first impression. In a feed saturated
-                with plain text, a beautifully styled bio written with{" "}
-                <strong className="text-slate-200">copy and paste fonts</strong> can be the
-                difference between someone scrolling past and clicking follow. GoFancyFont.com
-                offers the fastest, cleanest, and most comprehensive{" "}
-                <strong className="text-slate-200">aesthetic text maker</strong> on the web —
-                and this guide explains exactly why.
-              </p>
-            </header>
-
-            {/* Section 1 */}
-            <section>
-              <h2 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
-                How Unicode Magic Powers Your Social Media Bios
-              </h2>
-              <p className="text-slate-400 leading-relaxed mb-4">
-                Every character you see on a screen — every letter, number, emoji, and symbol —
-                is defined by the{" "}
-                <strong className="text-slate-200">Unicode Standard</strong>, a universal
-                encoding system maintained by the Unicode Consortium. Unicode currently encodes
-                over 149,000 characters covering 161 modern and historic scripts. Within this
-                vast library are entire alphabets designed for specialized mathematical
-                typesetting: bold serifs, italic serifs, script cursives, Fraktur Gothic, double
-                struck, monospace, and more.
-              </p>
-              <p className="text-slate-400 leading-relaxed mb-4">
-                GoFancyFont maps your typed text — letter by letter — to these specialized
-                Unicode ranges in real time. The letter{" "}
-                <strong className="text-white">A</strong> (U+0041) becomes{" "}
-                <strong className="text-white">𝐀</strong> (U+1D400, Mathematical Bold Capital A)
-                or <strong className="text-white">𝒜</strong> (U+1D49C, Mathematical Script
-                Capital A) or <strong className="text-white">Ａ</strong> (U+FF21, Fullwidth
-                Latin Capital Letter A). Because each styled character is a genuinely different
-                Unicode code point, the visual styling is{" "}
-                <strong className="text-slate-200">embedded in the text itself</strong> — not
-                in a font file. This is the fundamental reason why copy-and-paste fonts work
-                on every platform: the characters travel with the text.
-              </p>
-              <p className="text-slate-400 leading-relaxed">
-                This approach requires zero plugins, zero downloads, and zero accounts. All
-                22 style transformations happen locally in your browser using a single
-                JavaScript mapping function — making GoFancyFont one of the fastest{" "}
-                <strong className="text-slate-200">aesthetic text makers</strong> available.
-                There is no server round-trip, which also means your typed text is never
-                collected, stored, or transmitted.
-              </p>
-            </section>
-
-            {/* Section 2 */}
-            <section>
-              <h2 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
-                Step-by-Step Guide: Copy and Paste Fancy Fonts for Instagram,
-                TikTok, and Discord
-              </h2>
-
-              <h3 className="text-base font-semibold text-slate-200 mb-3 mt-5">
-                Instagram Bio Ideas with Fancy Fonts
-              </h3>
-              <p className="text-slate-400 leading-relaxed mb-3">
-                Instagram's bio field accepts any Unicode text, making it the most popular
-                destination for styled fonts. Here's how to craft the perfect{" "}
-                <strong className="text-slate-200">Instagram bio idea</strong> with GoFancyFont:
-              </p>
-              <ol className="list-decimal list-inside space-y-2 text-slate-400 mb-4">
-                <li>Type your name or tagline into the GoFancyFont input box.</li>
-                <li>Browse the 22 live previews — try <em>Bold Script</em> for elegance or <em>Aesthetic</em> for a vaporwave look.</li>
-                <li>Click <strong className="text-slate-200">Copy Text</strong> on your chosen style.</li>
-                <li>Open Instagram → Edit Profile → Bio → long-press → Paste.</li>
-                <li>Combine multiple styles: use Bold Script for your name, plain text for your tagline, and Superscript for a subtle detail line.</li>
-              </ol>
-              <div className="p-4 rounded-lg bg-surface-700 border border-surface-600 mb-5">
-                <p className="text-sm text-slate-300">
-                  <strong>Pro tip:</strong> Use aesthetic separators like{" "}
-                  <span className="text-brand-400">✦ · ∙ ◈ ⟡</span> between lines of your bio
-                  to create a professional, polished look without reducing your character count.
-                </p>
-              </div>
-
-              <h3 className="text-base font-semibold text-slate-200 mb-3 mt-5">
-                TikTok & Twitter Bios
-              </h3>
-              <p className="text-slate-400 leading-relaxed mb-3">
-                TikTok's bio limit is 80 characters, so brevity matters. Choose a single
-                high-impact style — <em>Cursive Script</em> for a personal brand, or{" "}
-                <em>Small Caps</em> for a clean professional look. Twitter/X allows 160
-                characters in the bio field and fully supports all Unicode styles including
-                the Zalgo glitch effect, which is popular in creative and gaming communities.
-              </p>
-
-              <h3 className="text-base font-semibold text-slate-200 mb-3 mt-5">
-                Discord Font Generator Use Cases
-              </h3>
-              <p className="text-slate-400 leading-relaxed">
-                As a <strong className="text-slate-200">Discord font generator</strong>,
-                GoFancyFont is particularly popular for server names, custom statuses, and
-                channel descriptions. The Monospace style gives a developer/hacker aesthetic
-                that fits tech servers perfectly. Gothic Fraktur suits fantasy or medieval
-                roleplay servers. Zalgo is a staple in horror, meme, and creepypasta
-                communities. Discord also renders Circled and Squared block letter styles
-                cleanly across both desktop and mobile clients.
-              </p>
-            </section>
-
-            {/* Section 3 */}
-            <section>
-              <h2 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
-                The Difference Between Fonts and Mathematical Alphanumeric Symbols
-              </h2>
-              <p className="text-slate-400 leading-relaxed mb-4">
-                Understanding this distinction will help you use fancy text generators more
-                effectively and explain to others why they work.
-              </p>
-
-              <h3 className="text-base font-semibold text-slate-200 mb-2 mt-4">
-                Traditional Fonts (TrueType / OpenType)
-              </h3>
-              <p className="text-slate-400 leading-relaxed mb-4">
-                A font file (e.g., <em>.ttf</em> or <em>.otf</em>) is a software library that
-                maps standard Unicode code points to visual glyph designs. When you set text
-                to "Arial Bold" in a word processor, the software reads the Arial font file
-                and renders each letter using that file's bold glyph designs. The underlying
-                code points remain unchanged (A is always U+0041). Copy that text and paste
-                it into a plain text field — like an Instagram bio — and only the bare code
-                points travel. The font is left behind. The result is unstyled plain text.
-              </p>
-
-              <h3 className="text-base font-semibold text-slate-200 mb-2 mt-4">
-                Unicode Mathematical Alphanumeric Symbols (Block U+1D400–U+1D7FF)
-              </h3>
-              <p className="text-slate-400 leading-relaxed mb-4">
-                The Unicode Standard includes a dedicated block called{" "}
-                <strong className="text-slate-200">Mathematical Alphanumeric Symbols</strong>{" "}
-                (U+1D400 to U+1D7FF), originally intended for mathematical notation in academic
-                publishing. This block contains complete alphabets in bold, italic, bold italic,
-                script, bold script, Fraktur, double-struck, sans-serif, and monospace styles —
-                uppercase, lowercase, and digits. A character from this block is a{" "}
-                <em>different code point</em> from a standard Latin letter. It looks stylized
-                because it was designed to, not because a font file is styling it. When you
-                copy U+1D400 (𝐀), you copy the stylized character itself. It renders
-                identically on any system that supports that Unicode block — which includes
-                every major OS released since 2010.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
-                {[
-                  { label: "Bold Serif 𝐀𝐁𝐂",    range: "U+1D400–U+1D433", compat: "Universal" },
-                  { label: "Script 𝒜ℬ𝒞",          range: "U+1D49C–U+1D4CF", compat: "Universal" },
-                  { label: "Aesthetic Ａ Ｂ Ｃ",   range: "U+FF01–U+FF5E",   compat: "Universal" },
-                  { label: "Gothic 𝔄𝔅ℭ",           range: "U+1D504–U+1D537", compat: "Universal" },
-                  { label: "Circled Ⓐ Ⓑ Ⓒ",      range: "U+24B6–U+24E9",   compat: "Universal" },
-                  { label: "Zalgo Z̷a̷l̷g̷o̷",         range: "Combining chars",  compat: "Most apps" },
-                ].map((item) => (
-                  <div key={item.label} className="p-3 rounded-lg bg-surface-900 border border-surface-600 text-center">
-                    <p className="text-white font-medium text-sm mb-1">{item.label}</p>
-                    <p className="text-[10px] text-slate-500">{item.range}</p>
-                    <p className="text-[10px] text-emerald-400 mt-1">{item.compat}</p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-slate-400 leading-relaxed mt-5">
-                Beyond the Mathematical Alphanumeric Symbols block, GoFancyFont also uses
-                the <strong className="text-slate-200">Enclosed Alphanumerics</strong> block
-                (Circled, Squared), the{" "}
-                <strong className="text-slate-200">Fullwidth Latin</strong> range (Aesthetic),
-                and Unicode{" "}
-                <strong className="text-slate-200">Combining Diacritical Marks</strong> (Zalgo
-                glitch effect) — giving you 22 distinct visual styles from a single tool.
-              </p>
-            </section>
-
-            {/* Why GoFancyFont */}
-            <section>
-              <h2 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
-                What Makes GoFancyFont Different from Other Generators?
-              </h2>
-              <ul className="space-y-4">
-                {[
-                  {
-                    title: "22 styles, one page",
-                    body: "Most tools show 5–8 styles. GoFancyFont renders all 22 simultaneously in real time so you can compare every option at a glance, without clicking through pages or reloading.",
-                  },
-                  {
-                    title: "Zero latency, privacy-first",
-                    body: "All transformations run in your browser using a local Unicode mapping function. Nothing you type is ever sent to a server. There are no cookies set by the generator itself, no analytics attached to your keystrokes.",
-                  },
-                  {
-                    title: "Category filter + search",
-                    body: "Quickly narrow down results by style category (Serif, Script, Decorative, Effects) or search by name. Ideal when you know the aesthetic you're going for — gothic, vaporwave, minimal — without scrolling through everything.",
-                  },
-                  {
-                    title: "Mobile-optimized interface",
-                    body: "Built with a mobile-first layout. The copy button is large and well-spaced for touchscreen use, because most users will paste directly into an Instagram or TikTok app on their phone.",
-                  },
-                  {
-                    title: "AdSense-free generator area",
-                    body: "Advertisements are placed thoughtfully — above the results, between style groups, and in the page footer — never interrupting the core copy-and-paste workflow. Your experience stays clean and fast.",
-                  },
-                ].map(({ title, body }) => (
-                  <li key={title} className="flex gap-4">
-                    <span className="mt-1 shrink-0 w-5 h-5 rounded-full bg-brand-500/20
-                                      text-brand-400 flex items-center justify-center text-xs">✓</span>
-                    <div>
-                      <strong className="text-slate-200">{title}:</strong>{" "}
-                      <span className="text-slate-400">{body}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </article>
-
-          {/* ── FAQ Section ─────────────────────────────── */}
-          <section>
-            <h2 className="text-2xl font-bold text-white mb-6 pb-2 border-b border-surface-600">
-              Frequently Asked Questions
+          {/* ── H2: Main Article Heading ──────────────────── */}
+          <header>
+            <p className="text-xs text-brand-400 font-semibold tracking-widest uppercase mb-3">
+              Ultimate Guide · 2026
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-4">
+              The Ultimate Fancy Font Generator for 2026
             </h2>
-            <div className="space-y-3">
-              {FAQ_ITEMS.map((item) => (
-                <details
-                  key={item.question}
-                  className="group bg-surface-700 border border-surface-600 rounded-xl overflow-hidden"
-                >
-                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer
-                                       font-medium text-white list-none select-none
-                                       hover:bg-surface-600 transition-colors">
-                    {item.question}
-                    <span className="shrink-0 ml-4 text-slate-500 group-open:rotate-180 transition-transform duration-200">
-                      ▾
-                    </span>
-                  </summary>
-                  <p className="px-5 pb-5 pt-4 text-slate-400 text-sm leading-relaxed border-t border-surface-500">
-                    {item.answer}
-                  </p>
-                </details>
+            <p className="text-lg text-slate-400 leading-relaxed">
+              Social media profiles are your most visible digital real estate. In a feed
+              where millions of creators compete for attention, the difference between a
+              profile someone scrolls past and one they stop to follow often comes down to
+              a single detail: how your bio looks. GoFancyFont.com is the{" "}
+              <strong className="text-white">fastest, most comprehensive aesthetic text maker</strong>{" "}
+              available in 2026 — delivering 22+ live Unicode font styles with one-click
+              copy, a real-time Instagram bio preview, a curated symbol library, and
+              zero sign-up friction.
+            </p>
+            <p className="mt-4 text-slate-400">
+              Whether you need a{" "}
+              <strong className="text-white">cursive font generator</strong> for an elegant
+              Instagram bio, a Gothic Fraktur style for a gaming username, or vaporwave
+              aesthetic text for a TikTok profile, GoFancyFont transforms your ordinary
+              text into something extraordinary — instantly, in your browser, for free.
+            </p>
+          </header>
+
+          {/* ── H3: Unicode Magic ──────────────────────────── */}
+          <section>
+            <h3 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
+              How Unicode Magic Makes Copy &amp; Paste Fonts Work Everywhere
+            </h3>
+            <p className="mb-4">
+              The fundamental question most users ask is: <em>"Why does this work when
+              changing the font in Word doesn't?"</em> The answer lies in understanding the
+              difference between a{" "}
+              <strong className="text-white">font file</strong> and a{" "}
+              <strong className="text-white">Unicode character</strong>.
+            </p>
+            <p className="mb-4">
+              The Unicode Standard — maintained by the Unicode Consortium — is a universal
+              encoding system that assigns a unique numerical identity (called a code point)
+              to every character used in human writing. As of Unicode 15.1, the standard
+              encodes over 149,000 characters across 161 scripts. Within this vast
+              library sits a dedicated block called{" "}
+              <strong className="text-white">Mathematical Alphanumeric Symbols</strong>{" "}
+              (U+1D400 to U+1D7FF), originally designed for academic mathematical
+              typesetting but now the backbone of every{" "}
+              <strong className="text-white">cool text fonts</strong> generator on the web.
+            </p>
+            <p className="mb-4">
+              This block contains complete alphabets styled as bold, italic, bold italic,
+              script, bold script, Fraktur (Gothic), double-struck (blackboard bold),
+              sans-serif, and monospace — plus their digit equivalents. Each of these is
+              not the letter A displayed in a different font — it is a{" "}
+              <em>different character entirely</em>, with its own code point. The
+              Mathematical Bold Capital A is U+1D400 (<strong className="text-white">𝐀</strong>).
+              The Mathematical Script Capital A is U+1D49C (<strong className="text-white">𝒜</strong>).
+              When you copy <strong className="text-white">𝐀</strong> and paste it into
+              Instagram, the character U+1D400 travels with the text. Every device and
+              platform that supports Unicode — which includes all major social media apps
+              on iOS, Android, and web — renders it as a bold-style letter.
+            </p>
+            <p className="mb-4">
+              Beyond the Mathematical Alphanumerics block, GoFancyFont also uses:
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-slate-400 ml-2 mb-4">
+              <li>
+                <strong className="text-slate-200">Fullwidth Latin (U+FF01–U+FF5E)</strong>
+                {" "} — the Aesthetic vaporwave style where each character occupies double
+                the standard width (Ａ Ｂ Ｃ)
+              </li>
+              <li>
+                <strong className="text-slate-200">Enclosed Alphanumerics (U+2460–U+24FF)</strong>
+                {" "} — Circled (Ⓐ) and other enclosed letter forms
+              </li>
+              <li>
+                <strong className="text-slate-200">Enclosed Alphanumeric Supplement (U+1F100–U+1F1FF)</strong>
+                {" "} — Squared negative block letters (🅐)
+              </li>
+              <li>
+                <strong className="text-slate-200">Unicode Combining Diacritical Marks (U+0300–U+036F)</strong>
+                {" "} — Used for the Zalgo glitch effect by stacking multiple combining
+                characters above, through, and below each base letter
+              </li>
+              <li>
+                <strong className="text-slate-200">Latin Extended ranges</strong>
+                {" "} — Small Caps (ᴀʙᴄ) and Upside-Down text using phonetic extensions
+                and special Latin characters
+              </li>
+            </ul>
+            <p>
+              GoFancyFont maps each standard ASCII character you type to its equivalent
+              in these Unicode ranges using a client-side JavaScript mapping table. The
+              conversion is instantaneous — there is no server request, no API call,
+              and no processing delay. All 22 style previews update in real time as you
+              type, so you can compare every option before you copy.
+            </p>
+          </section>
+
+          {/* ── H3: Best Styles by Platform ────────────────── */}
+          <section>
+            <h3 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
+              Best Aesthetic Fonts for Instagram Bios, TikTok, and Discord
+            </h3>
+            <p className="mb-5">
+              Not all Unicode styles render equally well across every platform, and the
+              "best" style depends on your brand, community, and creative intent. Here is
+              a platform-by-platform breakdown to help you choose the right{" "}
+              <strong className="text-white">copy and paste fonts</strong> for your
+              specific use case.
+            </p>
+
+            {/* Instagram */}
+            <div className="mb-6">
+              <h4 className="font-semibold text-slate-200 mb-2">
+                📸 Instagram Bio Ideas — Fonts That Perform
+              </h4>
+              <p className="text-slate-400 mb-3">
+                Instagram's bio field supports all major Unicode ranges. The most popular
+                styles among influencers, creators, and lifestyle brands are:
+              </p>
+              <ul className="list-disc list-inside space-y-1.5 text-slate-400 ml-2">
+                <li>
+                  <strong className="text-slate-200">Bold Script 𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽</strong>
+                  {" "} — The gold standard for feminine, luxury, and lifestyle aesthetics.
+                  High contrast and instantly recognizable as a "designer" choice.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Aesthetic Ａｅｓｔｈｅｔｉｃ</strong>
+                  {" "} — Full-width vaporwave style. Popular with K-pop fans, vintage
+                  aesthetics, and lo-fi content creators.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Small Caps ꜱᴍᴀʟʟ ᴄᴀᴘꜱ</strong>
+                  {" "} — Understated and professional. Works well for business profiles,
+                  coaches, and consultants who want subtle differentiation.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Italic Serif 𝐼𝑡𝑎𝑙𝑖𝑐</strong>
+                  {" "} — Clean and elegant. Pairs well with emoji and standard text in
+                  a multi-line bio structure.
+                </li>
+              </ul>
+            </div>
+
+            {/* TikTok */}
+            <div className="mb-6">
+              <h4 className="font-semibold text-slate-200 mb-2">
+                🎵 TikTok — Short, Bold, Unmissable
+              </h4>
+              <p className="text-slate-400 mb-3">
+                TikTok's bio limit is 80 characters, so every character counts. The most
+                effective TikTok bio fonts are those that make an immediate visual impact
+                at small screen sizes:
+              </p>
+              <ul className="list-disc list-inside space-y-1.5 text-slate-400 ml-2">
+                <li>
+                  <strong className="text-slate-200">Bold Sans-Serif 𝗦𝗮𝗻𝘀</strong>
+                  {" "} — Maximum legibility at small sizes. Renders cleanly on all
+                  Android and iOS devices.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Cursive Script 𝒞𝓊𝓇𝓈𝒾𝓋𝑒</strong>
+                  {" "} — Adds personality to short bios without sacrificing readability.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Aesthetic Full-Width</strong>
+                  {" "} — Creates strong visual spacing, making even a single line feel
+                  premium and intentional.
+                </li>
+              </ul>
+            </div>
+
+            {/* Discord */}
+            <div className="mb-2">
+              <h4 className="font-semibold text-slate-200 mb-2">
+                🎮 Discord Font Generator — Gaming &amp; Community Servers
+              </h4>
+              <p className="text-slate-400 mb-3">
+                Discord is the most Unicode-permissive of all major platforms. All 22
+                GoFancyFont styles render correctly in Discord username fields, custom
+                statuses, bio sections, and server channel descriptions. Popular choices
+                in gaming communities include:
+              </p>
+              <ul className="list-disc list-inside space-y-1.5 text-slate-400 ml-2">
+                <li>
+                  <strong className="text-slate-200">Monospace 𝙼𝚘𝚗𝚘</strong>
+                  {" "} — The developer / hacker / cyberpunk aesthetic. Hugely popular
+                  in tech, coding, and CTF (Capture The Flag) servers.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Gothic Fraktur 𝔊𝔬𝔱𝔥𝔦𝔠</strong>
+                  {" "} — Medieval and fantasy roleplay servers, metal music communities,
+                  and dark academia aesthetics.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Zalgo Z̷a̷l̷g̷o̷</strong>
+                  {" "} — A staple in horror, SCP Foundation, and meme servers. Use
+                  sparingly for maximum impact.
+                </li>
+                <li>
+                  <strong className="text-slate-200">Double Struck 𝔻𝕠𝕦𝕓𝕝𝕖</strong>
+                  {" "} — Clean mathematical aesthetic popular in science, math, and
+                  education community servers.
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          {/* ── H3: Science of Text Symbols ────────────────── */}
+          <section>
+            <h3 className="text-xl font-bold text-white mb-4 pb-2 border-b border-surface-600">
+              Why Regular Keyboards Can&apos;t Do This: The Science of Text Symbols
+            </h3>
+            <p className="mb-4">
+              A standard QWERTY keyboard gives you access to 95 printable ASCII characters:
+              26 uppercase letters, 26 lowercase letters, 10 digits, and 33 punctuation
+              and special symbols. ASCII (American Standard Code for Information
+              Interchange) was designed in 1963 to cover the basic needs of English-language
+              computing. It maps each character to a number from 0 to 127.
+            </p>
+            <p className="mb-4">
+              Unicode expanded this concept globally, assigning code points to over 149,000
+              characters used in every human writing system — from Latin and Cyrillic to
+              Chinese, Arabic, emoji, ancient scripts, and the mathematical symbol blocks
+              that power{" "}
+              <strong className="text-white">cool text fonts</strong> generators like
+              GoFancyFont. Your keyboard has no keys for U+1D400 (𝐀) or U+1D49C (𝒜)
+              because these characters were never intended for keyboard input — they exist
+              in Unicode to allow mathematical papers and scientific documents to be encoded
+              as plain text without relying on font files.
+            </p>
+            <p className="mb-4">
+              The key insight is this: every Unicode character, no matter how exotic, is
+              ultimately just a number. 𝐀 = 119808. 𝒜 = 119964. These numbers are
+              what travel when you copy and paste text. As long as the destination
+              app supports Unicode (which all modern apps do), the character renders
+              correctly using whatever font the OS has installed that covers that code
+              point range.
+            </p>
+            <p className="mb-4">
+              GoFancyFont's mapping function takes your input character by character,
+              looks up the corresponding Unicode code point in the target style range,
+              and assembles the transformed string. For example, for Bold Serif:
+            </p>
+            <div className="p-4 rounded-xl bg-surface-900 border border-surface-600 font-mono text-sm mb-4 overflow-x-auto">
+              <p className="text-slate-400 mb-1">{"// Input: 'Hello'"}</p>
+              <p className="text-slate-400 mb-1">{"// H (U+0048) → 𝐇 (U+1D407)"}</p>
+              <p className="text-slate-400 mb-1">{"// e (U+0065) → 𝐞 (U+1D41E)"}</p>
+              <p className="text-slate-400 mb-1">{"// l (U+006C) → 𝐥 (U+1D425)"}</p>
+              <p className="text-slate-400 mb-1">{"// l (U+006C) → 𝐥 (U+1D425)"}</p>
+              <p className="text-slate-400">  {"// o (U+006F) → 𝐨 (U+1D428)"}</p>
+              <p className="text-brand-400 mt-2">{"// Output: '𝐇𝐞𝐥𝐥𝐨'"}</p>
+            </div>
+            <p className="mb-4">
+              This process happens for all 22 style mappings simultaneously, in real time,
+              with zero server involvement. It is why GoFancyFont can show you all 22
+              previews updating as you type each letter — the computation is fast enough to
+              run locally on even the slowest smartphones.
+            </p>
+            <p>
+              Beyond fonts, GoFancyFont's Symbol Library adds another dimension: curated
+              Kaomoji (emoticon art like ヽ(✿ﾟ▽ﾟ)ノ), aesthetic text borders (╔══════╗),
+              arrow strings (╰┈➤), and decorative symbols (✧˚ · .) — giving you a
+              complete toolkit for crafting the perfect{" "}
+              <strong className="text-white">aesthetic text maker</strong> experience
+              from a single page, without jumping between tools.
+            </p>
+          </section>
+
+          {/* ── Feature Summary Grid ───────────────────────── */}
+          <section>
+            <h3 className="text-xl font-bold text-white mb-5 pb-2 border-b border-surface-600">
+              Everything GoFancyFont Gives You — For Free
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { icon: "⚡", t: "22 Live Previews",        d: "All styles update in real time as you type. No page reload, no delay." },
+                { icon: "📱", t: "Instagram Bio Preview",    d: "See exactly how your styled text looks in a real Instagram profile card." },
+                { icon: "♥",  t: "Save Favorites",           d: "Heart any style to pin it to the top of your list, saved to localStorage." },
+                { icon: "✦",  t: "Symbol & Kaomoji Library", d: "100+ aesthetic symbols, text borders, kaomoji, and sparkles — click to copy." },
+                { icon: "🔒", t: "Private by Design",        d: "Your text never leaves your browser. No servers, no logging, no data collection." },
+                { icon: "💸", t: "Always Free",              d: "No account. No subscription. No watermark. No limit. Supported by ads only." },
+              ].map(({ icon, t, d }) => (
+                <div key={t} className="flex gap-4 p-4 rounded-xl bg-surface-700 border border-surface-600">
+                  <span className="text-2xl shrink-0">{icon}</span>
+                  <div>
+                    <p className="font-semibold text-white text-sm mb-1">{t}</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">{d}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </section>
 
-        </div>
+        </article>
       </div>
-    </>
+    </div>
   );
 }

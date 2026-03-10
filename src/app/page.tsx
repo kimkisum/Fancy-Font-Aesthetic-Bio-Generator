@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Generator from "@/components/Generator";
 import SymbolPicker from "@/components/SymbolPicker";
+import SymbolLibrary from "@/components/SymbolLibrary";
 import HomeContent from "@/components/HomeContent";
+import FAQSection from "@/components/FAQSection";
 
 export const metadata: Metadata = {
   title: "Fancy Font Generator & Aesthetic Bio Maker — 22 Styles",
@@ -150,8 +152,13 @@ export default function HomePage() {
         </section>
 
         {/* ── Symbol Picker ─────────────────────────────────── */}
-        <section id="symbols" className="pb-16">
+        <section id="symbols" className="pb-2">
           <SymbolPicker />
+        </section>
+
+        {/* ── Symbol Library (Kaomoji + Borders) ───────────── */}
+        <section id="library" className="pb-16">
+          <SymbolLibrary />
         </section>
 
         {/* ── Feature Cards ────────────────────────────────── */}
@@ -260,8 +267,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── HomeContent: SEO Article + FAQ ───────────────── */}
+        {/* ── HomeContent: SEO Article ─────────────────────── */}
         <HomeContent />
+
+        {/* ── FAQ Section (JSON-LD Schema) ──────────────────── */}
+        <FAQSection />
 
         {/* ── Footer ───────────────────────────────────────── */}
         <footer className="border-t border-surface-600 py-8 text-center text-slate-600 text-sm space-y-2">
