@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Generator from "@/components/Generator";
+import SymbolPicker from "@/components/SymbolPicker";
 import HomeContent from "@/components/HomeContent";
 
 export const metadata: Metadata = {
@@ -144,8 +145,13 @@ export default function HomePage() {
         </section>
 
         {/* ── Generator ────────────────────────────────────── */}
-        <section id="generator" className="pb-16">
+        <section id="generator" className="pb-4">
           <Generator />
+        </section>
+
+        {/* ── Symbol Picker ─────────────────────────────────── */}
+        <section id="symbols" className="pb-16">
+          <SymbolPicker />
         </section>
 
         {/* ── Feature Cards ────────────────────────────────── */}
