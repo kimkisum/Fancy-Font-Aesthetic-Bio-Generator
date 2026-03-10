@@ -1,0 +1,46 @@
+{
+  "name": "GoFancyFont — Fancy Font Generator",
+  "short_name": "FancyFont",
+  "description": "Generate 22+ fancy Unicode fonts for Instagram, TikTok, Discord bios instantly. Free, real-time, no sign-up.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "en",
+  "categories": ["utilities", "productivity", "social"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-default.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Instagram Fonts",
+      "url": "/instagram-fonts",
+      "description": "Fancy fonts for Instagram bio"
+    },
+    {
+      "name": "Discord Fonts",
+      "url": "/discord-text-generator",
+      "description": "Cool text for Discord"
+    }
+  ]
+}
