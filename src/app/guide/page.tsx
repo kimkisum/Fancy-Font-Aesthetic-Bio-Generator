@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     description:
       "Everything you need to know about fancy Unicode fonts — how they work, where to use them, and pro tips for stunning social media bios.",
     type: "article",
-    url: "https://fancyfont.io/guide",
+    url: "https://gofancyfont.com/guide",
   },
-  alternates: { canonical: "https://fancyfont.io/guide" },
+  alternates: { canonical: "https://gofancyfont.com/guide" },
 };
 
 // FAQ Schema for this guide page

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = "March 10, 2026";
 const SITE_NAME    = "FancyFont.io";
-const SITE_URL     = "https://fancyfont.io";
-const CONTACT      = "privacy@fancyfont.io";
+const SITE_URL     = "https://gofancyfont.com";
+const CONTACT      = "privacy@gofancyfont.com";
 
 export default function PrivacyPolicyPage() {
   return (

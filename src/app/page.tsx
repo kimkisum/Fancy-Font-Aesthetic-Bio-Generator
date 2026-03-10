@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Copy-ready fancy fonts for Instagram, TikTok & Twitter bios. Bold, cursive, Gothic, vaporwave, Zalgo & 16 more. Instant, free, no login.",
     type: "website",
-    url: "https://fancyfont.io",
+    url: "https://gofancyfont.com",
     siteName: "Fancy Font Generator",
     locale: "en_US",
     images: [
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://fancyfont.io",
+    canonical: "https://gofancyfont.com",
   },
   robots: "index, follow",
 };
@@ -60,7 +60,7 @@ const jsonLd = {
   name: "Fancy Font Generator",
   description:
     "Free online tool to convert text into 22+ Unicode fancy font styles for social media bios.",
-  url: "https://fancyfont.io",
+  url: "https://gofancyfont.com",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any",
   offers: {
