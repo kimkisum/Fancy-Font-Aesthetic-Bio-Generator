@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { FONT_STYLES, CATEGORIES, type FontStyle } from "@/utils/fontMap";
+import { FONT_STYLES, CATEGORIES, MOOD_TAGS, type FontStyle } from "@/utils/fontMap";
 import BioPreview from "./BioPreview";
 
 const LS_KEY = "gofancyfont_favorites";
@@ -32,6 +32,7 @@ function HeartIcon({ filled }: { filled: boolean }) {
 export default function Generator() {
   const [inputText, setInputText]           = useState("Fancy Font Generator");
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeMood, setActiveMood]         = useState<string>("");
   const [copied, setCopied]                 = useState<CopiedState>({ id: "", timeout: null });
   const [search, setSearch]                 = useState("");
   const [favorites, setFavorites]           = useState<string[]>([]);
@@ -63,14 +64,23 @@ export default function Generator() {
   }, []);
 
   // ── Filtered & sorted styles ───────────────────────────
+  const moodKeywords = useMemo(
+    () => MOOD_TAGS.find((m) => m.id === activeMood)?.keywords ?? [],
+    [activeMood]
+  );
+
   const filteredStyles = useMemo(() => {
+    const q = search.toLowerCase();
     let list = FONT_STYLES.filter((style) => {
       const matchCat    = activeCategory === "all" || style.category === activeCategory;
-      const matchSearch = search === "" ||
-        style.name.toLowerCase().includes(search.toLowerCase()) ||
-        style.description.toLowerCase().includes(search.toLowerCase());
+      const matchSearch = q === "" ||
+        style.name.toLowerCase().includes(q) ||
+        style.description.toLowerCase().includes(q) ||
+        style.tags.some((tag) => tag.includes(q));
+      const matchMood   = activeMood === "" ||
+        style.tags.some((tag) => (moodKeywords as readonly string[]).includes(tag));
       const matchFav    = !showFavOnly || favorites.includes(style.id);
-      return matchCat && matchSearch && matchFav;
+      return matchCat && matchSearch && matchMood && matchFav;
     });
     // Favorites float to the top
     if (favorites.length > 0 && !showFavOnly) {
@@ -80,7 +90,7 @@ export default function Generator() {
       ];
     }
     return list;
-  }, [activeCategory, search, favorites, showFavOnly]);
+  }, [activeCategory, search, activeMood, moodKeywords, favorites, showFavOnly]);
 
   const handleCopy = useCallback(
     (style: FontStyle) => {
@@ -94,7 +104,8 @@ export default function Generator() {
     [inputText, copied.timeout]
   );
 
-  const favCount = favorites.length;
+  const favCount        = favorites.length;
+  const activeMoodInfo  = MOOD_TAGS.find((m) => m.id === activeMood);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8 space-y-6">
@@ -175,6 +186,8 @@ export default function Generator() {
 
       {/* ── Filters ──────────────────────────────────────── */}
       <section className="space-y-3">
+
+        {/* Category pills */}
         <div className="flex flex-wrap items-center gap-2">
           {CATEGORIES.map((cat) => (
             <button
@@ -210,12 +223,41 @@ export default function Generator() {
           </button>
         </div>
 
+        {/* ── Vibe / Mood filter ──────────────────────────── */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-slate-500 self-center tracking-wider uppercase mr-1">
+            Vibe
+          </span>
+          {MOOD_TAGS.map((mood) => (
+            <button
+              key={mood.id}
+              onClick={() => setActiveMood((prev) => (prev === mood.id ? "" : mood.id))}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-150
+                ${activeMood === mood.id
+                  ? "bg-violet-500/20 text-violet-300 border border-violet-400/50 shadow-sm shadow-violet-500/10"
+                  : "bg-surface-700 text-slate-400 hover:bg-surface-600 hover:text-white border border-transparent"
+                }`}
+            >
+              {mood.emoji} {mood.label}
+            </button>
+          ))}
+          {activeMood && (
+            <button
+              onClick={() => setActiveMood("")}
+              className="text-xs text-slate-500 hover:text-slate-300 transition-colors ml-1"
+            >
+              ✕ clear
+            </button>
+          )}
+        </div>
+
+        {/* Search input */}
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search styles..."
-          className="w-full max-w-xs bg-surface-700 border border-surface-500 rounded-lg
+          placeholder='Search by name or vibe (e.g. "gothic", "cute", "retro")'
+          className="w-full max-w-sm bg-surface-700 border border-surface-500 rounded-lg
                      text-sm text-white placeholder-slate-600 px-4 py-2 outline-none
                      focus:border-brand-400 transition-all"
         />
@@ -223,10 +265,15 @@ export default function Generator() {
 
       {/* ── Results ──────────────────────────────────────── */}
       <section>
-        <p className="text-xs text-slate-500 mb-4 tracking-wider uppercase">
-          {filteredStyles.length} styles
+        <p className="text-xs text-slate-500 mb-4 tracking-wider uppercase flex flex-wrap gap-x-2">
+          <span>{filteredStyles.length} styles</span>
+          {activeMoodInfo && (
+            <span className="text-violet-400">
+              · {activeMoodInfo.emoji} {activeMoodInfo.label}
+            </span>
+          )}
           {favCount > 0 && !showFavOnly && (
-            <span className="ml-2 text-pink-400">· {favCount} favorited</span>
+            <span className="text-pink-400">· {favCount} favorited</span>
           )}
         </p>
 
@@ -236,6 +283,16 @@ export default function Generator() {
             <p className="text-sm">No favorites yet.</p>
             <p className="text-xs mt-1 text-slate-600">
               Click the ♥ icon on any style card to save it here.
+            </p>
+          </div>
+        )}
+
+        {!showFavOnly && filteredStyles.length === 0 && (
+          <div className="text-center py-12 text-slate-500">
+            <p className="text-4xl mb-3">🔍</p>
+            <p className="text-sm">No styles found.</p>
+            <p className="text-xs mt-1 text-slate-600">
+              Try a different vibe or clear your filters.
             </p>
           </div>
         )}
@@ -270,11 +327,29 @@ export default function Generator() {
                 >
                   {/* Meta row */}
                   <div className="flex items-start justify-between gap-2">
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs text-brand-400 font-medium tracking-widest uppercase mb-0.5">
                         {style.category}
                       </p>
                       <p className="text-xs text-slate-500 leading-snug">{style.description}</p>
+                      {/* Mood tags preview */}
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {style.tags.slice(0, 3).map((tag) => (
+                          <button
+                            key={tag}
+                            onClick={() => {
+                              const mood = MOOD_TAGS.find((m) =>
+                                (m.keywords as readonly string[]).includes(tag)
+                              );
+                              if (mood) setActiveMood((prev) => (prev === mood.id ? "" : mood.id));
+                            }}
+                            className="text-[10px] px-1.5 py-0.5 rounded bg-surface-600 text-slate-500
+                                       hover:text-slate-300 hover:bg-surface-500 transition-colors"
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Action icons */}
