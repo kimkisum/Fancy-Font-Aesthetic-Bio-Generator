@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Generator from "@/components/Generator";
+import HomeContent from "@/components/HomeContent";
 
 export const metadata: Metadata = {
   title: "Fancy Font Generator & Aesthetic Bio Maker — 22 Styles",
@@ -253,11 +254,16 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── HomeContent: SEO Article + FAQ ───────────────── */}
+        <HomeContent />
+
         {/* ── Footer ───────────────────────────────────────── */}
         <footer className="border-t border-surface-600 py-8 text-center text-slate-600 text-sm space-y-2">
-          <p>© {new Date().getFullYear()} FancyFont.io — Free Fancy Font & Aesthetic Bio Generator</p>
+          <p>© {new Date().getFullYear()} GoFancyFont.com — Free Fancy Font & Aesthetic Bio Generator</p>
           <p className="flex justify-center gap-4 flex-wrap">
             <Link href="/guide"   className="hover:text-slate-400 transition-colors">Guide</Link>
+            <Link href="/about"   className="hover:text-slate-400 transition-colors">About</Link>
+            <Link href="/contact" className="hover:text-slate-400 transition-colors">Contact</Link>
             <Link href="/privacy" className="hover:text-slate-400 transition-colors">Privacy Policy</Link>
             <Link href="/terms"   className="hover:text-slate-400 transition-colors">Terms of Service</Link>
           </p>
