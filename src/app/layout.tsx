@@ -6,6 +6,9 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gofancyfont.com"),
+  verification: {
+    google: "djcQHrizMenk2JPPjw2bGwMoAU1QOCnsOUrgnRH1BTU",
+  },
 };
 
 export default function RootLayout({
