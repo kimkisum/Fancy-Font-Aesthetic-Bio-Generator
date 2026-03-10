@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -9,6 +10,9 @@ export const metadata: Metadata = {
   verification: {
     google: "djcQHrizMenk2JPPjw2bGwMoAU1QOCnsOUrgnRH1BTU",
   },
+  other: {
+    "google-adsense-account": "ca-pub-4640858493582523",
+  },
 };
 
 export default function RootLayout({
@@ -18,7 +22,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} dark`}>
-      <body className="antialiased bg-surface-900 text-white">{children}</body>
+      <body className="antialiased bg-surface-900 text-white">
+        {children}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4640858493582523"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
