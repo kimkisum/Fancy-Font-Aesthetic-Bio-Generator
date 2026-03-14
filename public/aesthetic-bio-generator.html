@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Font & Aesthetic Bio Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAFAFA',
+            blush: '#FFD1DC',
+            lavender: '#E6E6FA',
+            charcoal: '#333333',
+            plum: '#2D1B4E',
+            navy: '#1a1a2e',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --text: #333333;
+      --text-muted: #6b6b6b;
+      --accent-blush: #FFD1DC;
+      --accent-lavender: #E6E6FA;
+      --border: rgba(0, 0, 0, 0.06);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+    .dark {
+      --bg: #1a1a2e;
+      --bg-card: rgba(45, 27, 78, 0.5);
+      --text: #f1e6fa;
+      --text-muted: #b8a9c9;
+      --accent-blush: #ffb3c6;
+      --accent-lavender: #c4b8e6;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+    .glass { background: var(--bg-card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .pill { border-radius: 9999px; }
+    .btn-copy { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .btn-copy:active { transform: scale(0.97); }
+    .btn-copy.copied { animation: bounce 0.5s ease; }
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .sticky-input-wrap { position: sticky; top: 0; z-index: 20; padding-bottom: 0.5rem; }
+    @media (min-width: 768px) { .sticky-input-wrap { position: relative; } }
+    .char-counter-dynamic { font-size: 0.75rem; color: var(--text-muted); }
+    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-blush); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-blush); cursor: pointer; border: none; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="app" class="min-h-screen pb-20">
+    <!-- Header -->
+    <header class="glass border-b border-[var(--border)]">
+      <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
+          Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
+        </h1>
+        <button
+          id="dark-toggle"
+          type="button"
+          aria-label="Toggle dark mode"
+          class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
+        >
+          <span class="dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sticky Input Area -->
+    <section class="sticky-input-wrap glass -mb-px">
+      <div class="max-w-2xl mx-auto px-4 py-4">
+        <div class="relative">
+          <textarea
+            id="input-text"
+            rows="3"
+            maxlength="150"
+            placeholder="Type your name or bio here..."
+            class="w-full rounded-2xl border border-[var(--border)] bg-white/90 dark:bg-[var(--plum)]/30 text-[var(--text)] placeholder-[var(--text-muted)] px-4 py-3 pr-24 text-base resize-none outline-none focus:ring-2 focus:ring-[var(--accent-blush)]/40 focus:border-[var(--accent-blush)] transition-all"
+          ></textarea>
+          <div class="absolute top-3 right-3 flex items-center gap-1">
+            <button type="button" id="btn-paste" title="Paste from clipboard" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">📋</button>
+            <button type="button" id="btn-clear" title="Clear" class="pill p-2 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 transition-colors text-[var(--text)]">✕</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-2 px-1">
+          <p id="char-counter" class="char-counter-dynamic">0/150 — Type something!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Font Cards -->
+    <main class="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div id="font-cards" class="space-y-4"></div>
+
+      <!-- Zalgo Section -->
+      <section class="glass rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-serif font-medium text-[var(--text)]">Glitch / Zalgo</h3>
+          <span id="zalgo-intensity-label" class="text-sm text-[var(--text-muted)]">Intensity: 2</span>
+        </div>
+        <input type="range" id="zalgo-slider" min="0" max="5" value="2" class="w-full h-2 rounded-full appearance-none bg-[var(--accent-lavender)]/30 accent-[var(--accent-blush)]" />
+        <div class="min-h-[3rem] px-4 py-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all" id="zalgo-preview"></div>
+        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all">
+          Copy Zalgo
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ─── Unicode Mapper (reusable for font maps) ─────────────────────────────
+    function unicodeMapper(text, upperOffset, lowerOffset, upperExceptions = {}, lowerExceptions = {}, digitOffset) {
+      return [...text].map((char) => {
+        const code = char.charCodeAt(0);
+        if (code >= 65 && code <= 90) {
+          const idx = code - 65;
+          return upperExceptions[idx] ?? String.fromCodePoint(upperOffset + idx);
+        }
+        if (code >= 97 && code <= 122) {
+          const idx = code - 97;
+          return lowerExceptions[idx] ?? String.fromCodePoint(lowerOffset + idx);
+        }
+        if (digitOffset !== undefined && code >= 48 && code <= 57) {
+          return String.fromCodePoint(digitOffset + (code - 48));
+        }
+        return char;
+      }).join('');
+    }
+
+    function fullwidth(text) {
+      return [...text].map((c) => {
+        const code = c.charCodeAt(0);
+        if (code >= 33 && code <= 126) return String.fromCodePoint(code + 0xfee0);
+        if (c === ' ') return '\u3000';
+        return c;
+      }).join('');
+    }
+
+    const ZALGO_UP = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0357', '\u0351', '\u0307'];
+    const ZALGO_MID = ['\u0315', '\u031b', '\u0340', '\u0341', '\u0358', '\u0321', '\u0322', '\u0327', '\u0328', '\u0334', '\u0335', '\u0336'];
+    const ZALGO_DOWN = ['\u0317', '\u0318', '\u0319', '\u031c', '\u031d', '\u031e', '\u031f', '\u0320', '\u032a', '\u032b', '\u032c', '\u032d'];
+
+    function zalgo(text, intensity) {
+      if (intensity <= 0) return text;
+      return [...text].map((c) => {
+        if (c === ' ') return c;
+        let result = c;
+        for (let i = 0; i < intensity; i++) {
+          result += ZALGO_UP[Math.floor(Math.random() * ZALGO_UP.length)];
+          result += ZALGO_MID[Math.floor(Math.random() * ZALGO_MID.length)];
+          result += ZALGO_DOWN[Math.floor(Math.random() * ZALGO_DOWN.length)];
+        }
+        return result;
+      }).join('');
+    }
+
+    // ─── Font Maps: add new styles here ─────────────────────────────────────
+    const fontMaps = {
+      bold: {
+        name: '𝐁𝐨𝐥𝐝 𝐒𝐞𝐫𝐢𝐟',
+        transform: (t) => unicodeMapper(t, 0x1d400, 0x1d41a, {}, {}, 0x1d7ce),
+      },
+      italic: {
+        name: '𝐼𝑡𝑎𝑙𝑖𝑐 𝑆𝑒𝑟𝑖𝑓',
+        transform: (t) => unicodeMapper(t, 0x1d434, 0x1d44e, {}, { 7: 'ℎ' }),
+      },
+      boldItalic: {
+        name: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄',
+        transform: (t) => unicodeMapper(t, 0x1d468, 0x1d482),
+      },
+      script: {
+        name: '𝒮𝒸𝓇𝒾𝓅𝓉 𝒞𝓊𝓇𝓈𝒾𝓋ℯ',
+        transform: (t) => unicodeMapper(t, 0x1d49c, 0x1d4b6, { 1: 'ℬ', 4: 'ℰ', 5: 'ℱ', 7: 'ℋ', 8: 'ℐ', 11: 'ℒ', 12: 'ℳ', 17: 'ℛ' }, { 4: 'ℯ', 6: 'ℊ', 14: 'ℴ' }),
+      },
+      boldScript: {
+        name: '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽',
+        transform: (t) => unicodeMapper(t, 0x1d4d0, 0x1d4ea),
+      },
+      doubleStruck: {
+        name: '𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜',
+        transform: (t) => unicodeMapper(t, 0x1d538, 0x1d552, { 2: 'ℂ', 7: 'ℍ', 13: 'ℕ', 15: 'ℙ', 16: 'ℚ', 17: 'ℝ', 25: 'ℤ' }, {}, 0x1d7d8),
+      },
+      sansBold: {
+        name: '𝗦𝗮𝗻𝘀 𝗕𝗼𝗹𝗱',
+        transform: (t) => unicodeMapper(t, 0x1d5d4, 0x1d5ee, {}, {}, 0x1d7ec),
+      },
+      monospace: {
+        name: '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎',
+        transform: (t) => unicodeMapper(t, 0x1d670, 0x1d68a, {}, {}, 0x1d7f6),
+      },
+      aesthetic: {
+        name: 'Ａｅｓｔｈｅｔｉｃ',
+        transform: fullwidth,
+      },
+      coquette: {
+        name: '🎀 Coquette',
+        transform: (t) => (t.trim() ? t.trim() + ' 🎀 ⋆˙⟡♡' : ''),
+      },
+      kaomojiFramed: {
+        name: '✧ Kaomoji Framed',
+        transform: (t) => (t.trim() ? `✧･ﾟ: *✧･ﾟ:* ${t.trim()} *:･ﾟ✧*:･ﾟ✧` : ''),
+      },
+      circled: {
+        name: 'Ⓒⓘⓡⓒⓛⓔⓓ',
+        transform: (t) => unicodeMapper(t, 0x24b6, 0x24d0),
+      },
+      smallCaps: {
+        name: 'Sᴍᴀʟʟ Cᴀᴘꜱ',
+        transform: (t) => [...t.toLowerCase()].map((c) => ({ a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'Q',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' }[c] ?? c)).join(''),
+      },
+      dotted: {
+        name: 'D·o·t·t·e·d',
+        transform: (t) => [...t].map((c, i, arr) => (c === ' ' ? ' ' : (arr[i + 1] !== undefined && arr[i + 1] !== ' ' ? c + '·' : c))).join(''),
+      },
+      spaced: {
+        name: 'S p a c e d',
+        transform: (t) => [...t].join(' '),
+      },
+    };
+
+    // ─── DOM refs ───────────────────────────────────────────────────────────
+    const inputEl = document.getElementById('input-text');
+    const charCounter = document.getElementById('char-counter');
+    const fontCards = document.getElementById('font-cards');
+    const zalgoSlider = document.getElementById('zalgo-slider');
+    const zalgoPreview = document.getElementById('zalgo-preview');
+    const zalgoIntensityLabel = document.getElementById('zalgo-intensity-label');
+    const zalgoCopyBtn = document.getElementById('zalgo-copy');
+    const darkToggle = document.getElementById('dark-toggle');
+
+    const COUNTER_MSGS = [
+      { max: 50, msg: 'Perfect for TikTok!' },
+      { max: 100, msg: 'Ideal for Instagram!' },
+      { max: 150, msg: 'Full bio length!' },
+    ];
+
+    function updateCharCounter() {
+      const len = (inputEl.value || '').length;
+      const msg = len === 0 ? 'Type something!' : (COUNTER_MSGS.find((m) => len <= m.max)?.msg ?? 'Full bio length!');
+      charCounter.textContent = `${len}/150 — ${msg}`;
+    }
+
+    function getInputText() {
+      return (inputEl.value || '').trim() || 'Your name here';
+    }
+
+    function renderFontCards() {
+      const text = getInputText();
+      fontCards.innerHTML = Object.entries(fontMaps).map(([id, style]) => {
+        const display = style.transform(text);
+        return `
+          <div class="glass rounded-2xl p-4 space-y-3" data-style-id="${id}">
+            <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">${escapeHtml(style.name)}</p>
+            <div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">${escapeHtml(display) || '—'}</div>
+            <button type="button" class="btn-copy pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all" data-copy-id="${id}">
+              Copy
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      fontCards.querySelectorAll('[data-copy-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-copy-id');
+          const style = fontMaps[id];
+          if (!style) return;
+          const textToCopy = style.transform(getInputText());
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            btn.textContent = 'Copied! ✨';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function updateZalgoPreview() {
+      const intensity = parseInt(zalgoSlider.value, 10);
+      zalgoIntensityLabel.textContent = `Intensity: ${intensity}`;
+      zalgoPreview.textContent = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+    }
+
+    inputEl.addEventListener('input', () => {
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    });
+
+    inputEl.addEventListener('paste', () => setTimeout(updateCharCounter, 0));
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+      inputEl.value = '';
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    });
+
+    document.getElementById('btn-paste').addEventListener('click', () => {
+      navigator.clipboard.readText().then((t) => {
+        inputEl.value = t.slice(0, 150);
+        inputEl.focus();
+        updateCharCounter();
+        renderFontCards();
+        updateZalgoPreview();
+      }).catch(() => {});
+    });
+
+    zalgoSlider.addEventListener('input', updateZalgoPreview);
+
+    zalgoCopyBtn.addEventListener('click', () => {
+      const intensity = parseInt(zalgoSlider.value, 10);
+      const textToCopy = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        zalgoCopyBtn.textContent = 'Copied! ✨';
+        zalgoCopyBtn.classList.add('copied');
+        setTimeout(() => {
+          zalgoCopyBtn.textContent = 'Copy Zalgo';
+          zalgoCopyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
+    darkToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      try { localStorage.setItem('aesthetic-bio-dark', isDark ? '1' : '0'); } catch (_) {}
+    });
+
+    if (localStorage.getItem('aesthetic-bio-dark') === '1') {
+      document.documentElement.classList.add('dark');
+    }
+
+    updateCharCounter();
+    renderFontCards();
+    updateZalgoPreview();
+  </script>
+</body>
+</html>
