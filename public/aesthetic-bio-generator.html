@@ -118,18 +118,29 @@
 </head>
 <body class="min-h-screen">
   <div id="app" class="min-h-screen pb-24 md:pb-20">
-    <!-- Header -->
-    <header class="glass border-b border-[var(--border)]">
-      <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-        <h1 id="seo-h1" class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
-          Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
-        </h1>
-        <div class="flex items-center gap-2">
+    <!-- Aesthetic Header (Soft Coquette / Premium) -->
+    <header class="sticky top-0 z-50 bg-[#FAFAFA]/80 dark:bg-[#1a1a2e]/90 backdrop-blur-md border-b border-pink-100/50 dark:border-white/10 shadow-sm shadow-pink-900/5">
+      <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <button type="button" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" class="md:hidden p-2.5 rounded-full hover:bg-pink-50 dark:hover:bg-white/10 transition-colors duration-300 shrink-0">
+            <svg id="nav-hamburger-icon" class="w-5 h-5 text-[#333333] dark:text-[var(--text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg id="nav-close-icon" class="hidden w-5 h-5 text-[#333333] dark:text-[var(--text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+          <h1 id="seo-h1" class="font-serif text-xl md:text-2xl font-semibold italic text-[#333333] dark:text-[var(--text)] truncate">
+            FancyFont <span class="text-pink-300 dark:text-[var(--accent-blush)] not-italic">✨</span>
+          </h1>
+        </div>
+        <nav class="hidden md:flex items-center gap-6" aria-label="Main">
+          <a href="#app" class="nav-link text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text-muted)] hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300">Home</a>
+          <button type="button" class="nav-link-symbols text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text-muted)] hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300 bg-transparent border-none cursor-pointer">Symbols</button>
+          <a href="#section-templates" class="nav-link text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text-muted)] hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300">Templates</a>
+        </nav>
+        <div class="flex items-center gap-1.5 shrink-0">
           <button
             id="btn-saved"
             type="button"
             aria-label="Saved &amp; history"
-            class="pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-[var(--accent-blush)]/30 hover:bg-[var(--accent-blush)]/50 text-[var(--text)] text-sm font-medium transition-colors"
+            class="pill flex items-center gap-1.5 px-3 py-2 rounded-full hover:bg-pink-50 dark:hover:bg-white/10 text-[#333333] dark:text-[var(--text)] text-sm font-medium transition-colors duration-300"
           >
             <span id="saved-badge" class="hidden text-xs">0</span>
             ♡ Saved
@@ -138,11 +149,19 @@
             id="dark-toggle"
             type="button"
             aria-label="Toggle dark mode"
-            class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
+            class="pill p-2.5 rounded-full hover:bg-pink-50 dark:hover:bg-white/10 text-[#333333] dark:text-[var(--text)] transition-colors duration-300"
           >
             <span class="dark:hidden">🌙</span>
             <span class="hidden dark:inline">☀️</span>
           </button>
+        </div>
+      </div>
+      <!-- Mobile menu (slide-down) -->
+      <div id="nav-mobile-menu" class="hidden md:hidden border-t border-pink-100/50 dark:border-white/10 bg-white/50 dark:bg-[#1a1a2e]/50 backdrop-blur-sm">
+        <div class="max-w-2xl mx-auto px-4 py-3 flex flex-col gap-1">
+          <a href="#app" class="nav-mobile-link px-3 py-2.5 rounded-xl text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text)] hover:bg-pink-50 dark:hover:bg-white/10 hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300">Home</a>
+          <button type="button" class="nav-mobile-symbols text-left px-3 py-2.5 rounded-xl text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text)] hover:bg-pink-50 dark:hover:bg-white/10 hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300 bg-transparent border-none cursor-pointer w-full">Symbols</button>
+          <a href="#section-templates" class="nav-mobile-link px-3 py-2.5 rounded-xl text-sm font-sans tracking-wide text-[#333333] dark:text-[var(--text)] hover:bg-pink-50 dark:hover:bg-white/10 hover:text-[#FFD1DC] dark:hover:text-[var(--accent-blush)] transition-colors duration-300">Templates</a>
         </div>
       </div>
     </header>
@@ -221,7 +240,7 @@
     </div>
 
     <!-- Bio Templates carousel -->
-    <section class="max-w-2xl mx-auto px-4 py-3">
+    <section id="section-templates" class="max-w-2xl mx-auto px-4 py-3">
       <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase mb-2">Bio templates</p>
       <div id="bio-template-carousel" class="bio-template-carousel flex gap-2 pb-2" style="scroll-snap-type: x mandatory;"></div>
       <div id="bio-template-form-wrap" class="hidden mt-3 p-4 rounded-2xl glass border border-[var(--border)] space-y-3"></div>
@@ -321,7 +340,7 @@
       if (canonical) canonical.setAttribute('href', location.origin + (path === '/' ? '/' : path));
 
       const h1 = document.getElementById('seo-h1');
-      if (h1) h1.innerHTML = (config.h1 || '') + ' <span class="text-[var(--accent-blush)]">' + (config.h1Accent || '♡') + '</span> ' + (config.h1Suffix || '');
+      if (h1) h1.innerHTML = (config.h1 || '') + ' <span class="text-pink-300 dark:text-[var(--accent-blush)] not-italic">' + (config.h1Accent || '♡') + '</span> ' + (config.h1Suffix || '');
       const h2 = document.getElementById('seo-h2');
       if (h2) { h2.textContent = config.h2 || ''; h2.style.display = config.h2 ? '' : 'none'; }
       const para = document.getElementById('seo-paragraph');
@@ -697,6 +716,35 @@
     }
     document.getElementById('btn-symbols').addEventListener('click', () => openKaomojiPanel());
     document.getElementById('kaomoji-panel-close').addEventListener('click', () => closeKaomojiPanel());
+
+    const navMobileMenu = document.getElementById('nav-mobile-menu');
+    const navHamburger = document.getElementById('nav-hamburger');
+    const navHamburgerIcon = document.getElementById('nav-hamburger-icon');
+    const navCloseIcon = document.getElementById('nav-close-icon');
+    function closeNavMobile() {
+      if (navMobileMenu) navMobileMenu.classList.add('hidden');
+      if (navHamburger) navHamburger.setAttribute('aria-label', 'Open menu');
+      if (navHamburger) navHamburger.setAttribute('aria-expanded', 'false');
+      if (navHamburgerIcon) navHamburgerIcon.classList.remove('hidden');
+      if (navCloseIcon) navCloseIcon.classList.add('hidden');
+    }
+    function toggleNavMobile() {
+      const isOpen = navMobileMenu && !navMobileMenu.classList.contains('hidden');
+      if (isOpen) closeNavMobile();
+      else {
+        if (navMobileMenu) navMobileMenu.classList.remove('hidden');
+        if (navHamburger) navHamburger.setAttribute('aria-label', 'Close menu');
+        if (navHamburger) navHamburger.setAttribute('aria-expanded', 'true');
+        if (navHamburgerIcon) navHamburgerIcon.classList.add('hidden');
+        if (navCloseIcon) navCloseIcon.classList.remove('hidden');
+      }
+    }
+    if (navHamburger) navHamburger.addEventListener('click', toggleNavMobile);
+    document.querySelectorAll('.nav-link').forEach((a) => a.addEventListener('click', closeNavMobile));
+    document.querySelectorAll('.nav-mobile-link').forEach((a) => a.addEventListener('click', closeNavMobile));
+    document.querySelectorAll('.nav-link-symbols, .nav-mobile-symbols').forEach((btn) => {
+      btn.addEventListener('click', () => { openKaomojiPanel(); closeNavMobile(); });
+    });
 
     // ─── Easter egg: "coquette" / "love" → particles ─────────────────────────
     const EASTER_WORDS = ['coquette', 'love'];

@@ -6,9 +6,9 @@ window.seoConfig = {
   "/": {
     title: "Fancy Font & Aesthetic Bio Generator — Free Unicode Fonts",
     description: "Create fancy Unicode fonts and aesthetic bios instantly. Bold, cursive, vaporwave, Zalgo glitch & more. Copy for Instagram, TikTok, Discord. Free, no sign-up.",
-    h1: "Fancy Font",
-    h1Accent: "♡",
-    h1Suffix: "Bio",
+    h1: "FancyFont",
+    h1Accent: "✨",
+    h1Suffix: "",
     h2: "Free Fancy Font Generator",
     paragraph: "Transform any text into stylish Unicode fonts in one tap. Choose from bold serif, cursive script, aesthetic fullwidth, coquette, Kaomoji framed, and glitch Zalgo. Copy or share to Instagram, TikTok, or Discord — no account needed."
   },

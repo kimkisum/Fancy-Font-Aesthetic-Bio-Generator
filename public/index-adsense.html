@@ -101,9 +101,11 @@
     /* Auto Ads: reserve space to reduce CLS; fixed UI stays above content */
     .main-wrap {
       min-height: 100vh;
-      padding-bottom: 100px;
+      padding-bottom: calc(100px + env(safe-area-inset-bottom, 0));
       contain: layout style;
     }
+    /* iOS safe area for header / sticky input */
+    .header-safe { padding-top: env(safe-area-inset-top); }
     .kaomoji-panel {
       transform: translateY(100%);
       transition: transform 0.3s ease;
@@ -138,7 +140,7 @@
 </head>
 <body class="min-h-screen">
   <div id="app" class="main-wrap">
-    <header class="glass border-b border-[var(--border)] sticky top-0 z-10">
+    <header class="glass border-b border-[var(--border)] sticky top-0 z-10 header-safe">
       <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
         <h1 class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
           Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
@@ -173,7 +175,7 @@
         </div>
         <div class="flex flex-wrap items-center justify-between gap-2 mt-2 px-1">
           <p id="char-counter" class="char-counter">0/150 — Type something!</p>
-          <button type="button" id="btn-random-vibe" class="pill px-4 py-2 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-95">Random Vibe ✨</button>
+          <button type="button" id="btn-random-vibe" class="pill px-4 py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-95 min-h-[2.75rem]">Feeling Lucky ✨</button>
         </div>
       </div>
     </section>
@@ -188,7 +190,7 @@
         </div>
         <input type="range" id="zalgo-slider" min="0" max="5" value="2" class="w-full h-2 rounded-full appearance-none bg-[var(--accent-lavender)]/30 accent-[var(--accent-blush)]" />
         <div class="min-h-[3rem] px-4 py-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all" id="zalgo-preview"></div>
-        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all">Copy Zalgo</button>
+        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all min-h-[2.75rem]">Copy Zalgo</button>
       </section>
     </main>
     <footer class="max-w-2xl mx-auto px-4 py-6 text-center text-[var(--text-muted)] text-sm">
@@ -196,7 +198,7 @@
     </footer>
   </div>
 
-  <div id="toast-container" class="fixed left-4 right-4 bottom-8 z-40 pointer-events-none flex justify-center" aria-live="polite"></div>
+  <div id="toast-container" class="fixed left-4 right-4 z-40 pointer-events-none flex justify-center" style="bottom: calc(1.5rem + env(safe-area-inset-bottom, 0));" aria-live="polite"></div>
 
   <div id="kaomoji-panel" class="kaomoji-panel fixed bottom-0 left-0 right-0 glass border-t border-[var(--border)] shadow-[0_-4px_24px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom,0)]" aria-hidden="true">
     <div class="max-w-2xl mx-auto px-3 pt-2 pb-4">
@@ -325,7 +327,7 @@
         return '<div class="glass rounded-2xl p-4 space-y-3" data-style-id="' + id + '">' +
           '<p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">' + escapeHtml(style.name) + '</p>' +
           '<div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">' + (escapeHtml(display) || '—') + '</div>' +
-          '<button type="button" class="btn-copy pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all" data-copy-id="' + id + '">Copy</button>' +
+          '<button type="button" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all min-h-[2.75rem]" data-copy-id="' + id + '">Copy</button>' +
         '</div>';
       }).join('');
 
