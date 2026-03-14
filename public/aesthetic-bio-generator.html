@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FFD1DC" />
   <title>Fancy Font & Aesthetic Bio Generator</title>
+  <meta name="description" content="Create fancy Unicode fonts and aesthetic bios instantly. Free, no sign-up." id="meta-description" />
+  <link rel="canonical" href="" id="canonical-link" />
+  <link rel="manifest" href="/aesthetic-bio-manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
@@ -56,37 +60,173 @@
     .pill { border-radius: 9999px; }
     .btn-copy { transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .btn-copy:active { transform: scale(0.97); }
-    .btn-copy.copied { animation: bounce 0.5s ease; }
-    @keyframes bounce {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
     .sticky-input-wrap { position: sticky; top: 0; z-index: 20; padding-bottom: 0.5rem; }
     @media (min-width: 768px) { .sticky-input-wrap { position: relative; } }
     .char-counter-dynamic { font-size: 0.75rem; color: var(--text-muted); }
     input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-blush); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
     input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-blush); cursor: pointer; border: none; }
+    .a2hs-banner { background: linear-gradient(135deg, #FFD1DC 0%, #E6E6FA 100%); }
+    .modal-backdrop { background: rgba(0,0,0,0.35); backdrop-filter: blur(4px); }
+    .tab-active { background: var(--accent-blush); color: var(--text); }
+    .btn-copy.pop { animation: pop 0.4s ease; }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.08); }
+      70% { transform: scale(0.98); }
+      100% { transform: scale(1); }
+    }
+    .toast-enter { animation: toastIn 0.3s ease forwards; }
+    .toast-exit { animation: toastOut 0.25s ease forwards; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(100%); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(100%); }
+    }
+    .bottom-action-bar {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06);
+    }
+    .dark .bottom-action-bar {
+      background: rgba(26, 26, 46, 0.85);
+      border-top-color: var(--border);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
+    }
+    .safe-area-pb { padding-bottom: env(safe-area-inset-bottom, 0); }
+    .bio-template-carousel { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .bio-template-carousel::-webkit-scrollbar { height: 4px; }
+    .bio-template-card { scroll-snap-align: start; flex-shrink: 0; }
+    .kaomoji-panel { transform: translateY(100%); transition: transform 0.3s ease; }
+    .kaomoji-panel.open { transform: translateY(0); }
+    .kaomoji-key { min-width: 2.5rem; min-height: 2.5rem; }
+    .easter-particle { pointer-events: none; position: fixed; z-index: 9999; animation: floatUp 3s ease-out forwards; }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-120vh) scale(0.5); }
+    }
+    .confetti-piece { position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; z-index: 9998; animation: confettiFall 2.5s ease-out forwards; }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(-10px) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+    }
   </style>
 </head>
 <body class="min-h-screen">
-  <div id="app" class="min-h-screen pb-20">
+  <div id="app" class="min-h-screen pb-24 md:pb-20">
     <!-- Header -->
     <header class="glass border-b border-[var(--border)]">
       <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-        <h1 class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
+        <h1 id="seo-h1" class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
           Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
         </h1>
-        <button
-          id="dark-toggle"
-          type="button"
-          aria-label="Toggle dark mode"
-          class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
-        >
-          <span class="dark:hidden">🌙</span>
-          <span class="hidden dark:inline">☀️</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            id="btn-saved"
+            type="button"
+            aria-label="Saved &amp; history"
+            class="pill flex items-center gap-1.5 px-3 py-2 rounded-full bg-[var(--accent-blush)]/30 hover:bg-[var(--accent-blush)]/50 text-[var(--text)] text-sm font-medium transition-colors"
+          >
+            <span id="saved-badge" class="hidden text-xs">0</span>
+            ♡ Saved
+          </button>
+          <button
+            id="dark-toggle"
+            type="button"
+            aria-label="Toggle dark mode"
+            class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
+          >
+            <span class="dark:hidden">🌙</span>
+            <span class="hidden dark:inline">☀️</span>
+          </button>
+        </div>
       </div>
     </header>
+
+    <!-- Toast (floating, above bottom bar) -->
+    <div id="toast-container" class="fixed left-4 right-4 bottom-24 md:bottom-6 z-25 pointer-events-none flex justify-center" aria-live="polite"></div>
+
+    <!-- Floating bottom action bar (mobile thumb zone) -->
+    <nav id="bottom-action-bar" class="bottom-action-bar fixed bottom-0 left-0 right-0 z-20 rounded-t-2xl md:hidden safe-area-pb" aria-label="Quick actions">
+      <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-center gap-4">
+        <button type="button" id="bottom-paste" aria-label="Paste from clipboard" class="pill flex flex-col items-center gap-1 py-2 px-4 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 active:scale-95 transition-all text-[var(--text)]">
+          <span class="text-lg" aria-hidden="true">📋</span>
+          <span class="text-xs font-medium">Paste</span>
+        </button>
+        <button type="button" id="bottom-clear" aria-label="Clear text" class="pill flex flex-col items-center gap-1 py-2 px-4 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 active:scale-95 transition-all text-[var(--text)]">
+          <span class="text-lg" aria-hidden="true">✕</span>
+          <span class="text-xs font-medium">Clear</span>
+        </button>
+        <button type="button" id="bottom-theme" aria-label="Toggle theme" class="pill flex flex-col items-center gap-1 py-2 px-4 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 active:scale-95 transition-all text-[var(--text)]">
+          <span class="text-lg dark:hidden" aria-hidden="true">🌙</span>
+          <span class="text-lg hidden dark:inline" aria-hidden="true">☀️</span>
+          <span class="text-xs font-medium theme-label">Dark</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Add to Home Screen prompt (mobile, pastel) -->
+    <div id="a2hs-banner" class="hidden fixed bottom-0 left-0 right-0 z-30 a2hs-banner border-t border-[var(--border)] shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <p class="text-[var(--text)] text-sm font-medium">Add to Home Screen for quick access ✨</p>
+        <div class="flex items-center gap-2 shrink-0">
+          <button type="button" id="a2hs-dismiss" class="pill px-3 py-1.5 rounded-full bg-white/60 hover:bg-white/80 text-[var(--text)] text-sm">Not now</button>
+          <button type="button" id="a2hs-install" class="pill px-4 py-2 rounded-full bg-[#333333] text-white text-sm font-medium hover:opacity-90">Add to Home Screen</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Unlock (Watch Ad) modal -->
+    <div id="premium-unlock-modal" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end sm:items-center justify-center p-4" aria-modal="true" role="dialog">
+      <div class="w-full max-w-sm rounded-2xl glass border border-[var(--border)] shadow-xl overflow-hidden">
+        <div class="p-6 text-center space-y-4">
+          <p class="text-[var(--text)] font-medium leading-relaxed">Watch a quick 15-second ad to unlock this premium font for 24 hours! 🎀</p>
+          <div id="premium-unlock-countdown" class="hidden flex items-center justify-center gap-2 text-[var(--text-muted)] text-sm">
+            <span class="inline-block w-5 h-5 border-2 border-[var(--accent-blush)] border-t-transparent rounded-full animate-spin"></span>
+            <span id="premium-unlock-timer">15</span> seconds…
+          </div>
+          <div class="flex gap-2 justify-center">
+            <button type="button" id="premium-unlock-close" class="pill px-4 py-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 text-[var(--text)] text-sm font-medium">Maybe later</button>
+            <button type="button" id="premium-unlock-watch" class="pill px-5 py-2 rounded-full bg-[var(--accent-blush)]/60 hover:bg-[var(--accent-blush)]/80 text-[var(--text)] text-sm font-medium">Watch Ad</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved modal (Favorites + History) -->
+    <div id="saved-modal" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4" aria-modal="true" role="dialog">
+      <div class="w-full max-w-lg max-h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl glass shadow-xl overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
+          <h2 class="font-serif font-semibold text-[var(--text)]">Saved</h2>
+          <button type="button" id="saved-modal-close" aria-label="Close" class="pill p-2 rounded-full hover:bg-[var(--accent-blush)]/30 text-[var(--text)]">✕</button>
+        </div>
+        <div class="flex border-b border-[var(--border)]">
+          <button type="button" id="tab-favorites" class="tab-active flex-1 py-3 text-sm font-medium rounded-tl-2xl">Favorites</button>
+          <button type="button" id="tab-history" class="flex-1 py-3 text-sm font-medium text-[var(--text-muted)] bg-transparent hover:bg-[var(--accent-lavender)]/20 rounded-tr-2xl transition-colors">History</button>
+        </div>
+        <div class="flex-1 overflow-y-auto min-h-[200px]">
+          <div id="saved-favorites-panel" class="p-4 space-y-2"></div>
+          <div id="saved-history-panel" class="hidden p-4 space-y-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO H2 (visible for indexing and users) -->
+    <div class="max-w-2xl mx-auto px-4 pt-2 pb-0">
+      <h2 id="seo-h2" class="text-sm font-normal text-[var(--text-muted)]">Free Fancy Font Generator</h2>
+    </div>
+
+    <!-- Bio Templates carousel -->
+    <section class="max-w-2xl mx-auto px-4 py-3">
+      <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase mb-2">Bio templates</p>
+      <div id="bio-template-carousel" class="bio-template-carousel flex gap-2 pb-2" style="scroll-snap-type: x mandatory;"></div>
+      <div id="bio-template-form-wrap" class="hidden mt-3 p-4 rounded-2xl glass border border-[var(--border)] space-y-3"></div>
+      <div id="bio-template-result-wrap" class="hidden mt-3"></div>
+    </section>
 
     <!-- Sticky Input Area -->
     <section class="sticky-input-wrap glass -mb-px">
@@ -100,15 +240,31 @@
             class="w-full rounded-2xl border border-[var(--border)] bg-white/90 dark:bg-[var(--plum)]/30 text-[var(--text)] placeholder-[var(--text-muted)] px-4 py-3 pr-24 text-base resize-none outline-none focus:ring-2 focus:ring-[var(--accent-blush)]/40 focus:border-[var(--accent-blush)] transition-all"
           ></textarea>
           <div class="absolute top-3 right-3 flex items-center gap-1">
+            <button type="button" id="btn-symbols" title="Symbols &amp; Kaomoji" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">✨</button>
             <button type="button" id="btn-paste" title="Paste from clipboard" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">📋</button>
             <button type="button" id="btn-clear" title="Clear" class="pill p-2 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 transition-colors text-[var(--text)]">✕</button>
           </div>
         </div>
-        <div class="flex items-center justify-between mt-2 px-1">
+        <div class="flex flex-wrap items-center justify-between gap-2 mt-2 px-1">
           <p id="char-counter" class="char-counter-dynamic">0/150 — Type something!</p>
+          <button type="button" id="btn-random-vibe" class="pill px-4 py-2 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-95">Random Vibe ✨</button>
         </div>
       </div>
     </section>
+
+    <!-- Kaomoji / Symbols slide-up panel (mobile-first) -->
+    <div id="kaomoji-panel" class="kaomoji-panel fixed bottom-0 left-0 right-0 z-30 rounded-t-2xl glass border-t border-[var(--border)] shadow-[0_-4px_24px_rgba(0,0,0,0.08)] safe-area-pb" aria-hidden="true">
+      <div class="max-w-2xl mx-auto px-3 pt-2 pb-4">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs font-medium text-[var(--text-muted)]">Symbols &amp; Kaomoji</span>
+          <button type="button" id="kaomoji-panel-close" aria-label="Close" class="pill p-2 rounded-full bg-[var(--accent-blush)]/30 text-[var(--text)]">✕</button>
+        </div>
+        <div id="kaomoji-grid" class="grid grid-cols-6 sm:grid-cols-8 gap-1.5 max-h-[40vh] overflow-y-auto"></div>
+      </div>
+    </div>
+
+    <!-- Easter egg / Confetti container -->
+    <div id="easter-container" aria-live="polite"></div>
 
     <!-- Font Cards -->
     <main class="max-w-2xl mx-auto px-4 py-6 space-y-4">
@@ -122,14 +278,81 @@
         </div>
         <input type="range" id="zalgo-slider" min="0" max="5" value="2" class="w-full h-2 rounded-full appearance-none bg-[var(--accent-lavender)]/30 accent-[var(--accent-blush)]" />
         <div class="min-h-[3rem] px-4 py-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all" id="zalgo-preview"></div>
-        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all">
-          Copy Zalgo
-        </button>
+        <div class="flex gap-2">
+          <button type="button" id="zalgo-copy" class="btn-copy flex-1 pill py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all active:scale-[0.98]">Copy Zalgo</button>
+          <button type="button" id="zalgo-share" aria-label="Share Zalgo text" class="pill shrink-0 w-12 h-12 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 flex items-center justify-center text-[var(--text)] transition-all active:scale-95" title="Share to Instagram, TikTok, WhatsApp…">📤</button>
+        </div>
+      </section>
+
+      <!-- SEO description (bottom of page for indexing) -->
+      <section class="max-w-2xl mx-auto px-4 py-8 border-t border-[var(--border)] mt-8" aria-label="About this tool">
+        <p id="seo-paragraph" class="text-sm text-[var(--text-muted)] leading-relaxed">
+          Transform any text into stylish Unicode fonts in one tap. Choose from bold serif, cursive script, aesthetic fullwidth, coquette, Kaomoji framed, and glitch Zalgo. Copy or share to Instagram, TikTok, or Discord — no account needed.
+        </p>
+        <nav class="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--text-muted)]" aria-label="SEO pages">
+          <a href="/" class="seo-nav-link hover:text-[var(--text)]">Fancy Font Generator</a>
+          <a href="/instagram-bio-fonts" class="seo-nav-link hover:text-[var(--text)]">Instagram Bio Fonts</a>
+          <a href="/aesthetic-tiktok-text" class="seo-nav-link hover:text-[var(--text)]">Aesthetic TikTok Text</a>
+          <a href="/discord-glitch-maker" class="seo-nav-link hover:text-[var(--text)]">Discord Glitch Maker</a>
+        </nav>
       </section>
     </main>
   </div>
 
+  <script src="/seoConfig.js"></script>
   <script>
+    // ─── Client-side SPA Router (History API, no backend) ───────────────────
+    function getRoutePath() {
+      let p = (location.pathname || '/').replace(/\/$/, '') || '/';
+      if (p === '/aesthetic-bio-generator.html' || p === '/index.html') p = '/';
+      return p;
+    }
+
+    function applyRoute() {
+      if (typeof window.seoConfig === 'undefined') window.seoConfig = { '/': { title: document.title, description: 'Create fancy Unicode fonts and aesthetic bios instantly. Free, no sign-up.', h1: 'Fancy Font', h1Accent: '♡', h1Suffix: 'Bio', h2: 'Free Fancy Font Generator', paragraph: 'Transform any text into stylish Unicode fonts. Copy or share to Instagram, TikTok, or Discord — no account needed.' } };
+      const path = getRoutePath();
+      const config = window.seoConfig[path] || window.seoConfig['/'];
+      if (!config) return;
+
+      document.title = config.title || document.title;
+      const metaDesc = document.getElementById('meta-description');
+      if (metaDesc) metaDesc.setAttribute('content', config.description || metaDesc.getAttribute('content'));
+      const canonical = document.getElementById('canonical-link');
+      if (canonical) canonical.setAttribute('href', location.origin + (path === '/' ? '/' : path));
+
+      const h1 = document.getElementById('seo-h1');
+      if (h1) h1.innerHTML = (config.h1 || '') + ' <span class="text-[var(--accent-blush)]">' + (config.h1Accent || '♡') + '</span> ' + (config.h1Suffix || '');
+      const h2 = document.getElementById('seo-h2');
+      if (h2) { h2.textContent = config.h2 || ''; h2.style.display = config.h2 ? '' : 'none'; }
+      const para = document.getElementById('seo-paragraph');
+      if (para) para.textContent = config.paragraph || '';
+
+      document.querySelectorAll('a.seo-nav-link').forEach(function (a) {
+        const linkPath = (a.getAttribute('href') || '/').replace(/\/$/, '') || '/';
+        a.setAttribute('aria-current', linkPath === path ? 'page' : null);
+      });
+    }
+
+    function navigate(path) {
+      const clean = (path || '/').replace(/\/$/, '') || '/';
+      if (getRoutePath() === clean) return;
+      history.pushState(null, '', clean || '/');
+      applyRoute();
+    }
+
+    window.addEventListener('popstate', applyRoute);
+    document.body.addEventListener('click', function (e) {
+      const a = e.target.closest('a.seo-nav-link');
+      if (!a || !a.href || a.origin !== location.origin || a.target === '_blank') return;
+      const path = (a.getAttribute('href') || '/').replace(/\/$/, '') || '/';
+      if (path && window.seoConfig && Object.prototype.hasOwnProperty.call(window.seoConfig, path)) {
+        e.preventDefault();
+        navigate(path);
+      }
+    });
+
+    applyRoute();
+
     // ─── Unicode Mapper (reusable for font maps) ─────────────────────────────
     function unicodeMapper(text, upperOffset, lowerOffset, upperExceptions = {}, lowerExceptions = {}, digitOffset) {
       return [...text].map((char) => {
@@ -240,6 +463,53 @@
       },
     };
 
+    // ─── Premium fonts (ad-reward unlock, no backend) ───────────────────────
+    const PREMIUM_FONT_IDS = ['coquette', 'kaomojiFramed', 'boldScript'];
+    const LS_PREMIUM_UNLOCK = 'aesthetic-bio-premium-unlock';
+    const PREMIUM_UNLOCK_HOURS = 24;
+
+    function isPremiumUnlocked() {
+      try {
+        const raw = localStorage.getItem(LS_PREMIUM_UNLOCK);
+        if (!raw) return false;
+        const ts = parseInt(raw, 10);
+        return Date.now() - ts < PREMIUM_UNLOCK_HOURS * 60 * 60 * 1000;
+      } catch { return false; }
+    }
+    function setPremiumUnlocked() {
+      try { localStorage.setItem(LS_PREMIUM_UNLOCK, String(Date.now())); } catch (_) {}
+    }
+
+    // ─── Local Storage (no backend) ─────────────────────────────────────────
+    const LS_KEYS = { favorites: 'aesthetic-bio-favorites', history: 'aesthetic-bio-history', a2hsDismissed: 'aesthetic-bio-a2hs-dismissed' };
+    const HISTORY_MAX = 5;
+
+    function getFavorites() {
+      try {
+        const raw = localStorage.getItem(LS_KEYS.favorites);
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+    function setFavorites(arr) {
+      try { localStorage.setItem(LS_KEYS.favorites, JSON.stringify(arr)); } catch (_) {}
+      updateSavedBadge();
+    }
+    function getHistory() {
+      try {
+        const raw = localStorage.getItem(LS_KEYS.history);
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+    function setHistory(arr) {
+      try { localStorage.setItem(LS_KEYS.history, JSON.stringify(arr.slice(-HISTORY_MAX))); } catch (_) {}
+      updateSavedBadge();
+    }
+    function addToHistory(entry) {
+      const list = getHistory();
+      const next = [entry, ...list.filter((e) => e.text !== entry.text)].slice(0, HISTORY_MAX);
+      setHistory(next);
+    }
+
     // ─── DOM refs ───────────────────────────────────────────────────────────
     const inputEl = document.getElementById('input-text');
     const charCounter = document.getElementById('char-counter');
@@ -266,20 +536,306 @@
       return (inputEl.value || '').trim() || 'Your name here';
     }
 
+    // ─── Bio Templates (no backend) ──────────────────────────────────────────
+    const BIO_TEMPLATES = [
+      {
+        id: 'aesthetic',
+        label: 'Aesthetic Profile',
+        fields: [
+          { key: 'name', label: 'Name', placeholder: 'Your name' },
+          { key: 'zodiac', label: 'Zodiac', placeholder: 'e.g. Libra' },
+          { key: 'aesthetic', label: 'Aesthetic', placeholder: 'e.g. soft girl' },
+        ],
+        format: (v) => `✧･ﾟ: *✧･ﾟ:*\n  ${v.name || '—'} · ${v.zodiac || '—'}\n  ${v.aesthetic || '—'}\n*:･ﾟ✧*:･ﾟ✧`,
+      },
+      {
+        id: 'gamer',
+        label: 'Gamer Tag',
+        fields: [
+          { key: 'username', label: 'Username', placeholder: 'Your tag' },
+          { key: 'game', label: 'Main game', placeholder: 'e.g. Valorant' },
+          { key: 'rank', label: 'Rank', placeholder: 'e.g. Gold' },
+        ],
+        format: (v) => `┌─────────────────┐\n│ ${(v.username || '—').slice(0, 15)} │\n│ ${(v.game || '—').slice(0, 15)} · ${(v.rank || '—').slice(0, 8)} │\n└─────────────────┘`,
+      },
+      {
+        id: 'kpop',
+        label: 'K-pop Stan',
+        fields: [
+          { key: 'bias', label: 'Bias', placeholder: 'e.g. Jennie' },
+          { key: 'group', label: 'Group', placeholder: 'e.g. BLACKPINK' },
+          { key: 'song', label: 'Favorite song', placeholder: 'e.g. DDU-DU' },
+        ],
+        format: (v) => `♡ ${v.bias || '—'} ♡\n  ${v.group || '—'}\n  ✦ ${v.song || '—'} ✦`,
+      },
+    ];
+    let selectedTemplateId = null;
+    let templateValues = {};
+
+    function renderBioTemplateCarousel() {
+      const el = document.getElementById('bio-template-carousel');
+      if (!el) return;
+      el.innerHTML = BIO_TEMPLATES.map((t) =>
+        `<button type="button" class="bio-template-card pill px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedTemplateId === t.id ? 'bg-[var(--accent-blush)]/60 text-[var(--text)]' : 'bg-[var(--accent-lavender)]/30 text-[var(--text)] hover:bg-[var(--accent-lavender)]/50'}" data-template-id="${t.id}">${escapeHtml(t.label)}</button>`
+      ).join('');
+      el.querySelectorAll('[data-template-id]').forEach((btn) => {
+        btn.addEventListener('click', () => selectBioTemplate(btn.getAttribute('data-template-id')));
+      });
+    }
+
+    function selectBioTemplate(id) {
+      selectedTemplateId = id;
+      const t = BIO_TEMPLATES.find((x) => x.id === id);
+      if (!t) return;
+      templateValues = {};
+      const formWrap = document.getElementById('bio-template-form-wrap');
+      const resultWrap = document.getElementById('bio-template-result-wrap');
+      formWrap.classList.remove('hidden');
+      formWrap.innerHTML = t.fields.map((f) =>
+        `<label class="block text-xs font-medium text-[var(--text-muted)] mb-1">${escapeHtml(f.label)}</label><input type="text" class="template-field w-full rounded-xl border border-[var(--border)] bg-white/70 dark:bg-black/20 px-3 py-2 text-sm text-[var(--text)] placeholder-[var(--text-muted)] outline-none focus:ring-2 focus:ring-[var(--accent-blush)]/40" data-key="${f.key}" placeholder="${escapeHtml(f.placeholder || '')}" maxlength="50" />`
+      ).join('') + '<button type="button" id="bio-template-preview-btn" class="pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm mt-2">Preview &amp; Copy</button>';
+      resultWrap.classList.add('hidden');
+      formWrap.querySelectorAll('.template-field').forEach((input) => {
+        input.addEventListener('input', () => { templateValues[input.getAttribute('data-key')] = input.value; });
+        templateValues[input.getAttribute('data-key')] = input.value;
+      });
+      formWrap.querySelector('#bio-template-preview-btn').addEventListener('click', () => {
+        t.fields.forEach((f) => { templateValues[f.key] = (formWrap.querySelector(`[data-key="${f.key}"]`) || {}).value || templateValues[f.key] || ''; });
+        const combined = t.format(templateValues);
+        resultWrap.classList.remove('hidden');
+        resultWrap.innerHTML = `<div class="glass rounded-2xl p-4 space-y-3"><p class="text-xs text-[var(--text-muted)]">Your bio</p><pre class="min-h-[4rem] p-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] text-sm whitespace-pre-wrap break-all">${escapeHtml(combined)}</pre><button type="button" id="bio-template-copy-btn" class="pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm">Copy bio</button></div>`;
+        resultWrap.querySelector('#bio-template-copy-btn').addEventListener('click', () => {
+          navigator.clipboard.writeText(combined).then(() => showToast('Bio copied! ✨'));
+        });
+      });
+      renderBioTemplateCarousel();
+    }
+
+    renderBioTemplateCarousel();
+
+    // ─── Random Vibe + Confetti ────────────────────────────────────────────
+    const DECO_WRAPS = [['✧･ﾟ: *✧･ﾟ:* ', ' *:･ﾟ✧*:･ﾟ✧'], [' ˚ ༘♡ ', ' ⋆｡˚ '], [' ⟡ ', ' ⟡ '], [' ♡ ', ' ♡ ']];
+    const KAOMOJIS = [' (´｡• ᵕ •｡`) ', ' (◕‿◕)✧ ', ' ( ˘ ³˘)♥ ', ' (´ ω `) ', ' ♡(ŐωŐ人) ', ' ✧˖° ', ' ٩(◕‿◕)۶ ', ' (ᵔᴥᵔ) '];
+
+    function runRandomVibe() {
+      const ids = Object.keys(fontMaps).filter((k) => !PREMIUM_FONT_IDS.includes(k) || isPremiumUnlocked());
+      const styleId = ids[Math.floor(Math.random() * ids.length)];
+      const style = fontMaps[styleId];
+      const wrap = DECO_WRAPS[Math.floor(Math.random() * DECO_WRAPS.length)];
+      const kaomoji = KAOMOJIS[Math.floor(Math.random() * KAOMOJIS.length)];
+      const base = getInputText() || 'me';
+      const styled = style ? style.transform(base) : base;
+      const result = wrap[0] + styled + wrap[1] + kaomoji;
+      inputEl.value = result.slice(0, 150);
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+      triggerConfetti();
+    }
+
+    function triggerConfetti() {
+      const container = document.getElementById('easter-container');
+      if (!container) return;
+      const colors = ['#FFD1DC', '#E6E6FA', '#ffb3c6', '#c4b8e6'];
+      for (let i = 0; i < 45; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-10px';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.animationDelay = Math.random() * 0.3 + 's';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 2600);
+      }
+    }
+
+    document.getElementById('btn-random-vibe').addEventListener('click', () => runRandomVibe());
+
+    // ─── Kaomoji / Symbols panel (insert at cursor) ───────────────────────────
+    const KAOMOJI_SYMBOLS = ['♡', '♥', '✧', '⋆', '·', '˙', '⟡', '🎀', '✨', '🌸', '💕', '☆', '꒰', '꒱', '(´｡• ᵕ •｡`)', '(◕‿◕)✧', '( ˘ ³˘)♥', '٩(◕‿◕)۶', '♡(ŐωŐ人)', '✧˖°', '(ᵔᴥᵔ)', '°˖✧', '･ﾟ'];
+
+    function openKaomojiPanel() {
+      document.getElementById('kaomoji-panel').classList.add('open');
+      document.getElementById('kaomoji-panel').setAttribute('aria-hidden', 'false');
+    }
+    function closeKaomojiPanel() {
+      document.getElementById('kaomoji-panel').classList.remove('open');
+      document.getElementById('kaomoji-panel').setAttribute('aria-hidden', 'true');
+    }
+
+    let textareaCursorPosition = 0;
+    inputEl.addEventListener('focus', () => { textareaCursorPosition = inputEl.selectionStart; });
+    inputEl.addEventListener('click', () => { textareaCursorPosition = inputEl.selectionStart; });
+    inputEl.addEventListener('keyup', () => { textareaCursorPosition = inputEl.selectionStart; });
+
+    function insertAtCursor(str) {
+      const start = textareaCursorPosition;
+      const val = inputEl.value;
+      const before = val.slice(0, start);
+      const after = val.slice(start);
+      const newVal = before + str + after;
+      inputEl.value = newVal.slice(0, 150);
+      const newPos = start + str.length;
+      inputEl.setSelectionRange(newPos, newPos);
+      textareaCursorPosition = newPos;
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    }
+
+    const kaomojiGrid = document.getElementById('kaomoji-grid');
+    if (kaomojiGrid) {
+      kaomojiGrid.innerHTML = KAOMOJI_SYMBOLS.map((s, i) => `<button type="button" class="kaomoji-key pill rounded-lg bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 text-[var(--text)] text-center text-sm py-2 transition-colors" data-kao-idx="${i}">${escapeHtml(s)}</button>`).join('');
+      kaomojiGrid.querySelectorAll('[data-kao-idx]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-kao-idx'), 10);
+          if (KAOMOJI_SYMBOLS[idx] != null) insertAtCursor(KAOMOJI_SYMBOLS[idx]);
+        });
+      });
+    }
+    document.getElementById('btn-symbols').addEventListener('click', () => openKaomojiPanel());
+    document.getElementById('kaomoji-panel-close').addEventListener('click', () => closeKaomojiPanel());
+
+    // ─── Easter egg: "coquette" / "love" → particles ─────────────────────────
+    const EASTER_WORDS = ['coquette', 'love'];
+    let easterTriggeredAt = 0;
+    function checkEasterEgg() {
+      const val = (inputEl.value || '').toLowerCase();
+      const now = Date.now();
+      if (now - easterTriggeredAt < 4000) return;
+      for (const word of EASTER_WORDS) {
+        if (val.endsWith(word) && (val.length === word.length || /[\s\W]/.test(val[val.length - word.length - 1]))) {
+          easterTriggeredAt = now;
+          triggerEasterParticles();
+          break;
+        }
+      }
+    }
+    function triggerEasterParticles() {
+      const container = document.getElementById('easter-container');
+      if (!container) return;
+      const symbols = ['♡', '♥', '🎀', '✨'];
+      for (let i = 0; i < 25; i++) {
+        const el = document.createElement('div');
+        el.className = 'easter-particle';
+        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = Math.random() * 100 + 'vh';
+        el.style.fontSize = (14 + Math.random() * 16) + 'px';
+        el.style.color = Math.random() > 0.5 ? '#FFD1DC' : '#ffb3c6';
+        el.style.animationDelay = Math.random() * 0.5 + 's';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 3200);
+      }
+    }
+    inputEl.addEventListener('input', () => checkEasterEgg());
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      container.innerHTML = '';
+      const el = document.createElement('div');
+      el.className = 'toast-enter pill px-4 py-2.5 rounded-full glass border border-[var(--border)] text-sm font-medium text-[var(--text)] shadow-lg pointer-events-auto';
+      el.textContent = message;
+      container.appendChild(el);
+      const t = setTimeout(() => {
+        el.classList.remove('toast-enter');
+        el.classList.add('toast-exit');
+        setTimeout(() => el.remove(), 260);
+      }, 2200);
+      function dismiss() { clearTimeout(t); el.classList.remove('toast-enter'); el.classList.add('toast-exit'); setTimeout(() => el.remove(), 260); }
+      el.addEventListener('touchend', dismiss, { once: true });
+      el.addEventListener('click', dismiss, { once: true });
+    }
+
+    function doShare(text, styleName) {
+      const title = 'Fancy Font — ' + (styleName || 'Styled text');
+      if (typeof navigator.share === 'function') {
+        if (navigator.vibrate) navigator.vibrate([30]);
+        navigator.share({ title, text }).then(() => showToast('Shared! ✨')).catch(() => {});
+      } else {
+        if (navigator.vibrate) navigator.vibrate([50]);
+        navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard ✨'));
+      }
+    }
+
+    function updateSavedBadge() {
+      const fav = getFavorites().length;
+      const badge = document.getElementById('saved-badge');
+      if (badge) {
+        badge.textContent = fav;
+        badge.classList.toggle('hidden', fav === 0);
+      }
+    }
+
+    function toggleFavorite(id) {
+      const list = getFavorites();
+      const next = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+      setFavorites(next);
+      renderFontCards();
+      renderSavedFavoritesPanel();
+    }
+
+    function getNativeAdPlaceholderHtml() {
+      return `
+        <div class="native-ad-placeholder glass rounded-2xl p-4 space-y-3 min-h-[10.5rem]" aria-label="Sponsored">
+          <div class="flex items-start justify-between gap-2">
+            <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">For you</p>
+            <span class="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Sponsored</span>
+          </div>
+          <div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/30 dark:bg-black/10 border border-[var(--border)] border-dashed flex items-center justify-center">
+            <span class="text-xs text-[var(--text-muted)]">Ad</span>
+          </div>
+          <div class="h-10 rounded-full bg-[var(--accent-lavender)]/20 border border-[var(--border)]"></div>
+        </div>
+      `;
+    }
+
     function renderFontCards() {
       const text = getInputText();
-      fontCards.innerHTML = Object.entries(fontMaps).map(([id, style]) => {
+      const favorites = getFavorites();
+      const premiumUnlocked = isPremiumUnlocked();
+      const entries = Object.entries(fontMaps);
+      const items = [];
+      entries.forEach(([id, style], i) => {
+        const isLocked = PREMIUM_FONT_IDS.includes(id) && !premiumUnlocked;
         const display = style.transform(text);
-        return `
-          <div class="glass rounded-2xl p-4 space-y-3" data-style-id="${id}">
-            <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">${escapeHtml(style.name)}</p>
-            <div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">${escapeHtml(display) || '—'}</div>
-            <button type="button" class="btn-copy pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all" data-copy-id="${id}">
-              Copy
-            </button>
-          </div>
-        `;
-      }).join('');
+        const isFav = favorites.includes(id);
+        if (isLocked) {
+          items.push(`
+            <div class="glass rounded-2xl p-4 space-y-3 opacity-90" data-style-id="${id}" data-locked="true">
+              <div class="flex items-start justify-between gap-2">
+                <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">${escapeHtml(style.name)} 🔒</p>
+                <span class="text-[var(--text-muted)]" aria-hidden="true">🔒</span>
+              </div>
+              <div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/30 dark:bg-black/10 border border-[var(--border)] text-[var(--text-muted)] break-all text-sm select-none">${escapeHtml(display) || '—'}</div>
+              <button type="button" class="btn-unlock-premium w-full pill py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-[0.98]" data-unlock-id="${id}">Unlock with ad</button>
+            </div>
+          `);
+        } else {
+          items.push(`
+            <div class="glass rounded-2xl p-4 space-y-3" data-style-id="${id}">
+              <div class="flex items-start justify-between gap-2">
+                <p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">${escapeHtml(style.name)}</p>
+                <button type="button" aria-label="${isFav ? 'Remove from favorites' : 'Add to favorites'}" class="favorite-btn pill p-1.5 rounded-full transition-colors ${isFav ? 'text-[#e11d48] bg-[var(--accent-blush)]/60' : 'text-[var(--text-muted)] hover:bg-[var(--accent-blush)]/30 hover:text-[var(--text)]'}" data-fav-id="${id}">${isFav ? '♥' : '♡'}</button>
+              </div>
+              <div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">${escapeHtml(display) || '—'}</div>
+              <div class="flex gap-2">
+                <button type="button" class="btn-copy flex-1 pill py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-[0.98]" data-copy-id="${id}">Copy</button>
+                <button type="button" aria-label="Share" class="btn-share pill shrink-0 w-11 h-11 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 flex items-center justify-center text-[var(--text)] transition-all active:scale-95" data-share-id="${id}" title="Share to Instagram, TikTok, WhatsApp…">📤</button>
+              </div>
+            </div>
+          `);
+        }
+        if ((i + 1) % 5 === 0) items.push(getNativeAdPlaceholderHtml());
+      });
+      fontCards.innerHTML = items.join('');
+
+      fontCards.querySelectorAll('[data-fav-id]').forEach((btn) => {
+        btn.addEventListener('click', () => toggleFavorite(btn.getAttribute('data-fav-id')));
+      });
 
       fontCards.querySelectorAll('[data-copy-id]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -287,22 +843,148 @@
           const style = fontMaps[id];
           if (!style) return;
           const textToCopy = style.transform(getInputText());
+          if (navigator.vibrate) navigator.vibrate([50]);
           navigator.clipboard.writeText(textToCopy).then(() => {
+            addToHistory({ text: textToCopy, styleName: style.name, timestamp: Date.now() });
+            renderSavedHistoryPanel();
             btn.textContent = 'Copied! ✨';
-            btn.classList.add('copied');
+            btn.classList.add('pop');
+            showToast('Copied to clipboard ✨');
             setTimeout(() => {
               btn.textContent = 'Copy';
-              btn.classList.remove('copied');
+              btn.classList.remove('pop');
             }, 2000);
           });
         });
       });
+
+      fontCards.querySelectorAll('[data-share-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-share-id');
+          const style = fontMaps[id];
+          if (!style) return;
+          const textToShare = style.transform(getInputText());
+          doShare(textToShare, style.name);
+        });
+      });
+
+      fontCards.querySelectorAll('[data-unlock-id]').forEach((btn) => {
+        btn.addEventListener('click', () => openPremiumUnlockModal(btn.getAttribute('data-unlock-id')));
+      });
+    }
+
+    function renderSavedFavoritesPanel() {
+      const panel = document.getElementById('saved-favorites-panel');
+      const list = getFavorites();
+      if (list.length === 0) {
+        panel.innerHTML = '<p class="text-sm text-[var(--text-muted)] text-center py-6">Tap ♡ on any font style to save it here.</p>';
+        return;
+      }
+      panel.innerHTML = list.map((id) => {
+        const style = fontMaps[id];
+        const name = style ? style.name : id;
+        return `
+          <div class="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)]">
+            <span class="text-sm text-[var(--text)] truncate">${escapeHtml(name)}</span>
+            <button type="button" class="remove-fav pill px-3 py-1.5 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] text-xs font-medium" data-remove-id="${id}">Remove</button>
+          </div>
+        `;
+      }).join('');
+      panel.querySelectorAll('[data-remove-id]').forEach((b) => {
+        b.addEventListener('click', () => toggleFavorite(b.getAttribute('data-remove-id')));
+      });
+    }
+
+    function renderSavedHistoryPanel() {
+      const panel = document.getElementById('saved-history-panel');
+      const list = getHistory();
+      if (list.length === 0) {
+        panel.innerHTML = '<p class="text-sm text-[var(--text-muted)] text-center py-6">Copied texts will appear here (last 5).</p>';
+        return;
+      }
+      const clearBtn = '<div class="flex justify-end mb-2"><button type="button" id="history-clear-all" class="pill px-3 py-1.5 rounded-full bg-[var(--accent-blush)]/30 hover:bg-[var(--accent-blush)]/50 text-[var(--text-muted)] text-xs">Clear history</button></div>';
+      panel.innerHTML = clearBtn + list.map((entry, i) => `
+        <div class="p-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] space-y-2">
+          <p class="text-xs text-[var(--text-muted)]">${escapeHtml(entry.styleName || 'Copied')}</p>
+          <p class="text-sm text-[var(--text)] break-all line-clamp-2">${escapeHtml(entry.text)}</p>
+          <div class="flex gap-2">
+            <button type="button" class="history-copy pill px-3 py-1.5 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] text-xs font-medium" data-index="${i}">Copy again</button>
+            <button type="button" class="history-use pill px-3 py-1.5 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 text-[var(--text)] text-xs font-medium" data-index="${i}">Use in input</button>
+          </div>
+        </div>
+      `).join('');
+      panel.querySelectorAll('.history-copy').forEach((b) => {
+        b.addEventListener('click', () => {
+          const idx = parseInt(b.getAttribute('data-index'), 10);
+          const entry = list[idx];
+          if (entry) navigator.clipboard.writeText(entry.text);
+        });
+      });
+      panel.querySelectorAll('.history-use').forEach((b) => {
+        b.addEventListener('click', () => {
+          const idx = parseInt(b.getAttribute('data-index'), 10);
+          const entry = list[idx];
+          if (entry) {
+            inputEl.value = entry.text.slice(0, 150);
+            inputEl.focus();
+            updateCharCounter();
+            renderFontCards();
+            updateZalgoPreview();
+            closeSavedModal();
+          }
+        });
+      });
+      const clearAll = document.getElementById('history-clear-all');
+      if (clearAll) clearAll.addEventListener('click', () => { setHistory([]); renderSavedHistoryPanel(); });
     }
 
     function escapeHtml(s) {
       const div = document.createElement('div');
       div.textContent = s;
       return div.innerHTML;
+    }
+
+    // ─── Premium Unlock modal ───────────────────────────────────────────────
+    let premiumUnlockTimerId = null;
+    function openPremiumUnlockModal(unlockId) {
+      const modal = document.getElementById('premium-unlock-modal');
+      if (!modal) return;
+      modal.dataset.unlockId = unlockId || '';
+      document.getElementById('premium-unlock-countdown').classList.add('hidden');
+      document.getElementById('premium-unlock-watch').disabled = false;
+      document.getElementById('premium-unlock-timer').textContent = '15';
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePremiumUnlockModal() {
+      const modal = document.getElementById('premium-unlock-modal');
+      if (modal) modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      if (premiumUnlockTimerId) clearInterval(premiumUnlockTimerId);
+      premiumUnlockTimerId = null;
+    }
+    function runWatchAdFlow() {
+      const countdownEl = document.getElementById('premium-unlock-countdown');
+      const timerEl = document.getElementById('premium-unlock-timer');
+      const watchBtn = document.getElementById('premium-unlock-watch');
+      if (!countdownEl || !timerEl || !watchBtn) return;
+      watchBtn.disabled = true;
+      countdownEl.classList.remove('hidden');
+      countdownEl.classList.add('flex');
+      let left = 15;
+      timerEl.textContent = String(left);
+      premiumUnlockTimerId = setInterval(() => {
+        left--;
+        timerEl.textContent = String(left);
+        if (left <= 0) {
+          clearInterval(premiumUnlockTimerId);
+          premiumUnlockTimerId = null;
+          setPremiumUnlocked();
+          closePremiumUnlockModal();
+          renderFontCards();
+          showToast('Premium fonts unlocked for 24 hours! ✨');
+        }
+      }, 1000);
     }
 
     function updateZalgoPreview() {
@@ -342,28 +1024,132 @@
     zalgoCopyBtn.addEventListener('click', () => {
       const intensity = parseInt(zalgoSlider.value, 10);
       const textToCopy = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+      if (navigator.vibrate) navigator.vibrate([50]);
       navigator.clipboard.writeText(textToCopy).then(() => {
+        addToHistory({ text: textToCopy, styleName: 'Glitch / Zalgo', timestamp: Date.now() });
+        renderSavedHistoryPanel();
         zalgoCopyBtn.textContent = 'Copied! ✨';
-        zalgoCopyBtn.classList.add('copied');
+        zalgoCopyBtn.classList.add('pop');
+        showToast('Copied to clipboard ✨');
         setTimeout(() => {
           zalgoCopyBtn.textContent = 'Copy Zalgo';
-          zalgoCopyBtn.classList.remove('copied');
+          zalgoCopyBtn.classList.remove('pop');
         }, 2000);
       });
     });
 
-    darkToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      try { localStorage.setItem('aesthetic-bio-dark', isDark ? '1' : '0'); } catch (_) {}
+    document.getElementById('zalgo-share').addEventListener('click', () => {
+      const intensity = parseInt(zalgoSlider.value, 10);
+      const textToShare = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+      doShare(textToShare, 'Glitch / Zalgo');
     });
+
+    function setDarkMode(isDark) {
+      document.documentElement.classList.toggle('dark', isDark);
+      try { localStorage.setItem('aesthetic-bio-dark', isDark ? '1' : '0'); } catch (_) {}
+      const themeLabel = document.querySelector('#bottom-action-bar .theme-label');
+      if (themeLabel) themeLabel.textContent = isDark ? 'Light' : 'Dark';
+    }
+
+    darkToggle.addEventListener('click', () => {
+      const willBeDark = !document.documentElement.classList.contains('dark');
+      setDarkMode(willBeDark);
+    });
+
+    const bottomPaste = document.getElementById('bottom-paste');
+    const bottomClear = document.getElementById('bottom-clear');
+    const bottomTheme = document.getElementById('bottom-theme');
+    if (bottomPaste) bottomPaste.addEventListener('click', () => { if (navigator.vibrate) navigator.vibrate([30]); document.getElementById('btn-paste').click(); });
+    if (bottomClear) bottomClear.addEventListener('click', () => { if (navigator.vibrate) navigator.vibrate([30]); document.getElementById('btn-clear').click(); });
+    if (bottomTheme) bottomTheme.addEventListener('click', () => { if (navigator.vibrate) navigator.vibrate([30]); setDarkMode(!document.documentElement.classList.contains('dark')); });
 
     if (localStorage.getItem('aesthetic-bio-dark') === '1') {
       document.documentElement.classList.add('dark');
     }
+    const themeLabel = document.querySelector('#bottom-action-bar .theme-label');
+    if (themeLabel) themeLabel.textContent = document.documentElement.classList.contains('dark') ? 'Light' : 'Dark';
+
+    // ─── Saved modal ────────────────────────────────────────────────────────
+    const savedModal = document.getElementById('saved-modal');
+    const tabFavorites = document.getElementById('tab-favorites');
+    const tabHistory = document.getElementById('tab-history');
+    const savedFavoritesPanel = document.getElementById('saved-favorites-panel');
+    const savedHistoryPanel = document.getElementById('saved-history-panel');
+
+    function openSavedModal() {
+      savedModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      renderSavedFavoritesPanel();
+      renderSavedHistoryPanel();
+      switchSavedTab('favorites');
+    }
+    function closeSavedModal() {
+      savedModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+    function switchSavedTab(tab) {
+      const isFav = tab === 'favorites';
+      tabFavorites.classList.toggle('tab-active', isFav);
+      tabFavorites.classList.toggle('text-[var(--text-muted)]', !isFav);
+      tabHistory.classList.toggle('tab-active', !isFav);
+      tabHistory.classList.toggle('text-[var(--text-muted)]', isFav);
+      savedFavoritesPanel.classList.toggle('hidden', !isFav);
+      savedHistoryPanel.classList.toggle('hidden', isFav);
+    }
+
+    document.getElementById('btn-saved').addEventListener('click', openSavedModal);
+    document.getElementById('saved-modal-close').addEventListener('click', closeSavedModal);
+    savedModal.addEventListener('click', (e) => { if (e.target === savedModal) closeSavedModal(); });
+    tabFavorites.addEventListener('click', () => switchSavedTab('favorites'));
+    tabHistory.addEventListener('click', () => switchSavedTab('history'));
+
+    const premiumUnlockModal = document.getElementById('premium-unlock-modal');
+    document.getElementById('premium-unlock-close').addEventListener('click', closePremiumUnlockModal);
+    document.getElementById('premium-unlock-watch').addEventListener('click', runWatchAdFlow);
+    if (premiumUnlockModal) premiumUnlockModal.addEventListener('click', (e) => { if (e.target === premiumUnlockModal) closePremiumUnlockModal(); });
+
+    // ─── PWA: Service Worker & Add to Home Screen ───────────────────────────
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw-aesthetic.js').catch(() => {});
+    }
+
+    let deferredPrompt = null;
+    const a2hsBanner = document.getElementById('a2hs-banner');
+    const a2hsInstall = document.getElementById('a2hs-install');
+    const a2hsDismiss = document.getElementById('a2hs-dismiss');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (localStorage.getItem(LS_KEYS.a2hsDismissed) !== '1') {
+        a2hsBanner.classList.remove('hidden');
+      }
+    });
+
+    a2hsInstall.addEventListener('click', () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choice) => {
+        if (choice.outcome === 'accepted') a2hsBanner.classList.add('hidden');
+        deferredPrompt = null;
+      });
+    });
+
+    a2hsDismiss.addEventListener('click', () => {
+      try { localStorage.setItem(LS_KEYS.a2hsDismissed, '1'); } catch (_) {}
+      a2hsBanner.classList.add('hidden');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      a2hsBanner.classList.add('hidden');
+      deferredPrompt = null;
+    });
 
     updateCharCounter();
+    updateSavedBadge();
     renderFontCards();
+    renderSavedFavoritesPanel();
+    renderSavedHistoryPanel();
     updateZalgoPreview();
   </script>
 </body>

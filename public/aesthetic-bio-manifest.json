@@ -1,0 +1,27 @@
+{
+  "name": "Fancy Font & Aesthetic Bio Generator",
+  "short_name": "Fancy Bio",
+  "description": "Create fancy Unicode fonts and aesthetic bios for Instagram & TikTok. Offline-ready, no sign-up.",
+  "start_url": "/aesthetic-bio-generator.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FFD1DC",
+  "lang": "en",
+  "categories": ["utilities", "lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

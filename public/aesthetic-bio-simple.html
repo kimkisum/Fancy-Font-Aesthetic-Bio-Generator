@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Font & Aesthetic Bio Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAFAFA',
+            blush: '#FFD1DC',
+            lavender: '#E6E6FA',
+            charcoal: '#333333',
+            plum: '#2D1B4E',
+            navy: '#1a1a2e',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --bg-card: rgba(255, 255, 255, 0.85);
+      --text: #333333;
+      --text-muted: #6b6b6b;
+      --accent-blush: #FFD1DC;
+      --accent-lavender: #E6E6FA;
+      --border: rgba(0, 0, 0, 0.06);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+    .dark {
+      --bg: #1a1a2e;
+      --bg-card: rgba(45, 27, 78, 0.5);
+      --text: #f1e6fa;
+      --text-muted: #b8a9c9;
+      --accent-blush: #ffb3c6;
+      --accent-lavender: #c4b8e6;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+    .glass {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .pill { border-radius: 9999px; }
+    .btn-copy { transition: transform 0.2s ease; }
+    .btn-copy:active { transform: scale(0.97); }
+    .btn-copy.copied { animation: copyBounce 0.5s ease; }
+    @keyframes copyBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .sticky-input-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding-bottom: 0.5rem;
+    }
+    @media (min-width: 768px) {
+      .sticky-input-wrap { position: relative; }
+    }
+    .char-counter { font-size: 0.75rem; color: var(--text-muted); }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-blush);
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-blush);
+      cursor: pointer;
+      border: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="app" class="min-h-screen pb-12">
+    <!-- Header -->
+    <header class="glass border-b border-[var(--border)]">
+      <div class="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <h1 class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
+          Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
+        </h1>
+        <button
+          type="button"
+          id="dark-toggle"
+          aria-label="Toggle dark mode"
+          class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
+        >
+          <span class="dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sticky Input Area (glassmorphism) -->
+    <section class="sticky-input-wrap glass -mb-px">
+      <div class="max-w-2xl mx-auto px-4 py-4">
+        <div class="relative">
+          <textarea
+            id="input-text"
+            rows="3"
+            maxlength="150"
+            placeholder="Type your name or bio here..."
+            class="w-full rounded-2xl border border-[var(--border)] bg-white/90 dark:bg-[var(--plum)]/30 text-[var(--text)] placeholder-[var(--text-muted)] px-4 py-3 pr-24 text-base resize-none outline-none focus:ring-2 focus:ring-[var(--accent-blush)]/40 focus:border-[var(--accent-blush)] transition-all"
+          ></textarea>
+          <div class="absolute top-3 right-3 flex items-center gap-1">
+            <button type="button" id="btn-paste" title="Paste from clipboard" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">📋</button>
+            <button type="button" id="btn-clear" title="Clear" class="pill p-2 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 transition-colors text-[var(--text)]">✕</button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-2 px-1">
+          <p id="char-counter" class="char-counter">0/150 — Type something!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Font Cards -->
+    <main class="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div id="font-cards" class="space-y-4"></div>
+
+      <!-- Zalgo / Glitch Section -->
+      <section class="glass rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-serif font-medium text-[var(--text)]">Glitch / Zalgo</h2>
+          <span id="zalgo-label" class="text-sm text-[var(--text-muted)]">Intensity: 2</span>
+        </div>
+        <input type="range" id="zalgo-slider" min="0" max="5" value="2" class="w-full h-2 rounded-full appearance-none bg-[var(--accent-lavender)]/30 accent-[var(--accent-blush)]" />
+        <div class="min-h-[3rem] px-4 py-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all" id="zalgo-preview"></div>
+        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all">
+          Copy Zalgo
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ─── Unicode mapper (reusable for fontMaps) ─────────────────────────────
+    function unicodeMapper(text, upperOffset, lowerOffset, upperEx, lowerEx, digitOffset) {
+      upperEx = upperEx || {};
+      lowerEx = lowerEx || {};
+      return [...text].map(function (char) {
+        var code = char.charCodeAt(0);
+        if (code >= 65 && code <= 90) return upperEx[code - 65] != null ? upperEx[code - 65] : String.fromCodePoint(upperOffset + code - 65);
+        if (code >= 97 && code <= 122) return lowerEx[code - 97] != null ? lowerEx[code - 97] : String.fromCodePoint(lowerOffset + code - 97);
+        if (digitOffset != null && code >= 48 && code <= 57) return String.fromCodePoint(digitOffset + code - 48);
+        return char;
+      }).join('');
+    }
+
+    function fullwidth(text) {
+      return [...text].map(function (c) {
+        var code = c.charCodeAt(0);
+        if (code >= 33 && code <= 126) return String.fromCodePoint(code + 0xfee0);
+        if (c === ' ') return '\u3000';
+        return c;
+      }).join('');
+    }
+
+    var ZALGO_UP = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0357', '\u0351', '\u0307'];
+    var ZALGO_MID = ['\u0315', '\u031b', '\u0340', '\u0341', '\u0358', '\u0321', '\u0322', '\u0327', '\u0328', '\u0334', '\u0335', '\u0336'];
+    var ZALGO_DOWN = ['\u0317', '\u0318', '\u0319', '\u031c', '\u031d', '\u031e', '\u031f', '\u0320', '\u032a', '\u032b', '\u032c', '\u032d'];
+
+    function zalgo(text, intensity) {
+      if (intensity <= 0) return text;
+      return [...text].map(function (c) {
+        if (c === ' ') return c;
+        var out = c;
+        for (var i = 0; i < intensity; i++) {
+          out += ZALGO_UP[Math.floor(Math.random() * ZALGO_UP.length)];
+          out += ZALGO_MID[Math.floor(Math.random() * ZALGO_MID.length)];
+          out += ZALGO_DOWN[Math.floor(Math.random() * ZALGO_DOWN.length)];
+        }
+        return out;
+      }).join('');
+    }
+
+    // ─── fontMaps: add new styles here (easy to extend) ─────────────────────
+    var fontMaps = {
+      bold: {
+        name: '𝐁𝐨𝐥𝐝 𝐒𝐞𝐫𝐢𝐟',
+        transform: function (t) { return unicodeMapper(t, 0x1d400, 0x1d41a, {}, {}, 0x1d7ce); },
+      },
+      italic: {
+        name: '𝐼𝑡𝑎𝑙𝑖𝑐 𝑆𝑒𝑟𝑖𝑓',
+        transform: function (t) { return unicodeMapper(t, 0x1d434, 0x1d44e, {}, { 7: 'ℎ' }); },
+      },
+      boldItalic: {
+        name: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄',
+        transform: function (t) { return unicodeMapper(t, 0x1d468, 0x1d482); },
+      },
+      script: {
+        name: '𝒮𝒸𝓇𝒾𝓅𝓉 𝒞𝓊𝓇𝓈𝒾𝓋ℯ',
+        transform: function (t) { return unicodeMapper(t, 0x1d49c, 0x1d4b6, { 1: 'ℬ', 4: 'ℰ', 5: 'ℱ', 7: 'ℋ', 8: 'ℐ', 11: 'ℒ', 12: 'ℳ', 17: 'ℛ' }, { 4: 'ℯ', 6: 'ℊ', 14: 'ℴ' }); },
+      },
+      boldScript: {
+        name: '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽',
+        transform: function (t) { return unicodeMapper(t, 0x1d4d0, 0x1d4ea); },
+      },
+      doubleStruck: {
+        name: '𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜',
+        transform: function (t) { return unicodeMapper(t, 0x1d538, 0x1d552, { 2: 'ℂ', 7: 'ℍ', 13: 'ℕ', 15: 'ℙ', 16: 'ℚ', 17: 'ℝ', 25: 'ℤ' }, {}, 0x1d7d8); },
+      },
+      sansBold: {
+        name: '𝗦𝗮𝗻𝘀 𝗕𝗼𝗹𝗱',
+        transform: function (t) { return unicodeMapper(t, 0x1d5d4, 0x1d5ee, {}, {}, 0x1d7ec); },
+      },
+      monospace: {
+        name: '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎',
+        transform: function (t) { return unicodeMapper(t, 0x1d670, 0x1d68a, {}, {}, 0x1d7f6); },
+      },
+      aesthetic: {
+        name: 'Ａｅｓｔｈｅｔｉｃ',
+        transform: fullwidth,
+      },
+      coquette: {
+        name: '🎀 Coquette',
+        transform: function (t) { return (t.trim() ? t.trim() + ' 🎀 ⋆˙⟡♡' : ''); },
+      },
+      kaomojiFramed: {
+        name: '✧ Kaomoji Framed',
+        transform: function (t) { return (t.trim() ? '✧･ﾟ: *✧･ﾟ:* ' + t.trim() + ' *:･ﾟ✧*:･ﾟ✧' : ''); },
+      },
+      circled: {
+        name: 'Ⓒⓘⓡⓒⓛⓔⓓ',
+        transform: function (t) { return unicodeMapper(t, 0x24b6, 0x24d0); },
+      },
+      smallCaps: {
+        name: 'Sᴍᴀʟʟ Cᴀᴘꜱ',
+        transform: function (t) {
+          var m = { a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'Q',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' };
+          return [...t.toLowerCase()].map(function (c) { return m[c] != null ? m[c] : c; }).join('');
+        },
+      },
+      dotted: {
+        name: 'D·o·t·t·e·d',
+        transform: function (t) {
+          return [...t].map(function (c, i, arr) {
+            if (c === ' ') return ' ';
+            return (arr[i + 1] != null && arr[i + 1] !== ' ') ? c + '·' : c;
+          }).join('');
+        },
+      },
+      spaced: {
+        name: 'S p a c e d',
+        transform: function (t) { return [...t].join(' '); },
+      },
+    };
+
+    // ─── DOM & helpers ─────────────────────────────────────────────────────
+    var inputEl = document.getElementById('input-text');
+    var charCounter = document.getElementById('char-counter');
+    var fontCards = document.getElementById('font-cards');
+    var zalgoSlider = document.getElementById('zalgo-slider');
+    var zalgoPreview = document.getElementById('zalgo-preview');
+    var zalgoLabel = document.getElementById('zalgo-label');
+    var zalgoCopyBtn = document.getElementById('zalgo-copy');
+    var darkToggle = document.getElementById('dark-toggle');
+
+    var COUNTER_MSGS = [
+      { max: 50, msg: 'Perfect for TikTok!' },
+      { max: 100, msg: 'Ideal for Instagram!' },
+      { max: 150, msg: 'Full bio length!' },
+    ];
+
+    function updateCharCounter() {
+      var len = (inputEl.value || '').length;
+      var msg = len === 0 ? 'Type something!' : (COUNTER_MSGS.find(function (m) { return len <= m.max; }) || {}).msg || 'Full bio length!';
+      charCounter.textContent = len + '/150 — ' + msg;
+    }
+
+    function getInputText() {
+      return (inputEl.value || '').trim() || 'Your name here';
+    }
+
+    function escapeHtml(s) {
+      var div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function updateZalgoPreview() {
+      var intensity = parseInt(zalgoSlider.value, 10);
+      zalgoLabel.textContent = 'Intensity: ' + intensity;
+      zalgoPreview.textContent = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+    }
+
+    function renderFontCards() {
+      var text = getInputText();
+      fontCards.innerHTML = Object.entries(fontMaps).map(function (entry) {
+        var id = entry[0];
+        var style = entry[1];
+        var display = style.transform(text);
+        return (
+          '<div class="glass rounded-2xl p-4 space-y-3" data-style-id="' + id + '">' +
+            '<p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">' + escapeHtml(style.name) + '</p>' +
+            '<div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">' + (escapeHtml(display) || '—') + '</div>' +
+            '<button type="button" class="btn-copy pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all" data-copy-id="' + id + '">Copy</button>' +
+          '</div>'
+        );
+      }).join('');
+
+      fontCards.querySelectorAll('[data-copy-id]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-copy-id');
+          var style = fontMaps[id];
+          if (!style) return;
+          var textToCopy = style.transform(getInputText());
+          navigator.clipboard.writeText(textToCopy).then(function () {
+            btn.textContent = 'Copied! ✨';
+            btn.classList.add('copied');
+            setTimeout(function () {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+      });
+    }
+
+    inputEl.addEventListener('input', function () {
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    });
+
+    inputEl.addEventListener('paste', function () { setTimeout(updateCharCounter, 0); });
+
+    document.getElementById('btn-clear').addEventListener('click', function () {
+      inputEl.value = '';
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    });
+
+    document.getElementById('btn-paste').addEventListener('click', function () {
+      navigator.clipboard.readText().then(function (t) {
+        inputEl.value = t.slice(0, 150);
+        inputEl.focus();
+        updateCharCounter();
+        renderFontCards();
+        updateZalgoPreview();
+      }).catch(function () {});
+    });
+
+    zalgoSlider.addEventListener('input', updateZalgoPreview);
+
+    zalgoCopyBtn.addEventListener('click', function () {
+      var intensity = parseInt(zalgoSlider.value, 10);
+      var textToCopy = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+      navigator.clipboard.writeText(textToCopy).then(function () {
+        zalgoCopyBtn.textContent = 'Copied! ✨';
+        zalgoCopyBtn.classList.add('copied');
+        setTimeout(function () {
+          zalgoCopyBtn.textContent = 'Copy Zalgo';
+          zalgoCopyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
+    darkToggle.addEventListener('click', function () {
+      document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('aesthetic-bio-dark', document.documentElement.classList.contains('dark') ? '1' : '0'); } catch (_) {}
+    });
+
+    if (localStorage.getItem('aesthetic-bio-dark') === '1') {
+      document.documentElement.classList.add('dark');
+    }
+
+    updateCharCounter();
+    renderFontCards();
+    updateZalgoPreview();
+  </script>
+</body>
+</html>

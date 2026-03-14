@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#FAFAFA" />
+  <title>Fancy Font & Aesthetic Bio Generator — Free</title>
+  <meta name="description" content="Free fancy Unicode font generator. Create aesthetic bios for Instagram & TikTok. Bold, cursive, vaporwave, Zalgo — copy in one tap. No sign-up." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Poppins', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAFAFA',
+            blush: '#FFD1DC',
+            lavender: '#E6E6FA',
+            charcoal: '#333333',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --bg-card: rgba(255, 255, 255, 0.82);
+      --text: #333333;
+      --text-muted: #6b6b6b;
+      --accent-blush: #FFD1DC;
+      --accent-lavender: #E6E6FA;
+      --border: rgba(0, 0, 0, 0.06);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    }
+    .dark {
+      --bg: #1a1a2e;
+      --bg-card: rgba(45, 27, 78, 0.45);
+      --text: #f5f0fa;
+      --text-muted: #b8a9c9;
+      --accent-blush: #ffb3c6;
+      --accent-lavender: #c4b8e6;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+    .glass {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .pill { border-radius: 9999px; }
+    .btn-copy { transition: transform 0.2s ease; }
+    .btn-copy:active { transform: scale(0.97); }
+    .btn-copy.copied { animation: copyBounce 0.45s ease; }
+    @keyframes copyBounce {
+      0%, 100% { transform: scale(1); }
+      55% { transform: scale(1.06); }
+    }
+    /* Sticky input: stays under possible top Auto Ad; reserved bottom space for anchor ad */
+    .sticky-input-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding-bottom: 0.5rem;
+    }
+    @media (min-width: 768px) { .sticky-input-wrap { position: relative; } }
+    .char-counter { font-size: 0.75rem; color: var(--text-muted); }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-blush);
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-blush);
+      cursor: pointer;
+      border: none;
+    }
+    /* Auto Ads: reserve space to reduce CLS; fixed UI stays above content */
+    .main-wrap {
+      min-height: 100vh;
+      padding-bottom: 100px;
+      contain: layout style;
+    }
+    .kaomoji-panel {
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 50;
+    }
+    .kaomoji-panel.open { transform: translateY(0); }
+    .kaomoji-key { min-width: 2.75rem; min-height: 2.75rem; }
+    .toast-enter { animation: toastIn 0.28s ease forwards; }
+    .toast-exit { animation: toastOut 0.22s ease forwards; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(100%); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(100%); }
+    }
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      animation: confettiFall 2.4s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(-10px) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div id="app" class="main-wrap">
+    <header class="glass border-b border-[var(--border)] sticky top-0 z-10">
+      <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+        <h1 class="font-serif text-xl md:text-2xl font-semibold text-[var(--text)]">
+          Fancy Font <span class="text-[var(--accent-blush)]">♡</span> Bio
+        </h1>
+        <button
+          type="button"
+          id="dark-toggle"
+          aria-label="Toggle dark mode"
+          class="pill p-2.5 rounded-full bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 dark:bg-[var(--accent-lavender)]/20 dark:hover:bg-[var(--accent-lavender)]/40 transition-colors"
+        >
+          <span class="dark:hidden">🌙</span>
+          <span class="hidden dark:inline">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="sticky-input-wrap glass -mb-px">
+      <div class="max-w-2xl mx-auto px-4 py-4">
+        <div class="relative">
+          <textarea
+            id="input-text"
+            rows="3"
+            maxlength="150"
+            placeholder="Type your name or bio here..."
+            class="w-full rounded-2xl border border-[var(--border)] bg-white/90 dark:bg-[#2D1B4E]/30 text-[var(--text)] placeholder-[var(--text-muted)] px-4 py-3 pr-28 text-base resize-none outline-none focus:ring-2 focus:ring-[var(--accent-blush)]/40 focus:border-[var(--accent-blush)] transition-all"
+          ></textarea>
+          <div class="absolute top-3 right-3 flex items-center gap-1">
+            <button type="button" id="btn-symbols" title="Symbols &amp; Kaomoji" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">✨</button>
+            <button type="button" id="btn-paste" title="Paste" class="pill p-2 rounded-full bg-[var(--accent-lavender)]/40 hover:bg-[var(--accent-lavender)]/60 transition-colors text-[var(--text)]">📋</button>
+            <button type="button" id="btn-clear" title="Clear" class="pill p-2 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 transition-colors text-[var(--text)]">✕</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mt-2 px-1">
+          <p id="char-counter" class="char-counter">0/150 — Type something!</p>
+          <button type="button" id="btn-random-vibe" class="pill px-4 py-2 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all active:scale-95">Random Vibe ✨</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div id="font-cards" class="space-y-4"></div>
+
+      <section class="glass rounded-2xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-serif font-medium text-[var(--text)]">Glitch / Zalgo</h2>
+          <span id="zalgo-label" class="text-sm text-[var(--text-muted)]">Intensity: 2</span>
+        </div>
+        <input type="range" id="zalgo-slider" min="0" max="5" value="2" class="w-full h-2 rounded-full appearance-none bg-[var(--accent-lavender)]/30 accent-[var(--accent-blush)]" />
+        <div class="min-h-[3rem] px-4 py-3 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all" id="zalgo-preview"></div>
+        <button type="button" id="zalgo-copy" class="btn-copy pill w-full py-3 rounded-full bg-[var(--accent-blush)]/40 hover:bg-[var(--accent-blush)]/60 text-[var(--text)] font-medium transition-all">Copy Zalgo</button>
+      </section>
+    </main>
+    <footer class="max-w-2xl mx-auto px-4 py-6 text-center text-[var(--text-muted)] text-sm">
+      100% free · No sign-up · Copy & paste anywhere
+    </footer>
+  </div>
+
+  <div id="toast-container" class="fixed left-4 right-4 bottom-8 z-40 pointer-events-none flex justify-center" aria-live="polite"></div>
+
+  <div id="kaomoji-panel" class="kaomoji-panel fixed bottom-0 left-0 right-0 glass border-t border-[var(--border)] shadow-[0_-4px_24px_rgba(0,0,0,0.08)] pb-[env(safe-area-inset-bottom,0)]" aria-hidden="true">
+    <div class="max-w-2xl mx-auto px-3 pt-2 pb-4">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-xs font-medium text-[var(--text-muted)]">Symbols &amp; Kaomoji</span>
+        <button type="button" id="kaomoji-close" aria-label="Close" class="pill p-2 rounded-full bg-[var(--accent-blush)]/30 text-[var(--text)]">✕</button>
+      </div>
+      <div id="kaomoji-grid" class="grid grid-cols-6 sm:grid-cols-8 gap-1.5 max-h-[38vh] overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <div id="confetti-container" aria-hidden="true"></div>
+
+  <script>
+    // ─── Unicode mapper (add new styles via fontMaps below) ──────────────────
+    function unicodeMapper(text, upperOffset, lowerOffset, upperEx, lowerEx, digitOffset) {
+      upperEx = upperEx || {};
+      lowerEx = lowerEx || {};
+      return [...text].map(function (c) {
+        var code = c.charCodeAt(0);
+        if (code >= 65 && code <= 90) return upperEx[code - 65] != null ? upperEx[code - 65] : String.fromCodePoint(upperOffset + code - 65);
+        if (code >= 97 && code <= 122) return lowerEx[code - 97] != null ? lowerEx[code - 97] : String.fromCodePoint(lowerOffset + code - 97);
+        if (digitOffset != null && code >= 48 && code <= 57) return String.fromCodePoint(digitOffset + code - 48);
+        return c;
+      }).join('');
+    }
+    function fullwidth(text) {
+      return [...text].map(function (c) {
+        var code = c.charCodeAt(0);
+        if (code >= 33 && code <= 126) return String.fromCodePoint(code + 0xfee0);
+        if (c === ' ') return '\u3000';
+        return c;
+      }).join('');
+    }
+    var ZALGO_UP = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0352', '\u0357', '\u0351', '\u0307'];
+    var ZALGO_MID = ['\u0315', '\u031b', '\u0340', '\u0341', '\u0358', '\u0321', '\u0322', '\u0327', '\u0328', '\u0334', '\u0335', '\u0336'];
+    var ZALGO_DOWN = ['\u0317', '\u0318', '\u0319', '\u031c', '\u031d', '\u031e', '\u031f', '\u0320', '\u032a', '\u032b', '\u032c', '\u032d'];
+    function zalgo(text, intensity) {
+      if (intensity <= 0) return text;
+      return [...text].map(function (c) {
+        if (c === ' ') return c;
+        var r = c;
+        for (var i = 0; i < intensity; i++) {
+          r += ZALGO_UP[Math.floor(Math.random() * ZALGO_UP.length)];
+          r += ZALGO_MID[Math.floor(Math.random() * ZALGO_MID.length)];
+          r += ZALGO_DOWN[Math.floor(Math.random() * ZALGO_DOWN.length)];
+        }
+        return r;
+      }).join('');
+    }
+
+    // ─── fontMaps: add new Unicode styles here ──────────────────────────────
+    var fontMaps = {
+      bold: { name: '𝐁𝐨𝐥𝐝 𝐒𝐞𝐫𝐢𝐟', transform: function (t) { return unicodeMapper(t, 0x1d400, 0x1d41a, {}, {}, 0x1d7ce); } },
+      italic: { name: '𝐼𝑡𝑎𝑙𝑖𝑐 𝑆𝑒𝑟𝑖𝑓', transform: function (t) { return unicodeMapper(t, 0x1d434, 0x1d44e, {}, { 7: 'ℎ' }); } },
+      boldItalic: { name: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄', transform: function (t) { return unicodeMapper(t, 0x1d468, 0x1d482); } },
+      script: { name: '𝒮𝒸𝓇𝒾𝓅𝓉 𝒞𝓊𝓇𝓈𝒾𝓋ℯ', transform: function (t) { return unicodeMapper(t, 0x1d49c, 0x1d4b6, { 1: 'ℬ', 4: 'ℰ', 5: 'ℱ', 7: 'ℋ', 8: 'ℐ', 11: 'ℒ', 12: 'ℳ', 17: 'ℛ' }, { 4: 'ℯ', 6: 'ℊ', 14: 'ℴ' }); } },
+      boldScript: { name: '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽', transform: function (t) { return unicodeMapper(t, 0x1d4d0, 0x1d4ea); } },
+      doubleStruck: { name: '𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜', transform: function (t) { return unicodeMapper(t, 0x1d538, 0x1d552, { 2: 'ℂ', 7: 'ℍ', 13: 'ℕ', 15: 'ℙ', 16: 'ℚ', 17: 'ℝ', 25: 'ℤ' }, {}, 0x1d7d8); } },
+      sansBold: { name: '𝗦𝗮𝗻𝘀 𝗕𝗼𝗹𝗱', transform: function (t) { return unicodeMapper(t, 0x1d5d4, 0x1d5ee, {}, {}, 0x1d7ec); } },
+      monospace: { name: '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎', transform: function (t) { return unicodeMapper(t, 0x1d670, 0x1d68a, {}, {}, 0x1d7f6); } },
+      aesthetic: { name: 'Ａｅｓｔｈｅｔｉｃ', transform: fullwidth },
+      coquette: { name: '🎀 Coquette', transform: function (t) { return (t.trim() ? t.trim() + ' 🎀 ⋆˙⟡♡' : ''); } },
+      kaomojiFramed: { name: '✧ Kaomoji Framed', transform: function (t) { return (t.trim() ? '✧･ﾟ: *✧･ﾟ:* ' + t.trim() + ' *:･ﾟ✧*:･ﾟ✧' : ''); } },
+      circled: { name: 'Ⓒⓘⓡⓒⓛⓔⓓ', transform: function (t) { return unicodeMapper(t, 0x24b6, 0x24d0); } },
+      smallCaps: { name: 'Sᴍᴀʟʟ Cᴀᴘꜱ', transform: function (t) { var m = { a:'ᴀ',b:'ʙ',c:'ᴄ',d:'ᴅ',e:'ᴇ',f:'ꜰ',g:'ɢ',h:'ʜ',i:'ɪ',j:'ᴊ',k:'ᴋ',l:'ʟ',m:'ᴍ',n:'ɴ',o:'ᴏ',p:'ᴘ',q:'Q',r:'ʀ',s:'ꜱ',t:'ᴛ',u:'ᴜ',v:'ᴠ',w:'ᴡ',x:'x',y:'ʏ',z:'ᴢ' }; return [...t.toLowerCase()].map(function (c) { return m[c] != null ? m[c] : c; }).join(''); } },
+      dotted: { name: 'D·o·t·t·e·d', transform: function (t) { return [...t].map(function (c, i, a) { return c === ' ' ? ' ' : (a[i + 1] != null && a[i + 1] !== ' ' ? c + '·' : c); }).join(''); } },
+      spaced: { name: 'S p a c e d', transform: function (t) { return [...t].join(' '); } },
+      fraktur: { name: '𝔉𝔯𝔞𝔨𝔱𝔲𝔯', transform: function (t) { return unicodeMapper(t, 0x1d504, 0x1d51e, { 2: 'ℭ', 7: 'ℌ', 8: 'ℑ', 17: 'ℜ', 25: 'ℨ' }); } },
+    };
+
+    var inputEl = document.getElementById('input-text');
+    var charCounter = document.getElementById('char-counter');
+    var fontCards = document.getElementById('font-cards');
+    var zalgoSlider = document.getElementById('zalgo-slider');
+    var zalgoPreview = document.getElementById('zalgo-preview');
+    var zalgoLabel = document.getElementById('zalgo-label');
+    var zalgoCopyBtn = document.getElementById('zalgo-copy');
+    var darkToggle = document.getElementById('dark-toggle');
+
+    var COUNTER_MSGS = [
+      { max: 50, msg: 'Perfect for TikTok!' },
+      { max: 100, msg: 'Ideal for Instagram!' },
+      { max: 150, msg: 'Full bio length!' },
+    ];
+
+    function updateCharCounter() {
+      var len = (inputEl.value || '').length;
+      var msg = len === 0 ? 'Type something!' : (COUNTER_MSGS.find(function (m) { return len <= m.max; }) || {}).msg || 'Full bio length!';
+      charCounter.textContent = len + '/150 — ' + msg;
+    }
+    function getInputText() { return (inputEl.value || '').trim() || 'Your name here'; }
+    function escapeHtml(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    function showToast(message) {
+      var container = document.getElementById('toast-container');
+      if (!container) return;
+      container.innerHTML = '';
+      var el = document.createElement('div');
+      el.className = 'toast-enter pill px-4 py-2.5 rounded-full glass border border-[var(--border)] text-sm font-medium text-[var(--text)] shadow-lg pointer-events-auto';
+      el.textContent = message;
+      container.appendChild(el);
+      var t = setTimeout(function () {
+        el.classList.remove('toast-enter');
+        el.classList.add('toast-exit');
+        setTimeout(function () { el.remove(); }, 240);
+      }, 2000);
+      el.addEventListener('click', function () { clearTimeout(t); el.classList.remove('toast-enter'); el.classList.add('toast-exit'); setTimeout(function () { el.remove(); }, 240); }, { once: true });
+    }
+
+    function copyWithFeedback(textToCopy, btn, btnResetText) {
+      if (navigator.vibrate) navigator.vibrate(50);
+      navigator.clipboard.writeText(textToCopy).then(function () {
+        btn.textContent = 'Copied! ✨';
+        btn.classList.add('copied');
+        showToast('Copied! ✨');
+        setTimeout(function () { btn.textContent = btnResetText; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    function renderFontCards() {
+      var text = getInputText();
+      fontCards.innerHTML = Object.keys(fontMaps).map(function (id) {
+        var style = fontMaps[id];
+        var display = style.transform(text);
+        return '<div class="glass rounded-2xl p-4 space-y-3" data-style-id="' + id + '">' +
+          '<p class="text-xs font-medium text-[var(--text-muted)] tracking-wide uppercase">' + escapeHtml(style.name) + '</p>' +
+          '<div class="min-h-[2.5rem] px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/20 border border-[var(--border)] text-[var(--text)] break-all text-sm">' + (escapeHtml(display) || '—') + '</div>' +
+          '<button type="button" class="btn-copy pill w-full py-2.5 rounded-full bg-[var(--accent-blush)]/50 hover:bg-[var(--accent-blush)]/70 text-[var(--text)] font-medium text-sm transition-all" data-copy-id="' + id + '">Copy</button>' +
+        '</div>';
+      }).join('');
+
+      fontCards.querySelectorAll('[data-copy-id]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-copy-id');
+          var style = fontMaps[id];
+          if (!style) return;
+          var textToCopy = style.transform(getInputText());
+          copyWithFeedback(textToCopy, btn, 'Copy');
+        });
+      });
+    }
+
+    function updateZalgoPreview() {
+      var intensity = parseInt(zalgoSlider.value, 10);
+      zalgoLabel.textContent = 'Intensity: ' + intensity;
+      zalgoPreview.textContent = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+    }
+
+    var DECO_WRAPS = [['✧･ﾟ: *✧･ﾟ:* ', ' *:･ﾟ✧*:･ﾟ✧'], [' ˚ ༘♡ ', ' ⋆｡˚ '], [' ⟡ ', ' ⟡ '], [' ♡ ', ' ♡ ']];
+    var KAOMOJIS = [' (´｡• ᵕ •｡`) ', ' (◕‿◕)✧ ', ' ( ˘ ³˘)♥ ', ' (´ ω `) ', ' ♡(ŐωŐ人) ', ' ✧˖° ', ' ٩(◕‿◕)۶ ', ' (ᵔᴥᵔ) '];
+
+    function runRandomVibe() {
+      var ids = Object.keys(fontMaps);
+      var styleId = ids[Math.floor(Math.random() * ids.length)];
+      var style = fontMaps[styleId];
+      var wrap = DECO_WRAPS[Math.floor(Math.random() * DECO_WRAPS.length)];
+      var kaomoji = KAOMOJIS[Math.floor(Math.random() * KAOMOJIS.length)];
+      var base = getInputText() || 'me';
+      var styled = style ? style.transform(base) : base;
+      var result = wrap[0] + styled + wrap[1] + kaomoji;
+      inputEl.value = result.slice(0, 150);
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+      var conf = document.getElementById('confetti-container');
+      if (conf) {
+        var colors = ['#FFD1DC', '#E6E6FA', '#ffb3c6', '#c4b8e6'];
+        for (var i = 0; i < 45; i++) {
+          var el = document.createElement('div');
+          el.className = 'confetti-piece';
+          el.style.left = Math.random() * 100 + 'vw';
+          el.style.top = '-10px';
+          el.style.background = colors[Math.floor(Math.random() * colors.length)];
+          el.style.animationDelay = Math.random() * 0.3 + 's';
+          conf.appendChild(el);
+          setTimeout(function () { el.remove(); }, 2500);
+        }
+      }
+    }
+
+    var KAOMOJI_SYMBOLS = ['♡', '♥', '✧', '⋆', '·', '˙', '⟡', '🎀', '✨', '🌸', '💕', '☆', '꒰', '꒱', '(´｡• ᵕ •｡`)', '(◕‿◕)✧', '( ˘ ³˘)♥', '٩(◕‿◕)۶', '♡(ŐωŐ人)', '✧˖°', '(ᵔᴥᵔ)', '°˖✧', '･ﾟ'];
+    var textareaCursorPosition = 0;
+    inputEl.addEventListener('focus', function () { textareaCursorPosition = inputEl.selectionStart; });
+    inputEl.addEventListener('click', function () { textareaCursorPosition = inputEl.selectionStart; });
+    inputEl.addEventListener('keyup', function () { textareaCursorPosition = inputEl.selectionStart; });
+
+    function insertAtCursor(str) {
+      var start = textareaCursorPosition;
+      var val = inputEl.value;
+      inputEl.value = (val.slice(0, start) + str + val.slice(start)).slice(0, 150);
+      var newPos = Math.min(start + str.length, 150);
+      inputEl.setSelectionRange(newPos, newPos);
+      textareaCursorPosition = newPos;
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    }
+
+    var grid = document.getElementById('kaomoji-grid');
+    if (grid) {
+      KAOMOJI_SYMBOLS.forEach(function (s, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'kaomoji-key pill rounded-lg bg-[var(--accent-lavender)]/30 hover:bg-[var(--accent-lavender)]/50 text-[var(--text)] text-center text-sm py-2 transition-colors';
+        btn.setAttribute('data-kao-idx', i);
+        btn.textContent = s;
+        btn.addEventListener('click', function () { insertAtCursor(KAOMOJI_SYMBOLS[i]); });
+        grid.appendChild(btn);
+      });
+    }
+    document.getElementById('btn-symbols').addEventListener('click', function () {
+      document.getElementById('kaomoji-panel').classList.add('open');
+      document.getElementById('kaomoji-panel').setAttribute('aria-hidden', 'false');
+    });
+    document.getElementById('kaomoji-close').addEventListener('click', function () {
+      document.getElementById('kaomoji-panel').classList.remove('open');
+      document.getElementById('kaomoji-panel').setAttribute('aria-hidden', 'true');
+    });
+
+    inputEl.addEventListener('input', function () { updateCharCounter(); renderFontCards(); updateZalgoPreview(); });
+    inputEl.addEventListener('paste', function () { setTimeout(updateCharCounter, 0); });
+
+    document.getElementById('btn-clear').addEventListener('click', function () {
+      inputEl.value = '';
+      inputEl.focus();
+      updateCharCounter();
+      renderFontCards();
+      updateZalgoPreview();
+    });
+    document.getElementById('btn-paste').addEventListener('click', function () {
+      navigator.clipboard.readText().then(function (t) {
+        inputEl.value = t.slice(0, 150);
+        inputEl.focus();
+        updateCharCounter();
+        renderFontCards();
+        updateZalgoPreview();
+      }).catch(function () {});
+    });
+
+    zalgoSlider.addEventListener('input', updateZalgoPreview);
+    zalgoCopyBtn.addEventListener('click', function () {
+      var intensity = parseInt(zalgoSlider.value, 10);
+      var textToCopy = intensity === 0 ? getInputText() : zalgo(getInputText(), intensity);
+      copyWithFeedback(textToCopy, zalgoCopyBtn, 'Copy Zalgo');
+    });
+
+    darkToggle.addEventListener('click', function () {
+      document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('aesthetic-bio-dark', document.documentElement.classList.contains('dark') ? '1' : '0'); } catch (_) {}
+    });
+    if (localStorage.getItem('aesthetic-bio-dark') === '1') document.documentElement.classList.add('dark');
+
+    updateCharCounter();
+    renderFontCards();
+    updateZalgoPreview();
+  </script>
+</body>
+</html>
