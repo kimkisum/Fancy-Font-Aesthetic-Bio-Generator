@@ -67,33 +67,25 @@ export default function FAQSection() {
         </p>
       </div>
 
-      <div className="space-y-3" itemScope itemType="https://schema.org/FAQPage">
+      <div className="space-y-3">
         {FAQS.map((faq, i) => (
           <details
             key={i}
             className="group bg-white border border-ed-border rounded-xl overflow-hidden shadow-sm shadow-ed-charcoal/[0.02]"
-            itemScope
-            itemProp="mainEntity"
-            itemType="https://schema.org/Question"
           >
             <summary
               className="flex items-start justify-between gap-4 px-5 py-4 cursor-pointer
                          text-[15px] font-medium text-ed-charcoal list-none select-none hover:bg-ed-bg
                          transition-colors leading-snug"
             >
-              <span itemProp="name">{faq.question}</span>
+              <span>{faq.question}</span>
               <span className="shrink-0 mt-0.5 text-ed-muted group-open:rotate-180
                                transition-transform duration-200 text-lg leading-none">
                 ▾
               </span>
             </summary>
-            <div
-              itemScope
-              itemProp="acceptedAnswer"
-              itemType="https://schema.org/Answer"
-              className="px-5 pb-5 pt-3 text-ed-muted text-[14px] leading-relaxed border-t border-ed-borderLight"
-            >
-              <p itemProp="text">{faq.answer}</p>
+            <div className="px-5 pb-5 pt-3 text-ed-muted text-[14px] leading-relaxed border-t border-ed-borderLight">
+              <p>{faq.answer}</p>
             </div>
           </details>
         ))}
