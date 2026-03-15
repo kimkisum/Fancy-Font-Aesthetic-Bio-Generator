@@ -36,9 +36,20 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Generador de Fuentes Aesthetic",
+  description: "Crea texto elegante y biografías aesthetic gratis con más de 50 estilos Unicode.",
+  url: "https://gofancyfont.com/es",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "All",
+};
+
 export default function HomePageES() {
   return (
     <main className="min-h-screen bg-ed-bg text-ed-charcoal">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Header />
 
       <section className="max-w-3xl mx-auto px-5 pt-16 pb-10 text-center">

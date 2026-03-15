@@ -36,9 +36,20 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "特殊文字ジェネレーター",
+  description: "おしゃれ特殊文字＆絵文字ジェネレーター: 50種類以上のスタイルでプロフィールを可愛く装飾。",
+  url: "https://gofancyfont.com/ja",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "All",
+};
+
 export default function HomePageJA() {
   return (
     <main className="min-h-screen bg-ed-bg text-ed-charcoal">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Header />
 
       <section className="max-w-3xl mx-auto px-5 pt-16 pb-10 text-center">
