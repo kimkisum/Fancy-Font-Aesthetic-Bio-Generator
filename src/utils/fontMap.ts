@@ -2,7 +2,7 @@ export interface FontStyle {
   id: string;
   name: string;
   description: string;
-  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect";
+  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute";
   tags: string[];
   transform: (text: string) => string;
 }
@@ -91,9 +91,7 @@ const underlineTransform = (text: string) =>
 // Circled (A=Ⓐ)
 const circledTransform = unicodeMapper(0x24b6, 0x24d0);
 
-// ── Squared & Squared Negative ─────────────────────────────────────────────
-// FIX: use [...string] spread (not .split("")) to correctly handle surrogate pairs
-// These are supplementary-plane characters (U+1F130–U+1F149, U+1F150–U+1F169)
+// Squared & Squared Negative (supplementary-plane characters)
 const SQUARED_MAP = [..."🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉"];
 const squaredTransform = (text: string) =>
   [...text]
@@ -153,8 +151,6 @@ const SUPERSCRIPT_MAP: Record<string, string> = {
 const superscriptTransform = (text: string) =>
   [...text].map((c) => SUPERSCRIPT_MAP[c.toLowerCase()] ?? c).join("");
 
-// ─── NEW Transformers ────────────────────────────────────────────────────────
-
 // Parenthesized lowercase ⒜⒝⒞... (U+249C–U+24B5)
 const parenthesizedTransform = (text: string) =>
   [...text.toLowerCase()]
@@ -179,9 +175,84 @@ const dottedTransform = (text: string) =>
 const spacedTransform = (text: string) =>
   [...text].join(" ");
 
-// Slashed diagonal  h̸e̸l̸l̸o̸  (combining long solidus overlay U+0338)
+// Slashed diagonal (combining long solidus overlay U+0338)
 const slashedTransform = (text: string) =>
   [...text].map((c) => (c === " " ? c : c + "\u0338")).join("");
+
+
+// ════════════════════════════════════════════════════════════════════════════════
+// ██  DECORATION / STRING-MANIPULATION STYLES                                 ██
+// ██  These use creative wrapping, insertion, and framing — not Unicode fonts. ██
+// ════════════════════════════════════════════════════════════════════════════════
+//
+// ┌─────────────────────────────────────────────────────────────────────────────┐
+// │  HOW TO ADD MORE CUSTOM STYLES:                                            │
+// │                                                                            │
+// │  1. Create a transform function: (text: string) => string                  │
+// │     Use string manipulation — insert emojis, wrap in frames, etc.          │
+// │                                                                            │
+// │  2. Add an entry to FONT_STYLES array below:                               │
+// │     {                                                                      │
+// │       id: "my-style",          // unique kebab-case id                     │
+// │       name: "My Style ✨",     // display name (can use emoji)             │
+// │       description: "...",      // one-line description                     │
+// │       category: "cute",        // "cute" | "aesthetic" | "effect" | etc.   │
+// │       tags: ["cute", "girly"], // for filtering — match MOOD_TAGS keywords │
+// │       transform: myFn,         // your transform function                  │
+// │     }                                                                      │
+// │                                                                            │
+// │  That's it! The card will appear automatically in the UI.                  │
+// └─────────────────────────────────────────────────────────────────────────────┘
+
+// Helper: insert a separator between every visible character (skipping spaces)
+function insertBetween(text: string, sep: string): string {
+  return [...text]
+    .map((c, i, arr) => {
+      if (c === " ") return " ";
+      const next = arr[i + 1];
+      return next !== undefined && next !== " " ? c + sep : c;
+    })
+    .join("");
+}
+
+// Helper: wrap text in prefix/suffix
+function wrapText(text: string, prefix: string, suffix: string): string {
+  return `${prefix} ${text} ${suffix}`;
+}
+
+// Helper: insert separator between words
+function insertBetweenWords(text: string, sep: string): string {
+  return text.split(/\s+/).join(` ${sep} `);
+}
+
+// ── Decoration Transforms ───────────────────────────────────────────────────
+
+const coquetteTransform = (text: string) => insertBetween(text, "🎀");
+const sparkleWrapTransform = (text: string) => wrapText(text, "✨", "✨");
+const fairycoreTransform = (text: string) => insertBetween(text, "✧") + " ⋆˙⟡♡";
+const kaomojiFrameTransform = (text: string) => wrapText(text, "ʕ•ᴥ•ʔ", "ʕ•ᴥ•ʔ");
+const cloudTransform = (text: string) => wrapText(text, "☁️", "☁️");
+const starryTransform = (text: string) => wrapText(text, "⋆｡˚", "˚｡⋆");
+const ribbonTransform = (text: string) => insertBetween(text, "✿");
+const heartsTransform = (text: string) => insertBetween(text, "♡");
+const softAestheticTransform = (text: string) => wrapText(text, "₊˚✧", "✧˚₊");
+const angelTransform = (text: string) => wrapText(text, "♡₊˚ 🦢・", "・🦢 ˚₊♡");
+const dreamyTransform = (text: string) => wrapText(text, "·˚ ༘", "·˚ ༘");
+const cottagecoreTransform = (text: string) => insertBetween(text, "🌿");
+const y2kTransform = (text: string) => wrapText(text, "»★«", "»★«");
+const bracketsTransform = (text: string) => `【${text}】`;
+const clapTransform = (text: string) => insertBetweenWords(text, "👏");
+const butterfliesTransform = (text: string) => insertBetween(text, "🦋");
+const cherryTransform = (text: string) => wrapText(text, "🍒", "🍒");
+const moonTransform = (text: string) => wrapText(text, "☾", "☽");
+const sakuraTransform = (text: string) => insertBetween(text, "🌸");
+const witchyTransform = (text: string) => wrapText(text, "🔮✦", "✦🔮");
+const tinyStarsTransform = (text: string) => wrapText(text, "˚ ✩ ₊˚", "˚₊ ✩ ˚");
+const loveLetterTransform = (text: string) => wrapText(text, "💌", "💌");
+const gemTransform = (text: string) => insertBetween(text, "💎");
+const snowflakeTransform = (text: string) => insertBetween(text, "❄");
+const arrowFrameTransform = (text: string) => wrapText(text, "╰┈➤", "╰┈➤");
+
 
 // ─── Font Styles Registry ────────────────────────────────────────────────────
 export const FONT_STYLES: FontStyle[] = [
@@ -433,27 +504,233 @@ export const FONT_STYLES: FontStyle[] = [
     tags: ["horror", "creepy", "cursed", "scary", "glitch", "dark"],
     transform: (text) => zalgoTransform(text, 2),
   },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // ██  CUTE / DECORATION STYLES (String manipulation — no Unicode mapping) ██
+  // ══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: "coquette",
+    name: "C🎀o🎀q🎀u🎀e🎀t🎀t🎀e",
+    description: "Coquette bow between every letter — soft girl essential",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "coquette", "romantic", "instagram"],
+    transform: coquetteTransform,
+  },
+  {
+    id: "sparkle-wrap",
+    name: "✨ Sparkle ✨",
+    description: "Sparkle emoji wrapping — instant glow-up",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "sparkle", "instagram", "fancy"],
+    transform: sparkleWrapTransform,
+  },
+  {
+    id: "fairycore",
+    name: "F✧a✧i✧r✧y ⋆˙⟡♡",
+    description: "Fairycore stars between letters with whimsical suffix",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "fairy", "romantic", "kawaii"],
+    transform: fairycoreTransform,
+  },
+  {
+    id: "kaomoji-frame",
+    name: "ʕ•ᴥ•ʔ Text ʕ•ᴥ•ʔ",
+    description: "Cute bear kaomoji framing your text",
+    category: "cute",
+    tags: ["cute", "kawaii", "fun", "playful", "creative", "japanese"],
+    transform: kaomojiFrameTransform,
+  },
+  {
+    id: "cloud",
+    name: "☁️ Cloud ☁️",
+    description: "Dreamy cloud-wrapped text — soft and airy",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "dreamy", "soft", "chill"],
+    transform: cloudTransform,
+  },
+  {
+    id: "starry",
+    name: "⋆｡˚ Starry ˚｡⋆",
+    description: "Starry night framing — celestial aesthetic vibes",
+    category: "cute",
+    tags: ["aesthetic", "girly", "dreamy", "romantic", "instagram", "cute"],
+    transform: starryTransform,
+  },
+  {
+    id: "ribbon",
+    name: "R✿i✿b✿b✿o✿n",
+    description: "Floral ribbon between letters — garden party aesthetic",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "romantic", "instagram"],
+    transform: ribbonTransform,
+  },
+  {
+    id: "hearts",
+    name: "H♡e♡a♡r♡t♡s",
+    description: "Hearts between every letter — love letter vibes",
+    category: "cute",
+    tags: ["cute", "girly", "romantic", "love", "instagram", "aesthetic"],
+    transform: heartsTransform,
+  },
+  {
+    id: "soft-aesthetic",
+    name: "₊˚✧ Soft ✧˚₊",
+    description: "Soft aesthetic wrapping — premium Instagram bio energy",
+    category: "cute",
+    tags: ["aesthetic", "girly", "cute", "soft", "instagram", "luxury"],
+    transform: softAestheticTransform,
+  },
+  {
+    id: "angel",
+    name: "♡₊˚ 🦢・Angel・🦢 ˚₊♡",
+    description: "Angel wings swan frame — ethereal and elegant",
+    category: "cute",
+    tags: ["cute", "girly", "romantic", "aesthetic", "luxury", "elegant"],
+    transform: angelTransform,
+  },
+  {
+    id: "dreamy",
+    name: "·˚ ༘ Dreamy ·˚ ༘",
+    description: "Dreamy Tibetan dot wrapping — mystical soft vibes",
+    category: "cute",
+    tags: ["aesthetic", "dreamy", "girly", "chill", "romantic", "cute"],
+    transform: dreamyTransform,
+  },
+  {
+    id: "cottagecore",
+    name: "C🌿o🌿t🌿t🌿a🌿g🌿e",
+    description: "Cottagecore leaves between letters — nature lover aesthetic",
+    category: "cute",
+    tags: ["aesthetic", "cute", "chill", "romantic", "instagram"],
+    transform: cottagecoreTransform,
+  },
+  {
+    id: "y2k",
+    name: "»★« Y2K »★«",
+    description: "Y2K star frame — early 2000s retro nostalgia",
+    category: "cute",
+    tags: ["retro", "fun", "aesthetic", "vintage", "creative"],
+    transform: y2kTransform,
+  },
+  {
+    id: "brackets",
+    name: "【Brackets】",
+    description: "CJK corner brackets — bold and structured Asian aesthetic",
+    category: "cute",
+    tags: ["aesthetic", "japanese", "clean", "modern", "structured"],
+    transform: bracketsTransform,
+  },
+  {
+    id: "clap",
+    name: "Clap 👏 Between 👏 Words",
+    description: "Clap emoji between words — for emphasis and attitude",
+    category: "cute",
+    tags: ["fun", "playful", "energetic", "creative", "strong"],
+    transform: clapTransform,
+  },
+  {
+    id: "butterflies",
+    name: "B🦋u🦋t🦋t🦋e🦋r🦋f🦋l🦋y",
+    description: "Butterflies between letters — metamorphosis aesthetic",
+    category: "cute",
+    tags: ["cute", "girly", "aesthetic", "romantic", "instagram"],
+    transform: butterfliesTransform,
+  },
+  {
+    id: "cherry",
+    name: "🍒 Cherry 🍒",
+    description: "Cherry emoji frame — sweet retro pop vibes",
+    category: "cute",
+    tags: ["cute", "retro", "fun", "girly", "aesthetic"],
+    transform: cherryTransform,
+  },
+  {
+    id: "moon",
+    name: "☾ Moon ☽",
+    description: "Crescent moon frame — celestial witchy aesthetic",
+    category: "cute",
+    tags: ["aesthetic", "dreamy", "romantic", "dark", "girly"],
+    transform: moonTransform,
+  },
+  {
+    id: "sakura",
+    name: "S🌸a🌸k🌸u🌸r🌸a",
+    description: "Cherry blossom between letters — Japanese spring aesthetic",
+    category: "cute",
+    tags: ["cute", "japanese", "girly", "aesthetic", "romantic", "kawaii"],
+    transform: sakuraTransform,
+  },
+  {
+    id: "witchy",
+    name: "🔮✦ Witchy ✦🔮",
+    description: "Crystal ball frame — mystic and enchanting",
+    category: "cute",
+    tags: ["dark", "aesthetic", "girly", "creative", "mystery"],
+    transform: witchyTransform,
+  },
+  {
+    id: "tiny-stars",
+    name: "˚ ✩ ₊˚ Stars ˚₊ ✩ ˚",
+    description: "Tiny star dust wrapping — subtle celestial touch",
+    category: "cute",
+    tags: ["aesthetic", "cute", "girly", "dreamy", "soft", "instagram"],
+    transform: tinyStarsTransform,
+  },
+  {
+    id: "love-letter",
+    name: "💌 Love Letter 💌",
+    description: "Love letter envelope frame — romantic and sweet",
+    category: "cute",
+    tags: ["cute", "romantic", "girly", "love", "aesthetic"],
+    transform: loveLetterTransform,
+  },
+  {
+    id: "gem",
+    name: "G💎e💎m💎s",
+    description: "Diamond gems between letters — luxury and sparkle",
+    category: "cute",
+    tags: ["luxury", "aesthetic", "girly", "fancy", "instagram"],
+    transform: gemTransform,
+  },
+  {
+    id: "snowflake",
+    name: "S❄n❄o❄w",
+    description: "Snowflakes between letters — winter wonderland vibes",
+    category: "cute",
+    tags: ["aesthetic", "chill", "cute", "dreamy", "creative"],
+    transform: snowflakeTransform,
+  },
+  {
+    id: "arrow-frame",
+    name: "╰┈➤ Arrow ╰┈➤",
+    description: "Arrow line frame — clean directional aesthetic",
+    category: "cute",
+    tags: ["clean", "modern", "aesthetic", "minimal", "instagram"],
+    transform: arrowFrameTransform,
+  },
 ];
 
 // ─── Category Filter ─────────────────────────────────────────────────────────
 export const CATEGORIES = [
   { id: "all",        label: "All Styles" },
+  { id: "cute",       label: "✨ Cute" },
+  { id: "script",     label: "Script" },
   { id: "serif",      label: "Serif" },
   { id: "sans",       label: "Sans-Serif" },
-  { id: "script",     label: "Script" },
-  { id: "decorative", label: "Decorative" },
   { id: "aesthetic",  label: "Aesthetic" },
+  { id: "decorative", label: "Decorative" },
   { id: "effect",     label: "Effects" },
 ] as const;
 
 // ─── Mood / Vibe Filter ───────────────────────────────────────────────────────
 export const MOOD_TAGS = [
-  { id: "cute",         emoji: "🌸", label: "Cute",     keywords: ["cute", "kawaii", "girly", "romantic", "mini", "playful"] },
+  { id: "cute",         emoji: "🌸", label: "Cute",     keywords: ["cute", "kawaii", "girly", "romantic", "mini", "playful", "coquette", "fairy"] },
   { id: "luxury",       emoji: "👑", label: "Luxury",   keywords: ["luxury", "elegant", "sophisticated", "fancy", "formal", "classic"] },
   { id: "gothic",       emoji: "🖤", label: "Gothic",   keywords: ["gothic", "dark", "medieval", "metal", "heavy", "historical"] },
-  { id: "aesthetic",    emoji: "✨", label: "Aesthetic",keywords: ["aesthetic", "vaporwave", "retro", "instagram", "minimal", "chill", "editorial"] },
+  { id: "aesthetic",    emoji: "✨", label: "Aesthetic", keywords: ["aesthetic", "vaporwave", "retro", "instagram", "minimal", "chill", "editorial", "dreamy", "soft"] },
   { id: "tech",         emoji: "💻", label: "Tech",     keywords: ["tech", "hacker", "developer", "gaming", "code", "retro"] },
-  { id: "fun",          emoji: "😂", label: "Fun",      keywords: ["fun", "funny", "quirky", "weird", "rebel", "unique", "creative"] },
+  { id: "fun",          emoji: "😂", label: "Fun",      keywords: ["fun", "funny", "quirky", "weird", "rebel", "unique", "creative", "energetic"] },
   { id: "creepy",       emoji: "👻", label: "Creepy",   keywords: ["creepy", "cursed", "horror", "scary", "glitch", "edgy", "dramatic"] },
   { id: "pro",          emoji: "💼", label: "Pro",      keywords: ["professional", "clean", "modern", "formal", "strong", "bold", "readable"] },
 ] as const;

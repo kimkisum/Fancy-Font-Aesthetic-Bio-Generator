@@ -1,36 +1,36 @@
 // FAQSection.tsx — Server Component with JSON-LD FAQPage schema
-// Renders 6 high-value FAQs + injects structured data for Google Rich Snippets
+// Optimized for AEO (Answer Engine Optimization) & GEO (Generative Engine Optimization)
 
 const FAQS = [
   {
-    question: "Are these fancy fonts safe to use on Instagram, TikTok, and Discord?",
+    question: "What is a fancy font generator?",
     answer:
-      "Yes — completely safe. GoFancyFont generates standard Unicode characters that are part of the global text encoding standard used by every modern device and operating system. They are plain text, not code, scripts, or exploits. Instagram, TikTok, Discord, Twitter/X, YouTube, and WhatsApp all accept Unicode text in bios, display names, captions, and status fields. The only exception is Zalgo glitch text, which uses combining diacritical marks — while harmless, very heavy use may occasionally be flagged by spam filters in comment sections. For bios and profile headers, all 22 styles on GoFancyFont are safe and widely supported.",
+      "A fancy font generator is a web tool that converts standard text into creative, aesthetic Unicode characters. Because it uses Unicode symbols rather than actual font files, the generated text can be copied and pasted directly into social media bios, usernames, and messages on platforms like Instagram, TikTok, and Discord.",
   },
   {
-    question: "Why do some letters show up as square boxes (□) or question marks?",
+    question: "How do you copy and paste fancy fonts on Instagram?",
     answer:
-      "Square boxes or question marks appear when the device or application doesn't have a font installed that covers those specific Unicode code points. This typically occurs on very old smartphones (pre-2015), certain niche gaming clients, or outdated browser versions. For maximum compatibility across all devices and platforms, choose the Bold Serif (𝐀𝐁𝐂), Italic Serif (𝐴𝐵𝐶), Aesthetic Full-Width (ＡＢＣ), or Small Caps (ᴀʙᴄ) styles — these use Unicode ranges that are covered by nearly every system font installed on modern iOS, Android, Windows, and macOS devices. Avoid Zalgo and some decorative squared styles on platforms with limited Unicode font support.",
+      "To copy and paste fancy fonts on Instagram: 1. Type your text into the GoFancyFont input box. 2. Choose from over 50 styles (like cursive, bold, or aesthetic formats) and click the 'Copy' button. 3. Open the Instagram app, go to 'Edit Profile', and paste the copied text into your 'Bio' or 'Name' field. The styling will remain exactly as previewed.",
   },
   {
-    question: "Can I use these fancy fonts in my gaming username on Free Fire, PUBG, or Fortnite?",
+    question: "Are fancy text fonts safe to use on social media?",
     answer:
-      "Many popular mobile and PC games allow Unicode characters in player names and clan tags, including Free Fire, PUBG Mobile, Mobile Legends, Genshin Impact, and several others. To use a fancy font username: type your desired name in GoFancyFont, select the style (Bold, Circled, and Aesthetic styles tend to have the highest acceptance rate in games), copy it with one click, then paste into your game's name-change field. Note that some games may restrict certain Unicode ranges or have character length limits that apply differently to multi-byte Unicode characters. If one style is rejected, try another — Bold Serif and Circled Alphabet styles typically have the widest gaming compatibility.",
+      "Yes, fancy text fonts are completely safe to use. They are simply standard Unicode characters recognized universally by modern operating systems (iOS, Android, Windows) and social networks. They do not contain malicious code or scripts. However, avoid excessive use of 'glitch' or Zalgo text in comment sections, as heavy symbol stacking can sometimes trigger automated spam filters.",
   },
   {
-    question: "Is GoFancyFont.com free? Are there any hidden limits or subscriptions?",
+    question: "How is GoFancyFont better than other font generators?",
     answer:
-      "GoFancyFont.com is 100% free with absolutely no limits, no account required, no watermarks, and no premium tiers. All 22+ font style transformations are available to every visitor on every visit without restriction. The tool runs entirely in your browser — all Unicode conversion happens locally using JavaScript, with no text sent to any server. The site is supported by non-intrusive display advertising. There is no subscription model and no plans to add one.",
+      "GoFancyFont is optimized for a premium, frictionless user experience. Unlike older tools with cluttered interfaces, we offer: Smart Auto-Sorting that anchors your most-used fonts at the top, live App Previews to test fonts within mock Instagram and TikTok UIs, categorized filtering by aesthetic (Cute, Gothic, Script), and local storage saving. It is 100% free with no sign-ups.",
   },
   {
-    question: "How do I copy a fancy font and paste it into my Instagram or TikTok bio?",
+    question: "Why do some Unicode fonts show up as square boxes or question marks?",
     answer:
-      "It takes about 10 seconds. First, type your desired text into the GoFancyFont input box — all 22 style previews update in real time as you type. Second, find the style you like and click the blue 'Copy Text' button. Third, open Instagram or TikTok on your phone, go to Edit Profile, tap the Bio field, long-press and select Paste. The styled Unicode text will appear exactly as shown in the preview. You can also use the Instagram Bio Preview card on GoFancyFont to see how your text will look in a real profile layout before copying.",
+      "Square boxes (commonly called 'tofu') or question marks appear when a viewer's device lacks a system font that supports a specific Unicode character. This usually only happens on older smartphones or severely outdated browsers. For maximum global compatibility, use widely supported styles like Bold Serif, Italic, or Small Caps.",
   },
   {
-    question: "Why can't I just bold text in WhatsApp or Notes and copy-paste it to Instagram?",
+    question: "Can I use Unicode fonts in gaming usernames?",
     answer:
-      "When you apply bold, italic, or any other font formatting in an app like Microsoft Word, Google Docs, or WhatsApp, the app is using a font file to visually render standard code points differently on your screen. The underlying characters are still plain A, B, C — the font styling is not embedded in the text itself. When you copy and paste that text into Instagram or TikTok, only the raw characters (A, B, C) travel — the font file stays behind. GoFancyFont works differently: it replaces each standard letter with a distinct Unicode character (like 𝐀 at U+1D400 instead of A at U+0041) that was designed to look bold. Because the character itself is different, the visual style is preserved wherever you paste it — no font file required.",
+      "Yes, many popular games—including PUBG Mobile, Free Fire, Mobile Legends, and Genshin Impact—support Unicode characters in player names and clan tags. If a specific style is rejected due to character limits or specific character blacklists in the game, try a simpler Unicode style like the Circled Alphabet or Aesthetic Full-Width.",
   },
 ];
 
@@ -49,46 +49,52 @@ const jsonLd = {
 
 export default function FAQSection() {
   return (
-    <section className="w-full max-w-4xl mx-auto px-4 py-12">
-      {/* JSON-LD Schema */}
+    <section id="faq" className="w-full max-w-3xl mx-auto px-5 py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="mb-8 text-center">
-        <p className="text-xs text-brand-400 font-semibold tracking-widest uppercase mb-2">
+      <div className="mb-10 text-center">
+        <p className="text-[11px] text-ed-muted font-bold tracking-[0.2em] uppercase mb-3">
           FAQ
         </p>
-        <h2 className="text-2xl font-extrabold text-white">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-ed-charcoal">
           Frequently Asked Questions
         </h2>
-        <p className="text-slate-400 text-sm mt-2">
-          Everything you need to know about fancy Unicode fonts and copy-paste text styles.
+        <p className="text-ed-muted text-[14px] mt-3">
+          Clear answers about using Unicode fonts for your profiles.
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3" itemScope itemType="https://schema.org/FAQPage">
         {FAQS.map((faq, i) => (
           <details
             key={i}
-            className="group bg-surface-700 border border-surface-600 rounded-xl overflow-hidden"
+            className="group bg-white border border-ed-border rounded-xl overflow-hidden shadow-sm shadow-ed-charcoal/[0.02]"
+            itemScope
+            itemProp="mainEntity"
+            itemType="https://schema.org/Question"
           >
             <summary
               className="flex items-start justify-between gap-4 px-5 py-4 cursor-pointer
-                         font-medium text-white list-none select-none hover:bg-surface-600
+                         text-[15px] font-medium text-ed-charcoal list-none select-none hover:bg-ed-bg
                          transition-colors leading-snug"
             >
-              <span>{faq.question}</span>
-              <span className="shrink-0 mt-0.5 text-slate-500 group-open:rotate-180
+              <span itemProp="name">{faq.question}</span>
+              <span className="shrink-0 mt-0.5 text-ed-muted group-open:rotate-180
                                transition-transform duration-200 text-lg leading-none">
                 ▾
               </span>
             </summary>
-            <p className="px-5 pb-5 pt-4 text-slate-400 text-sm leading-relaxed
-                          border-t border-surface-500">
-              {faq.answer}
-            </p>
+            <div
+              itemScope
+              itemProp="acceptedAnswer"
+              itemType="https://schema.org/Answer"
+              className="px-5 pb-5 pt-3 text-ed-muted text-[14px] leading-relaxed border-t border-ed-borderLight"
+            >
+              <p itemProp="text">{faq.answer}</p>
+            </div>
           </details>
         ))}
       </div>

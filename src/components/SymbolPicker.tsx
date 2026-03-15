@@ -30,8 +30,8 @@ const SYMBOL_CATEGORIES: SymbolCategory[] = [
   },
   {
     id: "sparkles",
-    label: "Sparkles",
-    emoji: "✨",
+    label: "Nature",
+    emoji: "🌸",
     symbols: [
       "✨","⚡","🔥","❄","☀","🌙","⚜","🔮","💎","👑","🌸","🌺",
       "🍃","🌿","🌱","🌼","🌻","🌹","🌷","🍀","✿","❀","❁","❃",
@@ -39,7 +39,7 @@ const SYMBOL_CATEGORIES: SymbolCategory[] = [
   },
   {
     id: "borders",
-    label: "Borders",
+    label: "Lines",
     emoji: "─",
     symbols: [
       "─","━","│","┃","═","║","▬","≡","≣","⋯","⋮","⋱","·","•",
@@ -66,7 +66,7 @@ const SYMBOL_CATEGORIES: SymbolCategory[] = [
   },
   {
     id: "aesthetic",
-    label: "Aesthetic",
+    label: "Misc",
     emoji: "˚",
     symbols: [
       "。","゚","ꕥ","ꗃ","ꙮ","⌨","✎","✐","✑","♪","♫","♬","♩",
@@ -95,58 +95,55 @@ export default function SymbolPicker() {
     SYMBOL_CATEGORIES.find((c) => c.id === activeCategory)?.symbols ?? [];
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 pb-4">
-      <div className="rounded-2xl bg-surface-700 border border-surface-600 overflow-hidden">
+    <section className="w-full max-w-3xl mx-auto px-5 pb-4">
+      <div className="rounded-xl bg-white border border-ed-border overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-surface-600">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-ed-borderLight">
           <div>
-            <h2 className="text-sm font-bold text-white tracking-tight">
-              ✦ Aesthetic Symbol Library
+            <h2 className="text-[13px] font-semibold text-ed-charcoal">
+              Symbol Library
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Click any symbol to copy instantly
+            <p className="text-[11px] text-ed-muted mt-0.5">
+              Click to copy
             </p>
           </div>
           {copied && (
-            <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400
-                             text-xs font-medium border border-emerald-500/30 animate-pulse">
-              "{copied.symbol}" copied!
+            <span className="text-[11px] text-ed-charcoal font-medium animate-toast-in">
+              Copied
             </span>
           )}
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-1 px-4 pt-3 pb-2 flex-wrap">
+        {/* Tabs */}
+        <div className="flex gap-1 px-3 pt-2.5 pb-1.5 flex-wrap">
           {SYMBOL_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                          transition-all duration-150
+              className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors duration-150
                 ${activeCategory === cat.id
-                  ? "bg-brand-500 text-white shadow-lg shadow-brand-500/25"
-                  : "bg-surface-600 text-slate-400 hover:bg-surface-500 hover:text-white"
+                  ? "bg-ed-charcoal text-white"
+                  : "text-ed-muted hover:text-ed-charcoal hover:bg-ed-sand/40"
                 }`}
             >
-              <span>{cat.emoji}</span>
               {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Symbol Grid */}
-        <div className="px-4 pb-4">
-          <div className="flex flex-wrap gap-2">
+        {/* Grid */}
+        <div className="px-3 pb-3">
+          <div className="flex flex-wrap gap-1.5">
             {currentSymbols.map((symbol, i) => (
               <button
                 key={`${symbol}-${i}`}
                 onClick={() => handleCopy(symbol)}
                 title={`Copy ${symbol}`}
-                className={`w-10 h-10 flex items-center justify-center rounded-lg text-lg
-                            transition-all duration-150 active:scale-90 select-none
+                className={`w-9 h-9 flex items-center justify-center rounded-md text-base
+                            transition-colors duration-100 select-none
                             ${copied?.symbol === symbol
-                              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 scale-95"
-                              : "bg-surface-900 border border-surface-500 text-white hover:border-brand-400 hover:bg-brand-500/10 hover:text-brand-300"
+                              ? "bg-ed-sage/20 text-ed-charcoal"
+                              : "bg-ed-bg text-ed-charcoal hover:bg-ed-sand/50"
                             }`}
               >
                 {symbol}

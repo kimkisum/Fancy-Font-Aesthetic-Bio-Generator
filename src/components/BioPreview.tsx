@@ -14,94 +14,65 @@ export default function BioPreview({ rawText, styledText, styleName }: BioPrevie
 
   return (
     <div className="w-full">
-      <p className="text-xs text-slate-500 uppercase tracking-widest mb-3 font-medium">
-        ✦ Live Bio Preview
+      <p className="text-[10px] text-ed-muted uppercase tracking-widest mb-2.5 font-medium">
+        Live Preview
       </p>
 
-      {/* Instagram-style card */}
-      <div className="rounded-2xl bg-surface-900 border border-surface-600 overflow-hidden
-                      shadow-2xl shadow-black/40">
+      <div className="rounded-xl bg-white border border-ed-border overflow-hidden">
         {/* Top bar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-surface-700">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-red-500/70" />
-            <div className="w-2 h-2 rounded-full bg-yellow-500/70" />
-            <div className="w-2 h-2 rounded-full bg-emerald-500/70" />
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-ed-borderLight">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-red-400/50" />
+            <div className="w-2 h-2 rounded-full bg-yellow-400/50" />
+            <div className="w-2 h-2 rounded-full bg-green-400/50" />
           </div>
-          <span className="text-[10px] text-slate-600 font-mono">instagram.com / profile</span>
-          <div className="w-12" />
+          <span className="text-[10px] text-ed-muted/50 font-mono">instagram.com</span>
+          <div className="w-10" />
         </div>
 
-        {/* Profile area */}
-        <div className="p-5">
-          {/* Avatar row */}
-          <div className="flex items-start gap-5 mb-4">
-            {/* Avatar */}
-            <div className="relative shrink-0">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-400 via-purple-500 to-pink-500
-                              flex items-center justify-center text-2xl shadow-lg">
-                ✨
-              </div>
-              <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full
-                              bg-emerald-500 border-2 border-surface-900" />
+        {/* Profile */}
+        <div className="p-4">
+          <div className="flex items-start gap-4 mb-3">
+            <div className="w-14 h-14 rounded-full bg-ed-sand flex items-center justify-center
+                           text-lg text-ed-muted shrink-0">
+              ✦
             </div>
-
-            {/* Stats */}
-            <div className="flex gap-4 pt-1">
+            <div className="flex gap-3 pt-1.5">
               {[
                 { label: "Posts",     value: "24"  },
                 { label: "Followers", value: "1.2K"},
                 { label: "Following", value: "380" },
               ].map(({ label, value }) => (
                 <div key={label} className="text-center">
-                  <p className="text-white font-bold text-sm leading-tight">{value}</p>
-                  <p className="text-slate-500 text-[10px] leading-tight">{label}</p>
+                  <p className="text-ed-charcoal font-semibold text-[13px] leading-tight">{value}</p>
+                  <p className="text-ed-muted text-[10px] leading-tight">{label}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Name & Bio */}
-          <div className="space-y-1">
-            <p className="text-white font-bold text-sm leading-snug break-all">
+          <div className="space-y-0.5">
+            <p className="text-ed-charcoal font-semibold text-[13px] leading-snug break-all">
               {displayName.slice(0, 60)}
             </p>
             {bioLines.map((line, i) => (
-              <p key={i} className="text-slate-300 text-xs leading-relaxed break-all">
+              <p key={i} className="text-ed-muted text-[12px] leading-relaxed break-all">
                 {line || " "}
               </p>
             ))}
           </div>
 
-          {/* Link placeholder */}
-          <p className="text-brand-400 text-xs mt-2 font-medium">
-            🔗 gofancyfont.com
+          <p className="text-ed-sage text-[12px] mt-1.5 font-medium">
+            gofancyfont.com
           </p>
-
-          {/* Action buttons */}
-          <div className="flex gap-2 mt-4">
-            <button className="flex-1 py-1.5 rounded-lg bg-brand-500/20 border border-brand-500/30
-                               text-brand-400 text-xs font-semibold hover:bg-brand-500/30 transition-colors">
-              Edit Profile
-            </button>
-            <button className="flex-1 py-1.5 rounded-lg bg-surface-700 border border-surface-500
-                               text-slate-300 text-xs font-semibold hover:bg-surface-600 transition-colors">
-              Share Profile
-            </button>
-            <button className="w-9 h-7 flex items-center justify-center rounded-lg
-                               bg-surface-700 border border-surface-500 text-slate-400
-                               hover:bg-surface-600 transition-colors text-sm">
-              ⋯
-            </button>
-          </div>
         </div>
 
         {/* Style tag */}
-        <div className="px-5 pb-4">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
-                           bg-brand-500/10 border border-brand-500/20 text-brand-400 text-[10px] font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse" />
-            Live preview · {styleName}
+        <div className="px-4 pb-3">
+          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px]
+                           bg-ed-bg text-ed-muted border border-ed-borderLight font-medium">
+            <span className="w-1 h-1 rounded-full bg-ed-sage" />
+            {styleName}
           </span>
         </div>
       </div>
