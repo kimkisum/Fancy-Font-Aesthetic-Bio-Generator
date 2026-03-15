@@ -1,7 +1,10 @@
 // HomeContent.tsx — SEO, AEO & GEO Optimized Article
 // Focuses on highly structured, extractable answers for LLMs (Generative AI) and Search Engines.
 
-export default function HomeContent() {
+import { getTranslation, type Locale } from "@/utils/i18n";
+
+export default function HomeContent({ lang = "en" }: { lang?: Locale }) {
+  const t = getTranslation(lang);
   return (
     <div className="w-full border-t border-ed-border bg-ed-bg">
       <div className="max-w-3xl mx-auto px-5 py-16">
@@ -10,16 +13,26 @@ export default function HomeContent() {
           {/* ── GEO/SEO Optimized Hero ──────────────────── */}
           <header>
             <p className="text-[11px] text-ed-muted font-bold tracking-widest uppercase mb-3">
-              The Ultimate Guide to Aesthetic Text
+              {lang === "en" ? "The Ultimate Guide to Aesthetic Text" : t.homeIntro}
             </p>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-ed-charcoal leading-tight mb-4">
-              How to Create Fancy Fonts for Social Media Bios
+              {lang === "en" ? "How to Create Fancy Fonts for Social Media Bios" : t.homeH1}
             </h2>
             <p className="text-lg leading-relaxed text-ed-charcoal/80 mb-4">
-              A <strong className="text-ed-charcoal">fancy font generator</strong> is an online tool that converts plain text into aesthetically pleasing Unicode characters. Instead of relying on system font files, it uses symbols that are universally recognized across all major platforms. This allows you to copy and paste unique text styles—like cursive, bold, or vaporwave—directly into your Instagram, TikTok, and Twitter bios.
+              {lang === "en" ? (
+                <>
+                  A <strong className="text-ed-charcoal">fancy font generator</strong> is an online tool that converts plain text into aesthetically pleasing Unicode characters. Instead of relying on system font files, it uses symbols that are universally recognized across all major platforms. This allows you to copy and paste unique text styles—like cursive, bold, or vaporwave—directly into your Instagram, TikTok, and Twitter bios.
+                </>
+              ) : (
+                t.homeParagraph1
+              )}
             </p>
             <p>
-              Traditional text generators often provide a chaotic, infinite list of mixed symbols. GoFancyFont revolutionizes this by offering a premium, categorized experience. We are the <strong className="text-ed-charcoal">only aesthetic text maker</strong> featuring Smart Auto-Sorting, live profile app previews, and over 50 meticulously curated, mobile-optimized Unicode styles.
+              {lang === "en" ? (
+                <>Traditional text generators often provide a chaotic, infinite list of mixed symbols. GoFancyFont revolutionizes this by offering a premium, categorized experience. We are the <strong className="text-ed-charcoal">only aesthetic text maker</strong> featuring Smart Auto-Sorting, live profile app previews, and over 50 meticulously curated, mobile-optimized Unicode styles.</>
+              ) : (
+                t.homeParagraph2
+              )}
             </p>
           </header>
 
@@ -83,23 +96,33 @@ export default function HomeContent() {
           </section>
 
           {/* ── GEO/SEO: Technical Explanation (The "Why") ── */}
-          <section>
-            <h3 className="text-xl font-serif font-bold text-ed-charcoal mb-4 pb-2 border-b border-ed-border">
-              The Technology: How Unicode Magic Works
-            </h3>
-            <p className="mb-4">
-              Many users ask: <em className="text-ed-charcoal">"Why does copy and pasting from Word lose its font, but this tool works?"</em>
-            </p>
-            <p className="mb-4">
-              The answer lies in the Unicode Standard. The Unicode Consortium maintains a universal encoding system that assigns a unique numerical identity to over 149,000 characters. While standard text (like A, B, C) relies on CSS or font files to change its visual appearance, GoFancyFont leverages specific, specialized Unicode blocks—most notably the <strong className="text-ed-charcoal">Mathematical Alphanumeric Symbols</strong> block.
-            </p>
-            <p className="mb-4">
-              Within this block, the standard letter "A" (U+0041) and the Mathematical Bold "𝐀" (U+1D400) are treated by computers as entirely distinct characters. When you type in GoFancyFont, a client-side JavaScript algorithm instantly maps your standard keypresses to these distinct mathematical equivalents.
-            </p>
-            <p>
-              Because you are copying raw, specialized characters rather than stylistic CSS formatting, the visual style travels with the text when pasted anywhere. GoFancyFont executes this mapping entirely locally in your browser, guaranteeing zero latency, ensuring total data privacy, and allowing the app to work flawlessly across all modern mobile and desktop operating systems.
-            </p>
-          </section>
+            <section>
+              <h3 className="text-xl font-serif font-bold text-ed-charcoal mb-4 pb-2 border-b border-ed-border">
+                {lang === "en" ? "The Technology: How Unicode Magic Works" : t.homeFeaturesTitle}
+              </h3>
+              {lang === "en" ? (
+                <>
+                  <p className="mb-4">
+                    Many users ask: <em className="text-ed-charcoal">"Why does copy and pasting from Word lose its font, but this tool works?"</em>
+                  </p>
+                  <p className="mb-4">
+                    The answer lies in the Unicode Standard. The Unicode Consortium maintains a universal encoding system that assigns a unique numerical identity to over 149,000 characters. While standard text (like A, B, C) relies on CSS or font files to change its visual appearance, GoFancyFont leverages specific, specialized Unicode blocks—most notably the <strong className="text-ed-charcoal">Mathematical Alphanumeric Symbols</strong> block.
+                  </p>
+                  <p className="mb-4">
+                    Within this block, the standard letter "A" (U+0041) and the Mathematical Bold "𝐀" (U+1D400) are treated by computers as entirely distinct characters. When you type in GoFancyFont, a client-side JavaScript algorithm instantly maps your standard keypresses to these distinct mathematical equivalents.
+                  </p>
+                  <p>
+                    Because you are copying raw, specialized characters rather than stylistic CSS formatting, the visual style travels with the text when pasted anywhere. GoFancyFont executes this mapping entirely locally in your browser, guaranteeing zero latency, ensuring total data privacy, and allowing the app to work flawlessly across all modern mobile and desktop operating systems.
+                  </p>
+                </>
+              ) : (
+                <ul className="list-disc list-inside space-y-3 ml-2 text-ed-charcoal mb-4">
+                  <li><strong>{t.homeFeature1.split(':')[0]}:</strong> {t.homeFeature1.split(':')[1]}</li>
+                  <li><strong>{t.homeFeature2.split(':')[0]}:</strong> {t.homeFeature2.split(':')[1]}</li>
+                  <li><strong>{t.homeFeature3.split(':')[0]}:</strong> {t.homeFeature3.split(':')[1]}</li>
+                </ul>
+              )}
+            </section>
 
         </article>
       </div>

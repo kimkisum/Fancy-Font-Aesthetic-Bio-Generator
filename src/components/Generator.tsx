@@ -8,9 +8,11 @@ import {
   useRef,
 } from "react";
 import { FONT_STYLES, CATEGORIES, MOOD_TAGS, type FontStyle } from "@/utils/fontMap";
+import { getTranslation, type Locale } from "@/utils/i18n";
 import BioPreview from "./BioPreview";
 import TikTokPreview from "./TikTokPreview";
 import Toast from "./Toast";
+import confetti from "canvas-confetti";
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  HOOKS: useDebounce & useCopyCounts
@@ -55,7 +57,7 @@ function useCopyCounts() {
   const topPickIds = useMemo(() => {
     const entries = Object.entries(copyCounts).filter(([, n]) => n > 0);
     entries.sort((a, b) => b[1] - a[1]);
-    return entries.slice(0, 3).map(([id]) => id);
+    return entries.slice(0, 5).map(([id]) => id);
   }, [copyCounts]);
 
   return { copyCounts, incrementCount, topPickIds };
@@ -216,8 +218,9 @@ interface CopiedState {
   timeout: ReturnType<typeof setTimeout> | null;
 }
 
-export default function Generator() {
-  const [inputText, setInputText]           = useState("Fancy Font Generator");
+export default function Generator({ lang = "en" }: { lang?: Locale }) {
+  const t = getTranslation(lang);
+  const [inputText, setInputText]           = useState(lang === "en" ? "Fancy Font Generator" : t.homeH1);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeMood, setActiveMood]         = useState<string>("");
   const [copied, setCopied]                 = useState<CopiedState>({ id: "", timeout: null });
@@ -284,7 +287,7 @@ export default function Generator() {
       if (copied.timeout) clearTimeout(copied.timeout);
       const timeout = setTimeout(() => setCopied({ id: "", timeout: null }), 2200);
       setCopied({ id: style.id, timeout });
-      setToastMsg("Copied to clipboard. Paste it anywhere!");
+      setToastMsg(t.toastCopied);
       setToastVisible(true);
     });
   }, [inputText, copied.timeout, incrementCount]);
@@ -295,6 +298,59 @@ export default function Generator() {
       setInputText(text.slice(0, 200));
     } catch {}
   }, []);
+
+  const handleShare = useCallback(async (style: FontStyle) => {
+    const transformed = style.transform(inputText || "Type something...");
+    let shareText = "";
+    if (lang === "es") shareText = `¡Mira mi perfil aesthetic! 🎀\n\n${transformed}\n\n- Crea gratis en GoFancyFont`;
+    else if (lang === "pt") shareText = `Olha meu perfil aesthetic! 🎀\n\n${transformed}\n\n- Crie grátis no GoFancyFont`;
+    else if (lang === "ja") shareText = `私の作ったおしゃれプロフィール見て！ 🎀\n\n${transformed}\n\n- GoFancyFontで無料作成`;
+    else shareText = `내가 만든 에스테틱 프로필 봐봐! 🎀\n\n${transformed}\n\n- Create for free at GoFancyFont`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Fancy Font Aesthetic",
+          text: shareText,
+          url: "https://gofancyfont.com" + (lang !== "en" ? `/${lang}` : ""),
+        });
+      } catch (err) {
+        // user may have cancelled
+      }
+    } else {
+      handleCopy(style);
+    }
+  }, [inputText, lang, handleCopy]);
+
+  const handleSurpriseMe = useCallback(() => {
+    const randomFont = FONT_STYLES[Math.floor(Math.random() * FONT_STYLES.length)];
+    const kaomojis = ["(づ｡◕‿‿◕｡)づ", "(*´∀`)~♥", "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧", "✧⁺⸜(●˙▾˙●)⸝⁺✧", "( ˶ˆ꒳ˆ˵ )"];
+    const borders = ["╔══════╗", "┊✦ ✦┊", "•◦ ❈ ◦•", "· · • • • ✤ • • • · ·"];
+    
+    const randomK = kaomojis[Math.floor(Math.random() * kaomojis.length)];
+    const textToTransform = inputText || (lang === "en" ? "Aesthetic" : t.vibe);
+    
+    const transformed = randomFont.transform(textToTransform);
+    let finalResult = "";
+    if (Math.random() > 0.5) {
+      finalResult = `${randomK} ${transformed} ${randomK}`;
+    } else {
+      const b = borders[Math.floor(Math.random() * borders.length)];
+      const closeB = b.replace('╔', '╚').replace('╗', '╝').replace('┌','└').replace('┐','┘');
+      finalResult = `${b}\n${transformed}\n${closeB}`;
+    }
+    
+    setInputText(finalResult);
+    setActiveCategory(randomFont.category);
+    
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94'],
+      zIndex: 100,
+    });
+  }, [inputText, lang, t]);
 
   const favCount = favorites.length;
   const activeMoodInfo = MOOD_TAGS.find((m) => m.id === activeMood);
@@ -322,7 +378,7 @@ export default function Generator() {
             {/* Modal Header */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-ed-border">
               <div>
-                <p className="text-[11px] text-ed-muted tracking-widest uppercase mb-1">Live App Preview</p>
+                <p className="text-[11px] text-ed-muted tracking-widest uppercase mb-1">{t.livePreview}</p>
                 <h3 className="text-xl font-serif font-bold text-ed-charcoal">{previewModalStyle.name}</h3>
               </div>
               <button 
@@ -351,13 +407,19 @@ export default function Generator() {
             {/* Modal Actions */}
             <div className="flex justify-end gap-3 pt-4 border-t border-ed-border">
               <button
+                onClick={() => handleShare(previewModalStyle)}
+                className="py-3 px-5 rounded-xl text-[14px] font-semibold bg-white border border-ed-border text-ed-charcoal hover:bg-ed-sand/50 transition-all duration-150 active:scale-[0.97]"
+              >
+                🚀 {t.share}
+              </button>
+              <button
                 onClick={() => handleCopy(previewModalStyle)}
                 className={`py-3 px-8 rounded-xl text-[14px] font-semibold transition-all duration-150 active:scale-[0.97]
                   ${copied.id === previewModalStyle.id
                     ? "bg-ed-sage text-white"
                     : "bg-ed-charcoal text-white shadow-lg hover:shadow-xl hover:bg-ed-charcoal/90"}`}
               >
-                {copied.id === previewModalStyle.id ? "✔ Copied!" : "📋 Copy This Style"}
+                {copied.id === previewModalStyle.id ? `✔ ${t.copied}` : `📋 ${t.copyThis}`}
               </button>
             </div>
           </div>
@@ -370,16 +432,16 @@ export default function Generator() {
           <div className="p-4">
             <div className="flex items-center justify-between mb-1.5">
               <label htmlFor="font-input" className="text-[10px] font-medium text-ed-muted tracking-widest uppercase">
-                Your Text
+                {t.yourText}
               </label>
               <div className="flex items-center gap-2">
                 {inputText && (
                   <button onClick={() => setInputText("")} className="text-[11px] text-ed-muted hover:text-ed-charcoal transition-colors flex items-center gap-0.5">
-                    ✕ Clear
+                    ✕ {t.clear}
                   </button>
                 )}
                 <button onClick={handlePaste} className="text-[11px] text-ed-muted hover:text-ed-charcoal transition-colors flex items-center gap-0.5">
-                  📋 Paste
+                  📋 {t.paste}
                 </button>
               </div>
             </div>
@@ -389,7 +451,7 @@ export default function Generator() {
                 rows={2}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Type or paste your text here..."
+                placeholder={t.placeholder}
                 className="w-full rounded-lg bg-white border border-ed-border text-ed-charcoal text-[15px] placeholder-ed-muted/40 px-3.5 py-2.5 resize-none outline-none focus:border-ed-sage focus:ring-1 focus:ring-ed-sage/30 transition-all duration-150 leading-relaxed font-sans"
                 maxLength={200}
               />
@@ -416,20 +478,26 @@ export default function Generator() {
                 ${showFavOnly ? "bg-ed-charcoal text-white shadow-sm" : "bg-ed-bg text-ed-muted hover:text-ed-charcoal"}`}
             >
               <HeartIcon filled={showFavOnly} />
-              Favorites
+              {t.favorites}
               {favCount > 0 && <span className="text-[9px] opacity-50">{favCount}</span>}
+            </button>
+            <button
+              onClick={handleSurpriseMe}
+              className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-medium transition-all duration-100 whitespace-nowrap bg-amber-100 text-amber-700 hover:bg-amber-200 ml-auto"
+            >
+              {t.surpriseMe} 🎲
             </button>
           </div>
         </div>
       </div>
 
       <div className="w-full max-w-3xl mx-auto h-[90px] border border-ed-border rounded-lg flex items-center justify-center text-ed-muted/30 text-xs tracking-wider bg-white/50">
-        [ Ad ]
+        {t.ad}
       </div>
 
       <section className="space-y-2.5 max-w-3xl mx-auto">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[10px] text-ed-muted tracking-widest uppercase mr-0.5">Vibe</span>
+          <span className="text-[10px] text-ed-muted tracking-widest uppercase mr-0.5">{t.vibe}</span>
           {MOOD_TAGS.map((mood) => (
             <button
               key={mood.id}
@@ -450,7 +518,7 @@ export default function Generator() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search styles..."
+          placeholder={t.searchStyles}
           className="w-full max-w-xs bg-white border border-ed-border rounded-lg text-[13px] text-ed-charcoal placeholder-ed-muted/40 px-3.5 py-2 outline-none focus:border-ed-sage focus:ring-1 focus:ring-ed-sage/30 transition-all"
         />
       </section>
@@ -458,25 +526,25 @@ export default function Generator() {
       <section className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <p className="text-[11px] text-ed-muted tracking-wider uppercase flex gap-x-2">
-            <span className="font-bold text-ed-charcoal">{filteredStyles.length} STYLES</span>
+            <span className="font-bold text-ed-charcoal">{filteredStyles.length} {t.styles}</span>
             {activeMoodInfo && <span>· {activeMoodInfo.emoji} {activeMoodInfo.label}</span>}
-            {favCount > 0 && !showFavOnly && <span>· {favCount} saved</span>}
+            {favCount > 0 && !showFavOnly && <span>· {favCount} {t.saved}</span>}
           </p>
-          <span className="text-[11px] text-ed-muted italic">Click '📱' to preview</span>
+          <span className="text-[11px] text-ed-muted italic">{t.previewPrompt}</span>
         </div>
 
         {/* ── EMPTY STATES ── */}
         {showFavOnly && filteredStyles.length === 0 && (
           <div className="text-center py-16 text-ed-muted">
             <p className="text-2xl mb-2 opacity-30">♡</p>
-            <p className="text-sm">No favorites yet.</p>
-            <p className="text-xs mt-1 opacity-60">Tap the heart on any style to save it.</p>
+            <p className="text-sm">{t.noFavs}</p>
+            <p className="text-xs mt-1 opacity-60">{t.noFavsSub}</p>
           </div>
         )}
         {!showFavOnly && filteredStyles.length === 0 && (
           <div className="text-center py-16 text-ed-muted">
-            <p className="text-sm">No styles found.</p>
-            <p className="text-xs mt-1 opacity-60">Try a different filter or clear your search.</p>
+            <p className="text-sm">{t.noStyles}</p>
+            <p className="text-xs mt-1 opacity-60">{t.noStylesSub}</p>
           </div>
         )}
 
@@ -489,7 +557,7 @@ export default function Generator() {
               <div key={style.id}>
                 {index > 0 && index % 10 === 0 && (
                   <div className="col-span-full h-[90px] mb-3 border border-ed-border rounded-lg flex items-center justify-center text-ed-muted/30 text-xs tracking-wider bg-white/50">
-                    [ Ad ]
+                    {t.ad}
                   </div>
                 )}
                 {index < INITIAL_RENDER_COUNT ? (
@@ -499,7 +567,7 @@ export default function Generator() {
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
                             <p className="text-[10px] text-ed-muted tracking-widest uppercase">{style.category}</p>
-                            {isTopPick && <span className="text-[9px] font-medium text-amber-600 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none">Top Pick ✨</span>}
+                            {isTopPick && <span className="text-[9px] font-medium text-amber-600 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none">{t.topPick}</span>}
                           </div>
                           <p className="text-[12px] text-ed-muted leading-snug mt-0.5">{style.description}</p>
                         </div>
@@ -517,7 +585,7 @@ export default function Generator() {
                         <PhoneIcon />
                       </button>
                       <button onClick={() => handleCopy(style)} className={`flex items-center justify-center gap-2 flex-1 py-3 sm:py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 active:scale-[0.98] ${copied.id === style.id ? "bg-ed-sage/20 text-ed-charcoal border border-ed-sage/40" : "border border-ed-border text-ed-muted hover:text-ed-charcoal hover:border-ed-charcoal/20"}`}>
-                        {copied.id === style.id ? <><CheckIcon /> Copied!</> : <><CopyIcon /> Copy</>}
+                        {copied.id === style.id ? <><CheckIcon /> {t.copied}</> : <><CopyIcon /> {t.copy}</>}
                       </button>
                     </div>
                   </div>
@@ -540,7 +608,7 @@ export default function Generator() {
       </section>
 
       <div className="w-full max-w-3xl mx-auto h-[250px] border border-ed-border rounded-lg flex items-center justify-center text-ed-muted/30 text-xs tracking-wider bg-white/50">
-        [ Ad ]
+        {t.ad}
       </div>
     </div>
   );

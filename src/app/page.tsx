@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Generator from "@/components/Generator";
+import BioTemplates from "@/components/BioTemplates";
 import SymbolPicker from "@/components/SymbolPicker";
 import SymbolLibrary from "@/components/SymbolLibrary";
 import HomeContent from "@/components/HomeContent";
@@ -120,6 +121,11 @@ export default function HomePage() {
         {/* ── Generator ────────────────────────────────────── */}
         <section id="generator" className="pb-4">
           <Generator />
+        </section>
+
+        {/* ── Templates ────────────────────────────────────── */}
+        <section id="templates" className="pb-4">
+          <BioTemplates />
         </section>
 
         {/* ── Symbols ──────────────────────────────────────── */}
