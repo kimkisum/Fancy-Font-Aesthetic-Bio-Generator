@@ -42,7 +42,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="GoFancyFont" />
         <meta name="theme-color" content="#FAF9F6" />
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="antialiased bg-ed-bg text-ed-charcoal">
