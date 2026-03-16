@@ -100,6 +100,10 @@ export default function Generator() {
 
   // ── Language detection ─────────────────────────────────
   const detectedScript = useMemo(() => detectScript(inputText), [inputText]);
+  const hasJapanese    = useMemo(
+    () => /[\u3040-\u309F\u30A0-\u30FF]/.test(inputText),
+    [inputText]
+  );
 
   // ── Filtered & sorted styles ───────────────────────────
   const moodKeywords = useMemo(
@@ -120,11 +124,11 @@ export default function Generator() {
       const matchFav    = !showFavOnly || favorites.includes(style.id);
       return matchCat && matchSearch && matchMood && matchFav;
     });
-    // When non-Latin text detected, float webfont + "all" compatible styles to top
+    // When non-Latin text detected, float compatible styles to top
     if (detectedScript !== "latin" && activeCategory === "all" && !showFavOnly) {
       list = [
-        ...list.filter((s) => s.langCompat === "all"),
-        ...list.filter((s) => s.langCompat !== "all"),
+        ...list.filter((s) => s.langCompat === "all" || (hasJapanese && s.langCompat === "ja")),
+        ...list.filter((s) => !(s.langCompat === "all" || (hasJapanese && s.langCompat === "ja"))),
       ];
     }
     // Favorites float to the top (within their compat group)
@@ -135,7 +139,7 @@ export default function Generator() {
       ];
     }
     return list;
-  }, [activeCategory, search, activeMood, moodKeywords, favorites, showFavOnly, detectedScript]);
+  }, [activeCategory, search, activeMood, moodKeywords, favorites, showFavOnly, detectedScript, hasJapanese]);
 
   const handleCopy = useCallback(
     (style: FontStyle) => {
@@ -490,6 +494,14 @@ export default function Generator() {
                       {style.langCompat === "all" ? (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 font-medium">
                           ✓ All languages
+                        </span>
+                      ) : style.langCompat === "ja" ? (
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${
+                          hasJapanese
+                            ? "bg-sky-500/15 text-sky-400 border-sky-500/25"
+                            : "bg-surface-600 text-slate-500 border-surface-500"
+                        }`}>
+                          {hasJapanese ? "✓ Japanese" : "Japanese only"}
                         </span>
                       ) : (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-surface-600 text-slate-500 border border-surface-500">

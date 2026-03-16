@@ -4,8 +4,10 @@ export interface FontStyle {
   description: string;
   category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute";
   tags: string[];
-  /** "latin" = works for Latin/ASCII only · "all" = works with any language */
-  langCompat: "latin" | "all";
+  /**
+   * "latin" = Latin/ASCII only · "all" = any language · "ja" = Japanese hiragana/katakana
+   */
+  langCompat: "latin" | "all" | "ja";
   transform: (text: string) => string;
 }
 
@@ -192,6 +194,21 @@ const waveTildeTransform = (text: string) =>
 // Double overline  T̿e̿x̿t̿ (combining double overline U+033F)
 const doubleOverlineTransform = (text: string) =>
   [...text].map((c) => (c === " " ? c : c + "\u033f")).join("");
+
+// ── Japanese Script Transforms ───────────────────────────────────────────────
+// Hiragana → Katakana (offset +0x60: U+3041–U+3096 → U+30A1–U+30F6)
+const hiraganaToKatakanaTransform = (text: string) =>
+  [...text].map((c) => {
+    const code = c.charCodeAt(0);
+    return code >= 0x3041 && code <= 0x3096 ? String.fromCharCode(code + 0x60) : c;
+  }).join("");
+
+// Katakana → Hiragana (offset -0x60: U+30A1–U+30F6 → U+3041–U+3096)
+const katakanaToHiraganaTransform = (text: string) =>
+  [...text].map((c) => {
+    const code = c.charCodeAt(0);
+    return code >= 0x30a1 && code <= 0x30f6 ? String.fromCharCode(code - 0x60) : c;
+  }).join("");
 
 // ════════════════════════════════════════════════════════════════════════════════
 // ██  DECORATION / STRING-MANIPULATION STYLES                                 ██
@@ -804,6 +821,28 @@ export const FONT_STYLES: FontStyle[] = [
     transform: arrowFrameTransform,
   },
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // ██  JAPANESE SCRIPT STYLES (copy-paste survives — real Unicode convert) ██
+  // ══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: "ja-hiragana-to-katakana",
+    name: "ひらがな → カタカナ",
+    description: "Convert hiragana to katakana — sharp, confident Japanese style",
+    category: "effect",
+    tags: ["japanese", "aesthetic", "modern", "clean", "unique"],
+    langCompat: "ja",
+    transform: hiraganaToKatakanaTransform,
+  },
+  {
+    id: "ja-katakana-to-hiragana",
+    name: "カタカナ → ひらがな",
+    description: "Convert katakana to hiragana — soft, flowing Japanese style",
+    category: "effect",
+    tags: ["japanese", "cute", "soft", "aesthetic", "kawaii"],
+    langCompat: "ja",
+    transform: katakanaToHiraganaTransform,
+  },
 ];
 
 // ─── Category Filter ─────────────────────────────────────────────────────────
