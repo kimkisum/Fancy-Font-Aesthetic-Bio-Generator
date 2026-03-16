@@ -503,7 +503,6 @@ export default function Generator() {
                   <div
                     className="min-h-[3rem] px-4 py-3 rounded-lg bg-surface-900 border border-surface-500
                                text-white text-lg leading-relaxed break-all select-all"
-                    style={style.fontFamily ? { fontFamily: style.fontFamily } : undefined}
                     title="Click to select all"
                   >
                     {transformed}

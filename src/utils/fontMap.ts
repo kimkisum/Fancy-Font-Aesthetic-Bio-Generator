@@ -2,12 +2,10 @@ export interface FontStyle {
   id: string;
   name: string;
   description: string;
-  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute" | "webfont";
+  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute";
   tags: string[];
   /** "latin" = works for Latin/ASCII only · "all" = works with any language */
   langCompat: "latin" | "all";
-  /** CSS font-family override (web preview only, does not affect copy text) */
-  fontFamily?: string;
   transform: (text: string) => string;
 }
 
@@ -194,10 +192,6 @@ const waveTildeTransform = (text: string) =>
 // Double overline  T̿e̿x̿t̿ (combining double overline U+033F)
 const doubleOverlineTransform = (text: string) =>
   [...text].map((c) => (c === " " ? c : c + "\u033f")).join("");
-
-// Pass-through (for web-font CSS preview styles — visual only)
-const passThrough = (text: string) => text;
-
 
 // ════════════════════════════════════════════════════════════════════════════════
 // ██  DECORATION / STRING-MANIPULATION STYLES                                 ██
@@ -810,131 +804,6 @@ export const FONT_STYLES: FontStyle[] = [
     transform: arrowFrameTransform,
   },
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // ██  WEB FONT STYLES — CSS Google Fonts (works with ALL languages)       ██
-  // ██  Visual preview only — copies as plain text                          ██
-  // ══════════════════════════════════════════════════════════════════════════
-
-  {
-    id: "wf-nanum-gothic",
-    name: "나눔 고딕",
-    description: "Nanum Gothic — clean Korean sans-serif, excellent readability",
-    category: "webfont",
-    tags: ["clean", "modern", "minimal", "readable", "professional"],
-    langCompat: "all",
-    fontFamily: "'Nanum Gothic', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-nanum-myeongjo",
-    name: "나눔 명조",
-    description: "Nanum Myeongjo — elegant Korean serif, literary and refined",
-    category: "webfont",
-    tags: ["elegant", "luxury", "sophisticated", "formal", "classic"],
-    langCompat: "all",
-    fontFamily: "'Nanum Myeongjo', serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-gowun-dodum",
-    name: "고운 돋움",
-    description: "Gowun Dodum — round and soft, warm everyday readability",
-    category: "webfont",
-    tags: ["cute", "soft", "clean", "minimal", "readable"],
-    langCompat: "all",
-    fontFamily: "'Gowun Dodum', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-black-han-sans",
-    name: "블랙 한 산스",
-    description: "Black Han Sans — ultra-heavy display font, bold statement",
-    category: "webfont",
-    tags: ["bold", "strong", "dramatic", "heavy", "modern"],
-    langCompat: "all",
-    fontFamily: "'Black Han Sans', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-do-hyeon",
-    name: "도현",
-    description: "Do Hyeon — round modern sans, friendly and approachable",
-    category: "webfont",
-    tags: ["modern", "clean", "friendly", "cute", "readable"],
-    langCompat: "all",
-    fontFamily: "'Do Hyeon', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-jua",
-    name: "주아",
-    description: "Jua — playful casual font with a hand-drawn character",
-    category: "webfont",
-    tags: ["fun", "playful", "cute", "kawaii", "creative"],
-    langCompat: "all",
-    fontFamily: "'Jua', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-cute-font",
-    name: "귀여운 폰트",
-    description: "Cute Font — adorable bubble lettering, ultra-kawaii",
-    category: "webfont",
-    tags: ["cute", "kawaii", "girly", "romantic", "mini", "playful"],
-    langCompat: "all",
-    fontFamily: "'Cute Font', cursive",
-    transform: passThrough,
-  },
-  {
-    id: "wf-gaegu",
-    name: "개구",
-    description: "Gaegu — hand-written sketchy style, authentic personal feel",
-    category: "webfont",
-    tags: ["cute", "creative", "aesthetic", "girly", "handwritten"],
-    langCompat: "all",
-    fontFamily: "'Gaegu', cursive",
-    transform: passThrough,
-  },
-  {
-    id: "wf-hi-melody",
-    name: "하이 멜로디",
-    description: "Hi Melody — kawaii soft font, perfect for cute Instagram bios",
-    category: "webfont",
-    tags: ["cute", "kawaii", "girly", "romantic", "aesthetic", "instagram"],
-    langCompat: "all",
-    fontFamily: "'Hi Melody', cursive",
-    transform: passThrough,
-  },
-  {
-    id: "wf-sunflower",
-    name: "해바라기",
-    description: "Sunflower — clean elegant weight-variable font",
-    category: "webfont",
-    tags: ["clean", "minimal", "elegant", "modern", "aesthetic"],
-    langCompat: "all",
-    fontFamily: "'Sunflower', sans-serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-song-myung",
-    name: "송명",
-    description: "Song Myung — classic traditional Korean serif",
-    category: "webfont",
-    tags: ["classic", "elegant", "formal", "historical", "sophisticated"],
-    langCompat: "all",
-    fontFamily: "'Song Myung', serif",
-    transform: passThrough,
-  },
-  {
-    id: "wf-stylish",
-    name: "스타일리쉬",
-    description: "Stylish — sleek contemporary sans with sharp character",
-    category: "webfont",
-    tags: ["modern", "stylish", "sleek", "elegant", "professional"],
-    langCompat: "all",
-    fontFamily: "'Stylish', sans-serif",
-    transform: passThrough,
-  },
 ];
 
 // ─── Category Filter ─────────────────────────────────────────────────────────
@@ -947,7 +816,6 @@ export const CATEGORIES = [
   { id: "aesthetic",  label: "Aesthetic" },
   { id: "decorative", label: "Decorative" },
   { id: "effect",     label: "Effects" },
-  { id: "webfont",    label: "🌏 Web Fonts" },
 ] as const;
 
 // ─── Mood / Vibe Filter ───────────────────────────────────────────────────────
