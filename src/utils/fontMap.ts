@@ -2,8 +2,12 @@ export interface FontStyle {
   id: string;
   name: string;
   description: string;
-  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute";
+  category: "serif" | "sans" | "script" | "decorative" | "aesthetic" | "effect" | "cute" | "webfont";
   tags: string[];
+  /** "latin" = works for Latin/ASCII only · "all" = works with any language */
+  langCompat: "latin" | "all";
+  /** CSS font-family override (web preview only, does not affect copy text) */
+  fontFamily?: string;
   transform: (text: string) => string;
 }
 
@@ -179,6 +183,21 @@ const spacedTransform = (text: string) =>
 const slashedTransform = (text: string) =>
   [...text].map((c) => (c === " " ? c : c + "\u0338")).join("");
 
+// Overline  T̅e̅x̅t̅ (combining overline U+0305)
+const overlineTransform = (text: string) =>
+  [...text].map((c) => (c === " " ? c : c + "\u0305")).join("");
+
+// Wave / Tilde-through  T̴e̴x̴t̴ (combining tilde overlay U+0334)
+const waveTildeTransform = (text: string) =>
+  [...text].map((c) => (c === " " ? c : c + "\u0334")).join("");
+
+// Double overline  T̿e̿x̿t̿ (combining double overline U+033F)
+const doubleOverlineTransform = (text: string) =>
+  [...text].map((c) => (c === " " ? c : c + "\u033f")).join("");
+
+// Pass-through (for web-font CSS preview styles — visual only)
+const passThrough = (text: string) => text;
+
 
 // ════════════════════════════════════════════════════════════════════════════════
 // ██  DECORATION / STRING-MANIPULATION STYLES                                 ██
@@ -198,6 +217,7 @@ const slashedTransform = (text: string) =>
 // │       description: "...",      // one-line description                     │
 // │       category: "cute",        // "cute" | "aesthetic" | "effect" | etc.   │
 // │       tags: ["cute", "girly"], // for filtering — match MOOD_TAGS keywords │
+// │       langCompat: "all",       // "latin" or "all"                         │
 // │       transform: myFn,         // your transform function                  │
 // │     }                                                                      │
 // │                                                                            │
@@ -264,6 +284,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Classic bold serif — perfect for strong statements",
     category: "serif",
     tags: ["professional", "strong", "formal", "bold", "powerful"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d400, 0x1d41a, {}, {}, 0x1d7ce),
   },
   {
@@ -272,6 +293,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Elegant italic serif for a refined touch",
     category: "serif",
     tags: ["elegant", "luxury", "classic", "sophisticated", "formal"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d434, 0x1d44e, {}, { 7: "ℎ" }),
   },
   {
@@ -280,6 +302,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Bold italic — dramatic and eye-catching",
     category: "serif",
     tags: ["dramatic", "bold", "intense", "fashion", "strong"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d468, 0x1d482),
   },
   {
@@ -288,6 +311,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Gothic Fraktur — dark, mysterious, medieval vibes",
     category: "serif",
     tags: ["gothic", "medieval", "dark", "metal", "vintage", "historical"],
+    langCompat: "latin",
     transform: unicodeMapper(
       0x1d504, 0x1d51e,
       { 2: "ℭ", 7: "ℌ", 8: "ℑ", 17: "ℜ", 25: "ℨ" }
@@ -299,6 +323,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Heavy Gothic — maximum impact and attitude",
     category: "serif",
     tags: ["gothic", "medieval", "dark", "metal", "heavy", "historical"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d56c, 0x1d586),
   },
 
@@ -309,6 +334,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Flowing cursive script — great for elegant bios",
     category: "script",
     tags: ["cute", "elegant", "luxury", "romantic", "cursive", "aesthetic", "girly"],
+    langCompat: "latin",
     transform: unicodeMapper(
       0x1d49c, 0x1d4b6,
       { 1: "ℬ", 4: "ℰ", 5: "ℱ", 7: "ℋ", 8: "ℐ", 11: "ℒ", 12: "ℳ", 17: "ℛ" },
@@ -321,6 +347,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Bold cursive for a luxurious, standout look",
     category: "script",
     tags: ["cute", "luxury", "fancy", "girly", "cursive", "romantic", "aesthetic", "instagram"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d4d0, 0x1d4ea),
   },
 
@@ -331,6 +358,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Mathematical blackboard bold — academic and cool",
     category: "sans",
     tags: ["math", "academic", "professional", "modern", "cool", "unique"],
+    langCompat: "latin",
     transform: unicodeMapper(
       0x1d538, 0x1d552,
       { 2: "ℂ", 7: "ℍ", 13: "ℕ", 15: "ℙ", 16: "ℚ", 17: "ℝ", 25: "ℤ" },
@@ -344,6 +372,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Clean sans-serif — minimal, modern, and easy to read",
     category: "sans",
     tags: ["clean", "modern", "minimal", "simple", "light", "readable", "professional"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d5a0, 0x1d5ba, {}, {}, 0x1d7e2),
   },
   {
@@ -352,6 +381,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Clean sans-serif bold — modern and readable",
     category: "sans",
     tags: ["modern", "clean", "professional", "bold", "strong"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d5d4, 0x1d5ee, {}, {}, 0x1d7ec),
   },
   {
@@ -360,6 +390,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Modern italic sans-serif — stylish and clean",
     category: "sans",
     tags: ["modern", "clean", "stylish", "sleek", "elegant"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d608, 0x1d622),
   },
   {
@@ -368,6 +399,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Bold italic sans-serif — dynamic, energetic, sporty",
     category: "sans",
     tags: ["dynamic", "sporty", "bold", "modern", "energetic", "strong"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d63c, 0x1d656),
   },
   {
@@ -376,6 +408,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Typewriter monospace — techy and retro developer vibes",
     category: "sans",
     tags: ["tech", "hacker", "developer", "retro", "gaming", "code"],
+    langCompat: "latin",
     transform: unicodeMapper(0x1d670, 0x1d68a, {}, {}, 0x1d7f6),
   },
 
@@ -386,6 +419,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Full-width vaporwave aesthetic — retro Japanese city pop",
     category: "aesthetic",
     tags: ["vaporwave", "retro", "japanese", "chill", "vintage", "aesthetic", "instagram"],
+    langCompat: "latin",
     transform: aestheticTransform,
   },
   {
@@ -394,6 +428,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Interpunct dots between letters — minimal aesthetic bio style",
     category: "aesthetic",
     tags: ["aesthetic", "minimal", "cute", "instagram", "elegant", "clean"],
+    langCompat: "all",
     transform: dottedTransform,
   },
   {
@@ -402,6 +437,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Wide-spaced letters — airy, editorial, and Instagram-ready",
     category: "aesthetic",
     tags: ["aesthetic", "minimal", "clean", "elegant", "instagram", "vaporwave", "editorial"],
+    langCompat: "all",
     transform: spacedTransform,
   },
 
@@ -412,6 +448,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Small capital letters — subtle and sophisticated",
     category: "decorative",
     tags: ["professional", "elegant", "sophisticated", "formal", "classic"],
+    langCompat: "latin",
     transform: smallCapsTransform,
   },
   {
@@ -420,6 +457,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Circled letters — playful and eye-catching",
     category: "decorative",
     tags: ["fun", "playful", "cute", "unique", "creative"],
+    langCompat: "latin",
     transform: circledTransform,
   },
   {
@@ -428,6 +466,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Letters in parentheses — soft, cute, and uniquely styled",
     category: "decorative",
     tags: ["cute", "unique", "creative", "fun", "different", "playful"],
+    langCompat: "latin",
     transform: parenthesizedTransform,
   },
   {
@@ -436,6 +475,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Squared letters — structured and geometric",
     category: "decorative",
     tags: ["geometric", "bold", "unique", "creative", "structured"],
+    langCompat: "latin",
     transform: squaredTransform,
   },
   {
@@ -444,6 +484,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Black square blocks — bold contrast statement",
     category: "decorative",
     tags: ["bold", "dark", "statement", "unique", "contrast"],
+    langCompat: "latin",
     transform: squaredNegTransform,
   },
 
@@ -454,6 +495,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Flipped upside-down text — for the rebels",
     category: "effect",
     tags: ["fun", "weird", "quirky", "rebel", "funny"],
+    langCompat: "latin",
     transform: upsideDownTransform,
   },
   {
@@ -462,6 +504,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Reversed mirror text — enigmatic and cryptic",
     category: "effect",
     tags: ["mystery", "weird", "quirky", "cryptic", "unique"],
+    langCompat: "all",
     transform: mirrorTransform,
   },
   {
@@ -470,6 +513,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Crossed-out text — edgy and dramatic",
     category: "effect",
     tags: ["edgy", "dark", "dramatic", "cool", "rebel"],
+    langCompat: "all",
     transform: strikethroughTransform,
   },
   {
@@ -478,6 +522,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Diagonal slash through letters — rebellious cyberpunk vibes",
     category: "effect",
     tags: ["edgy", "cool", "rebel", "dramatic", "unique", "cyberpunk"],
+    langCompat: "all",
     transform: slashedTransform,
   },
   {
@@ -486,7 +531,35 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Double underline — clean emphasis",
     category: "effect",
     tags: ["clean", "emphasis", "professional", "formal"],
+    langCompat: "all",
     transform: underlineTransform,
+  },
+  {
+    id: "overline",
+    name: "O̅v̅e̅r̅l̅i̅n̅e̅",
+    description: "Overline above every letter — sleek and editorial",
+    category: "effect",
+    tags: ["clean", "minimal", "editorial", "modern", "unique"],
+    langCompat: "all",
+    transform: overlineTransform,
+  },
+  {
+    id: "wave-tilde",
+    name: "W̴a̴v̴e̴ T̴i̴l̴d̴e̴",
+    description: "Tilde wave through letters — glitchy dreamy effect",
+    category: "effect",
+    tags: ["edgy", "glitch", "aesthetic", "dreamy", "unique", "creative"],
+    langCompat: "all",
+    transform: waveTildeTransform,
+  },
+  {
+    id: "double-overline",
+    name: "D̿o̿u̿b̿l̿e̿ O̿v̿e̿r̿",
+    description: "Double overline — bold architectural emphasis",
+    category: "effect",
+    tags: ["bold", "unique", "structured", "editorial", "modern"],
+    langCompat: "all",
+    transform: doubleOverlineTransform,
   },
   {
     id: "superscript",
@@ -494,6 +567,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Tiny superscript — mini text for aesthetic bios",
     category: "effect",
     tags: ["cute", "tiny", "kawaii", "mini", "aesthetic"],
+    langCompat: "latin",
     transform: superscriptTransform,
   },
   {
@@ -502,6 +576,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Glitch Zalgo horror — cursed and corrupted",
     category: "effect",
     tags: ["horror", "creepy", "cursed", "scary", "glitch", "dark"],
+    langCompat: "all",
     transform: (text) => zalgoTransform(text, 2),
   },
 
@@ -515,6 +590,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Coquette bow between every letter — soft girl essential",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "coquette", "romantic", "instagram"],
+    langCompat: "all",
     transform: coquetteTransform,
   },
   {
@@ -523,6 +599,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Sparkle emoji wrapping — instant glow-up",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "sparkle", "instagram", "fancy"],
+    langCompat: "all",
     transform: sparkleWrapTransform,
   },
   {
@@ -531,6 +608,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Fairycore stars between letters with whimsical suffix",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "fairy", "romantic", "kawaii"],
+    langCompat: "all",
     transform: fairycoreTransform,
   },
   {
@@ -539,6 +617,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Cute bear kaomoji framing your text",
     category: "cute",
     tags: ["cute", "kawaii", "fun", "playful", "creative", "japanese"],
+    langCompat: "all",
     transform: kaomojiFrameTransform,
   },
   {
@@ -547,6 +626,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Dreamy cloud-wrapped text — soft and airy",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "dreamy", "soft", "chill"],
+    langCompat: "all",
     transform: cloudTransform,
   },
   {
@@ -555,6 +635,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Starry night framing — celestial aesthetic vibes",
     category: "cute",
     tags: ["aesthetic", "girly", "dreamy", "romantic", "instagram", "cute"],
+    langCompat: "all",
     transform: starryTransform,
   },
   {
@@ -563,6 +644,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Floral ribbon between letters — garden party aesthetic",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "romantic", "instagram"],
+    langCompat: "all",
     transform: ribbonTransform,
   },
   {
@@ -571,6 +653,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Hearts between every letter — love letter vibes",
     category: "cute",
     tags: ["cute", "girly", "romantic", "love", "instagram", "aesthetic"],
+    langCompat: "all",
     transform: heartsTransform,
   },
   {
@@ -579,6 +662,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Soft aesthetic wrapping — premium Instagram bio energy",
     category: "cute",
     tags: ["aesthetic", "girly", "cute", "soft", "instagram", "luxury"],
+    langCompat: "all",
     transform: softAestheticTransform,
   },
   {
@@ -587,6 +671,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Angel wings swan frame — ethereal and elegant",
     category: "cute",
     tags: ["cute", "girly", "romantic", "aesthetic", "luxury", "elegant"],
+    langCompat: "all",
     transform: angelTransform,
   },
   {
@@ -595,6 +680,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Dreamy Tibetan dot wrapping — mystical soft vibes",
     category: "cute",
     tags: ["aesthetic", "dreamy", "girly", "chill", "romantic", "cute"],
+    langCompat: "all",
     transform: dreamyTransform,
   },
   {
@@ -603,6 +689,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Cottagecore leaves between letters — nature lover aesthetic",
     category: "cute",
     tags: ["aesthetic", "cute", "chill", "romantic", "instagram"],
+    langCompat: "all",
     transform: cottagecoreTransform,
   },
   {
@@ -611,6 +698,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Y2K star frame — early 2000s retro nostalgia",
     category: "cute",
     tags: ["retro", "fun", "aesthetic", "vintage", "creative"],
+    langCompat: "all",
     transform: y2kTransform,
   },
   {
@@ -619,6 +707,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "CJK corner brackets — bold and structured Asian aesthetic",
     category: "cute",
     tags: ["aesthetic", "japanese", "clean", "modern", "structured"],
+    langCompat: "all",
     transform: bracketsTransform,
   },
   {
@@ -627,6 +716,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Clap emoji between words — for emphasis and attitude",
     category: "cute",
     tags: ["fun", "playful", "energetic", "creative", "strong"],
+    langCompat: "all",
     transform: clapTransform,
   },
   {
@@ -635,6 +725,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Butterflies between letters — metamorphosis aesthetic",
     category: "cute",
     tags: ["cute", "girly", "aesthetic", "romantic", "instagram"],
+    langCompat: "all",
     transform: butterfliesTransform,
   },
   {
@@ -643,6 +734,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Cherry emoji frame — sweet retro pop vibes",
     category: "cute",
     tags: ["cute", "retro", "fun", "girly", "aesthetic"],
+    langCompat: "all",
     transform: cherryTransform,
   },
   {
@@ -651,6 +743,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Crescent moon frame — celestial witchy aesthetic",
     category: "cute",
     tags: ["aesthetic", "dreamy", "romantic", "dark", "girly"],
+    langCompat: "all",
     transform: moonTransform,
   },
   {
@@ -659,6 +752,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Cherry blossom between letters — Japanese spring aesthetic",
     category: "cute",
     tags: ["cute", "japanese", "girly", "aesthetic", "romantic", "kawaii"],
+    langCompat: "all",
     transform: sakuraTransform,
   },
   {
@@ -667,6 +761,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Crystal ball frame — mystic and enchanting",
     category: "cute",
     tags: ["dark", "aesthetic", "girly", "creative", "mystery"],
+    langCompat: "all",
     transform: witchyTransform,
   },
   {
@@ -675,6 +770,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Tiny star dust wrapping — subtle celestial touch",
     category: "cute",
     tags: ["aesthetic", "cute", "girly", "dreamy", "soft", "instagram"],
+    langCompat: "all",
     transform: tinyStarsTransform,
   },
   {
@@ -683,6 +779,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Love letter envelope frame — romantic and sweet",
     category: "cute",
     tags: ["cute", "romantic", "girly", "love", "aesthetic"],
+    langCompat: "all",
     transform: loveLetterTransform,
   },
   {
@@ -691,6 +788,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Diamond gems between letters — luxury and sparkle",
     category: "cute",
     tags: ["luxury", "aesthetic", "girly", "fancy", "instagram"],
+    langCompat: "all",
     transform: gemTransform,
   },
   {
@@ -699,6 +797,7 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Snowflakes between letters — winter wonderland vibes",
     category: "cute",
     tags: ["aesthetic", "chill", "cute", "dreamy", "creative"],
+    langCompat: "all",
     transform: snowflakeTransform,
   },
   {
@@ -707,7 +806,134 @@ export const FONT_STYLES: FontStyle[] = [
     description: "Arrow line frame — clean directional aesthetic",
     category: "cute",
     tags: ["clean", "modern", "aesthetic", "minimal", "instagram"],
+    langCompat: "all",
     transform: arrowFrameTransform,
+  },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // ██  WEB FONT STYLES — CSS Google Fonts (works with ALL languages)       ██
+  // ██  Visual preview only — copies as plain text                          ██
+  // ══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: "wf-nanum-gothic",
+    name: "나눔 고딕",
+    description: "Nanum Gothic — clean Korean sans-serif, excellent readability",
+    category: "webfont",
+    tags: ["clean", "modern", "minimal", "readable", "professional"],
+    langCompat: "all",
+    fontFamily: "'Nanum Gothic', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-nanum-myeongjo",
+    name: "나눔 명조",
+    description: "Nanum Myeongjo — elegant Korean serif, literary and refined",
+    category: "webfont",
+    tags: ["elegant", "luxury", "sophisticated", "formal", "classic"],
+    langCompat: "all",
+    fontFamily: "'Nanum Myeongjo', serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-gowun-dodum",
+    name: "고운 돋움",
+    description: "Gowun Dodum — round and soft, warm everyday readability",
+    category: "webfont",
+    tags: ["cute", "soft", "clean", "minimal", "readable"],
+    langCompat: "all",
+    fontFamily: "'Gowun Dodum', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-black-han-sans",
+    name: "블랙 한 산스",
+    description: "Black Han Sans — ultra-heavy display font, bold statement",
+    category: "webfont",
+    tags: ["bold", "strong", "dramatic", "heavy", "modern"],
+    langCompat: "all",
+    fontFamily: "'Black Han Sans', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-do-hyeon",
+    name: "도현",
+    description: "Do Hyeon — round modern sans, friendly and approachable",
+    category: "webfont",
+    tags: ["modern", "clean", "friendly", "cute", "readable"],
+    langCompat: "all",
+    fontFamily: "'Do Hyeon', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-jua",
+    name: "주아",
+    description: "Jua — playful casual font with a hand-drawn character",
+    category: "webfont",
+    tags: ["fun", "playful", "cute", "kawaii", "creative"],
+    langCompat: "all",
+    fontFamily: "'Jua', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-cute-font",
+    name: "귀여운 폰트",
+    description: "Cute Font — adorable bubble lettering, ultra-kawaii",
+    category: "webfont",
+    tags: ["cute", "kawaii", "girly", "romantic", "mini", "playful"],
+    langCompat: "all",
+    fontFamily: "'Cute Font', cursive",
+    transform: passThrough,
+  },
+  {
+    id: "wf-gaegu",
+    name: "개구",
+    description: "Gaegu — hand-written sketchy style, authentic personal feel",
+    category: "webfont",
+    tags: ["cute", "creative", "aesthetic", "girly", "handwritten"],
+    langCompat: "all",
+    fontFamily: "'Gaegu', cursive",
+    transform: passThrough,
+  },
+  {
+    id: "wf-hi-melody",
+    name: "하이 멜로디",
+    description: "Hi Melody — kawaii soft font, perfect for cute Instagram bios",
+    category: "webfont",
+    tags: ["cute", "kawaii", "girly", "romantic", "aesthetic", "instagram"],
+    langCompat: "all",
+    fontFamily: "'Hi Melody', cursive",
+    transform: passThrough,
+  },
+  {
+    id: "wf-sunflower",
+    name: "해바라기",
+    description: "Sunflower — clean elegant weight-variable font",
+    category: "webfont",
+    tags: ["clean", "minimal", "elegant", "modern", "aesthetic"],
+    langCompat: "all",
+    fontFamily: "'Sunflower', sans-serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-song-myung",
+    name: "송명",
+    description: "Song Myung — classic traditional Korean serif",
+    category: "webfont",
+    tags: ["classic", "elegant", "formal", "historical", "sophisticated"],
+    langCompat: "all",
+    fontFamily: "'Song Myung', serif",
+    transform: passThrough,
+  },
+  {
+    id: "wf-stylish",
+    name: "스타일리쉬",
+    description: "Stylish — sleek contemporary sans with sharp character",
+    category: "webfont",
+    tags: ["modern", "stylish", "sleek", "elegant", "professional"],
+    langCompat: "all",
+    fontFamily: "'Stylish', sans-serif",
+    transform: passThrough,
   },
 ];
 
@@ -721,6 +947,7 @@ export const CATEGORIES = [
   { id: "aesthetic",  label: "Aesthetic" },
   { id: "decorative", label: "Decorative" },
   { id: "effect",     label: "Effects" },
+  { id: "webfont",    label: "🌏 Web Fonts" },
 ] as const;
 
 // ─── Mood / Vibe Filter ───────────────────────────────────────────────────────
@@ -737,4 +964,5 @@ export const MOOD_TAGS = [
   { id: 'darkacademia', emoji: '📚', label: 'Dark Academia',keywords: ['gothic', 'vintage', 'elegant', 'sophisticated', 'historical', 'classic'] },
   { id: 'y2k',          emoji: '💿', label: 'Y2K',          keywords: ['vaporwave', 'retro', 'aesthetic', 'instagram', 'unique'] },
   { id: 'cottagecore',  emoji: '🌿', label: 'Cottagecore',  keywords: ['aesthetic', 'cute', 'elegant', 'minimal', 'romantic'] },
-  { id: 'coquette',     emoji: '🩷', label: 'Coquette',     keywords: ['luxury', 'elegant', 'fancy', 'girly', 'romantic'] },] as const;
+  { id: 'coquette',     emoji: '🩷', label: 'Coquette',     keywords: ['luxury', 'elegant', 'fancy', 'girly', 'romantic'] },
+] as const;

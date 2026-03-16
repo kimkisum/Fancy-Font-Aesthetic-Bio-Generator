@@ -15,6 +15,20 @@ type PlatformId = typeof PLATFORMS[number]["id"];
 
 const LS_KEY = "gofancyfont_favorites";
 
+// ── Language / Script Detection ─────────────────────────────────────────────
+function detectScript(text: string): "latin" | "mixed" | "nonlatin" {
+  const hasNonLatin =
+    /[\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318F]/.test(text) || // Korean
+    /[\u3040-\u309F\u30A0-\u30FF]/.test(text)                 || // Japanese kana
+    /[\u4E00-\u9FFF\u3400-\u4DBF]/.test(text)                 || // CJK Unified
+    /[\u0600-\u06FF]/.test(text)                               || // Arabic
+    /[\u0900-\u097F]/.test(text);                                 // Devanagari
+  const hasLatin = /[a-zA-Z]/.test(text);
+  if (hasNonLatin && hasLatin) return "mixed";
+  if (hasNonLatin) return "nonlatin";
+  return "latin";
+}
+
 interface CopiedState {
   id: string;
   timeout: ReturnType<typeof setTimeout> | null;
@@ -84,6 +98,9 @@ export default function Generator() {
     );
   }, []);
 
+  // ── Language detection ─────────────────────────────────
+  const detectedScript = useMemo(() => detectScript(inputText), [inputText]);
+
   // ── Filtered & sorted styles ───────────────────────────
   const moodKeywords = useMemo(
     () => MOOD_TAGS.find((m) => m.id === activeMood)?.keywords ?? [],
@@ -103,7 +120,14 @@ export default function Generator() {
       const matchFav    = !showFavOnly || favorites.includes(style.id);
       return matchCat && matchSearch && matchMood && matchFav;
     });
-    // Favorites float to the top
+    // When non-Latin text detected, float webfont + "all" compatible styles to top
+    if (detectedScript !== "latin" && activeCategory === "all" && !showFavOnly) {
+      list = [
+        ...list.filter((s) => s.langCompat === "all"),
+        ...list.filter((s) => s.langCompat !== "all"),
+      ];
+    }
+    // Favorites float to the top (within their compat group)
     if (favorites.length > 0 && !showFavOnly) {
       list = [
         ...list.filter((s) => favorites.includes(s.id)),
@@ -111,7 +135,7 @@ export default function Generator() {
       ];
     }
     return list;
-  }, [activeCategory, search, activeMood, moodKeywords, favorites, showFavOnly]);
+  }, [activeCategory, search, activeMood, moodKeywords, favorites, showFavOnly, detectedScript]);
 
   const handleCopy = useCallback(
     (style: FontStyle) => {
@@ -322,6 +346,22 @@ export default function Generator() {
         />
       </section>
 
+      {/* ── Non-Latin Language Banner ─────────────────────── */}
+      {detectedScript !== "latin" && (
+        <div className="flex items-start gap-3 px-4 py-3 rounded-xl bg-violet-500/10 border border-violet-500/25 text-sm">
+          <span className="text-lg leading-none">🌏</span>
+          <div>
+            <p className="text-violet-300 font-medium leading-snug">
+              Non-Latin text detected — compatible styles floated to top
+            </p>
+            <p className="text-slate-500 text-xs mt-0.5">
+              Unicode font styles only work with English/Latin letters.
+              Styles marked <span className="text-emerald-400 font-medium">✓ All languages</span> work with Korean, Japanese, Chinese, and more.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ── Results ──────────────────────────────────────── */}
       <section>
         <p className="text-xs text-slate-500 mb-4 tracking-wider uppercase flex flex-wrap gap-x-2">
@@ -444,10 +484,26 @@ export default function Generator() {
                     </div>
                   </div>
 
+                  {/* Language compat badge */}
+                  {detectedScript !== "latin" && (
+                    <div className="flex items-center gap-1.5">
+                      {style.langCompat === "all" ? (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 font-medium">
+                          ✓ All languages
+                        </span>
+                      ) : (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-surface-600 text-slate-500 border border-surface-500">
+                          Latin only
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   {/* Transformed text */}
                   <div
                     className="min-h-[3rem] px-4 py-3 rounded-lg bg-surface-900 border border-surface-500
                                text-white text-lg leading-relaxed break-all select-all"
+                    style={style.fontFamily ? { fontFamily: style.fontFamily } : undefined}
                     title="Click to select all"
                   >
                     {transformed}

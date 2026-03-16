@@ -44,6 +44,13 @@ export default function RootLayout({
         <meta name="theme-color" content="#FAF9F6" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <link rel="manifest" href="/manifest.json" />
+        {/* Korean / CJK Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Gowun+Dodum&family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Cute+Font&family=Gaegu:wght@400;700&family=Hi+Melody&family=Sunflower:wght@300;500&family=Song+Myung&family=Stylish&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="antialiased bg-ed-bg text-ed-charcoal">
         {children}
