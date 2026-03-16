@@ -6,30 +6,39 @@ import SymbolPicker from "@/components/SymbolPicker";
 import SymbolLibrary from "@/components/SymbolLibrary";
 import HomeContent from "@/components/HomeContent";
 import FAQSection from "@/components/FAQSection";
-import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Fancy Font Generator | 50+ Best Copy & Paste Bio Fonts",
+  title: "Fancy Font Generator & Aesthetic Bio Maker — 22 Styles",
   description:
-    "Free fancy font generator: instantly convert plain text into 50+ aesthetic Unicode styles. Copy and paste bold, cursive, Gothic, and Coquette fonts for Instagram, TikTok, and Discord bios.",
+    "Transform plain text into 22+ fancy Unicode fonts instantly. Bold, italic, cursive, Gothic, aesthetic vaporwave, Zalgo glitch & more. Perfect for Instagram bios, TikTok profiles, Twitter, Discord — no sign-up needed.",
   keywords: [
     "fancy font generator",
     "aesthetic text maker",
     "instagram bio fonts",
-    "copy and paste fonts",
-    "fancy text generator",
     "unicode font converter",
+    "cool text generator",
     "cursive text generator",
     "bold text generator",
+    "aesthetic bio generator",
     "tiktok bio fonts",
+    "twitter fonts",
     "discord fonts",
     "vaporwave text",
-    "coquette aesthetic",
+    "zalgo text generator",
+    "gothic font generator",
+    "small caps generator",
+    "soft girl aesthetic bio",
+    "dark academia instagram bio",
+    "cottagecore bio ideas",
+    "y2k font generator",
+    "coquette aesthetic text",
+    "aesthetic bio maker for girls",
+    "cute instagram bio fonts",
   ],
   openGraph: {
-    title: "Fancy Font Generator | Best Aesthetic Text Styles",
+    title: "Fancy Font Generator — 22 Free Aesthetic Text Styles",
     description:
-      "A free online tool to create fancy text for your social media bios. Preview 50+ styles live in our Instagram and TikTok UI simulator.",
+      "Copy-ready fancy fonts for Instagram, TikTok & Twitter bios. Bold, cursive, Gothic, vaporwave, Zalgo & 16 more. Instant, free, no login.",
     type: "website",
     url: "https://gofancyfont.com",
     siteName: "Fancy Font Generator",
@@ -39,15 +48,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Fancy Font Generator - Copy & Paste Aesthetic Text",
+        alt: "Fancy Font & Aesthetic Bio Generator",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fancy Font Generator | Aesthetic Copy & Paste Fonts",
+    title: "Fancy Font Generator — 22 Aesthetic Text Styles",
     description:
-      "Instantly convert text into bold, cursive, aesthetic, Gothic, Coquette & Zalgo fonts. Free for Instagram, TikTok & Twitter bios.",
+      "Instantly convert text into bold, cursive, aesthetic, Gothic & Zalgo fonts. Free for Instagram, TikTok & Twitter bios.",
     images: ["/og-image.png"],
   },
   alternates: {
@@ -56,26 +65,21 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
+// ── Structured Data ────────────────────────────────────────────────────────
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "Fancy Font Generator",
   description:
-    "A free online WebApplication that converts plain text into 50+ aesthetic Unicode formats (bold, cursive, Gothic). Users can preview and copy/paste the generated text into social media profiles like Instagram and TikTok.",
+    "Free online tool to convert text into 22+ Unicode fancy font styles for social media bios.",
   url: "https://gofancyfont.com",
-  applicationCategory: "DesignApplication, UtilitiesApplication",
-  operatingSystem: "Windows, macOS, iOS, Android, web",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Any",
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "USD",
   },
-  featureList: [
-    "50+ Free Unicode Font Styles",
-    "Smart Auto-Sorting for Favorite Fonts",
-    "Live Instagram and TikTok Profile Previews",
-    "One-click Copy and Paste functionality",
-  ],
 };
 
 export default function HomePage() {
@@ -86,36 +90,74 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main className="min-h-screen bg-ed-bg text-ed-charcoal">
-        <Header />
-
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="max-w-3xl mx-auto px-5 pt-16 pb-10 text-center">
-          <p className="text-[11px] font-medium text-ed-muted tracking-[0.2em] uppercase mb-5">
-            50+ Free Styles · No Sign-Up
-          </p>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight
-                         text-ed-charcoal mb-3 leading-[1.15]">
-            Fancy Font Generator
-          </h1>
-
-          <p className="text-ed-muted text-[15px] leading-relaxed max-w-lg mx-auto mb-8">
-            Transform any text into <strong className="text-ed-charcoal font-medium">50+ unique styles</strong> — 
-            bold, cursive, Gothic, vaporwave, and cute decorations.
-            Copy and paste instantly for Instagram, TikTok, or Discord.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-2 text-[13px]">
-            {["𝐁𝐨𝐥𝐝", "𝒞𝓊𝓇𝓈𝒾𝓋𝑒", "𝔊𝔬𝔱𝔥𝔦𝔠", "Ａｅｓｔｈ", "ˢᵘᵖᵉʳ"].map((s) => (
-              <span
-                key={s}
-                className="px-3 py-1.5 rounded-md border border-ed-border text-ed-charcoal bg-white"
-              >
-                {s}
+      <main className="min-h-screen bg-surface-900 text-white">
+        {/* ── Hero ──────────────────────────────────────────── */}
+        <header className="border-b border-surface-600 bg-surface-800/60 backdrop-blur-sm sticky top-0 z-10">
+          <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">✨</span>
+              <span className="font-bold text-lg tracking-tight">
+                Fancy<span className="text-brand-400">Font</span>
               </span>
-            ))}
+            </div>
+            <nav className="hidden sm:flex items-center gap-6 text-sm text-slate-400">
+              <a href="#templates" className="hover:text-white transition-colors">Templates</a>
+              <a href="#generator" className="hover:text-white transition-colors">Generator</a>
+              <a href="#styles"    className="hover:text-white transition-colors">Styles</a>
+              <a href="#faq"       className="hover:text-white transition-colors">FAQ</a>
+            </nav>
           </div>
+        </header>
+
+        {/* ── Hero Section ─────────────────────────────────── */}
+        <section className="relative overflow-hidden">
+          {/* Background glow */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px]
+                            bg-brand-500/10 blur-[100px] rounded-full" />
+          </div>
+
+          <div className="relative max-w-5xl mx-auto px-4 pt-16 pb-10 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full
+                            bg-brand-500/10 border border-brand-500/20 text-brand-400
+                            text-xs font-medium tracking-widest uppercase mb-6">
+              ✨ 22 Free Font Styles
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight
+                           bg-gradient-to-br from-white via-slate-200 to-slate-400
+                           bg-clip-text text-transparent mb-4 leading-tight">
+              Fancy Font Generator
+              <br />
+              <span className="text-2xl sm:text-3xl font-medium text-brand-400">
+                & Aesthetic Bio Maker
+              </span>
+            </h1>
+
+            <p className="max-w-2xl mx-auto text-slate-400 text-base sm:text-lg leading-relaxed mb-8">
+              Transform any text into{" "}
+              <strong className="text-slate-200">22+ unique Unicode font styles</strong> — Bold,
+              Cursive, Gothic, Vaporwave, Zalgo Glitch & more. Copy instantly for your{" "}
+              <strong className="text-slate-200">Instagram bio, TikTok, Twitter,</strong> or
+              Discord profile.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-3 text-sm text-slate-500">
+              {["𝐁𝐨𝐥𝐝", "𝒞𝓊𝓇𝓈𝒾𝓋𝑒", "𝔊𝔬𝔱𝔥𝔦𝔠", "Ａｅｓｔｈｅｔｉｃ", "Z̷a̷l̷g̷o̷", "Ⓒⓘⓡⓒⓛⓔⓓ", "ᴅᴏᴜʙʟᴇ sᴛʀᴜᴄᴋ"].map((s) => (
+                <span
+                  key={s}
+                  className="px-3 py-1.5 rounded-full bg-surface-700 border border-surface-500 text-white"
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Bio Templates ────────────────────────────────── */}
+        <section id="templates" className="pb-2">
+          <BioTemplates />
         </section>
 
         {/* ── Generator ────────────────────────────────────── */}
@@ -123,78 +165,137 @@ export default function HomePage() {
           <Generator />
         </section>
 
-        {/* ── Templates ────────────────────────────────────── */}
-        <section id="templates" className="pb-4">
-          <BioTemplates />
-        </section>
-
-        {/* ── Symbols ──────────────────────────────────────── */}
+        {/* ── Symbol Picker ─────────────────────────────────── */}
         <section id="symbols" className="pb-2">
           <SymbolPicker />
         </section>
 
+        {/* ── Symbol Library (Kaomoji + Borders) ───────────── */}
         <section id="library" className="pb-16">
           <SymbolLibrary />
         </section>
 
-        {/* ── Features ─────────────────────────────────────── */}
-        <section className="border-t border-ed-border py-16">
-          <div className="max-w-3xl mx-auto px-5">
-            <h2 className="text-xl font-serif font-bold text-center mb-8 text-ed-charcoal">
-              Why GoFancyFont?
+        {/* ── Feature Cards ────────────────────────────────── */}
+        <section id="styles" className="border-t border-surface-600 bg-surface-800/40 py-16">
+          <div className="max-w-5xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-2">
+              Why Use Fancy Font Generator?
             </h2>
+            <p className="text-slate-400 text-center mb-10 text-sm">
+              The fastest, cleanest fancy text tool on the web.
+            </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 {
+                  icon: "⚡",
                   title: "Instant Preview",
-                  desc: "All 50+ styles update as you type. Zero delay.",
+                  desc: "See all 22 styles update in real-time as you type. Zero delay.",
                 },
                 {
+                  icon: "📋",
                   title: "One-Click Copy",
-                  desc: "Hit Copy and paste anywhere — Instagram, TikTok, Discord.",
+                  desc: "Hit Copy and it's on your clipboard. Paste anywhere — Instagram, TikTok, Discord.",
                 },
                 {
+                  icon: "🔒",
                   title: "No Sign-Up",
-                  desc: "Completely free, forever. No account required.",
+                  desc: "Completely free, forever. No account, no email, no tracking.",
                 },
                 {
+                  icon: "🌐",
                   title: "Works Everywhere",
-                  desc: "Unicode fonts work on every platform and device.",
+                  desc: "Unicode fonts work on every platform: iOS, Android, PC, Mac.",
                 },
                 {
-                  title: "50+ Styles",
-                  desc: "From cursive to Zalgo — with cute decoration styles.",
+                  icon: "🎨",
+                  title: "22+ Styles",
+                  desc: "From elegant cursive to chaotic Zalgo — there's a style for every mood.",
                 },
                 {
-                  title: "Mobile-First",
-                  desc: "Designed for comfortable phone browsing.",
+                  icon: "📱",
+                  title: "Mobile-Friendly",
+                  desc: "Perfectly optimized for smartphone use. Type and copy on the go.",
                 },
               ].map((f) => (
                 <div
                   key={f.title}
-                  className="p-4 rounded-xl bg-white border border-ed-border"
+                  className="p-5 rounded-xl bg-surface-700 border border-surface-600"
                 >
-                  <h3 className="font-medium text-ed-charcoal text-[14px] mb-1">{f.title}</h3>
-                  <p className="text-[13px] text-ed-muted leading-relaxed">{f.desc}</p>
+                  <div className="text-2xl mb-3">{f.icon}</div>
+                  <h3 className="font-semibold text-white mb-1">{f.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* ── FAQ ──────────────────────────────────────────── */}
+        <section id="faq" className="py-16 border-t border-surface-600">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-10">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-5">
+              {[
+                {
+                  q: "How does the fancy font generator work?",
+                  a: "It maps standard ASCII letters to Unicode mathematical and decorative character ranges, producing visually distinct text that works on any platform that supports Unicode.",
+                },
+                {
+                  q: "Do these fonts work on Instagram?",
+                  a: "Yes. Instagram, TikTok, Twitter/X, Facebook, Discord, YouTube, WhatsApp, and most modern apps all support Unicode text, so these styles copy and paste perfectly.",
+                },
+                {
+                  q: "Is it free?",
+                  a: "100% free, no sign-up required, and there's no limit on how many times you can use it.",
+                },
+                {
+                  q: "Why doesn't the font show on some apps?",
+                  a: "A small number of older or specialized apps may not render all Unicode ranges. For maximum compatibility, the Bold, Italic, and Aesthetic styles have the broadest support.",
+                },
+                {
+                  q: "What is a Zalgo / Glitch font?",
+                  a: "Zalgo text uses Unicode combining diacritical marks stacked above and below letters to create a corrupted, horror-style effect. It's supported everywhere but may look different across operating systems.",
+                },
+              ].map((item) => (
+                <details
+                  key={item.q}
+                  className="group bg-surface-700 border border-surface-600 rounded-xl overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer
+                                       font-medium text-white list-none select-none
+                                       hover:bg-surface-600 transition-colors">
+                    {item.q}
+                    <span className="text-slate-500 group-open:rotate-180 transition-transform duration-200 ml-4">
+                      ▾
+                    </span>
+                  </summary>
+                  <p className="px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-surface-500 pt-4">
+                    {item.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── HomeContent: SEO Article ─────────────────────── */}
         <HomeContent />
+
+        {/* ── FAQ Section (JSON-LD Schema) ──────────────────── */}
         <FAQSection />
 
         {/* ── Footer ───────────────────────────────────────── */}
-        <footer className="border-t border-ed-border py-8 text-center text-ed-muted text-[13px] space-y-2">
-          <p>© {new Date().getFullYear()} GoFancyFont.com</p>
-          <p className="flex justify-center gap-5 flex-wrap">
-            <Link href="/guide"   className="hover:text-ed-charcoal transition-colors">Guide</Link>
-            <Link href="/about"   className="hover:text-ed-charcoal transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-ed-charcoal transition-colors">Contact</Link>
-            <Link href="/privacy" className="hover:text-ed-charcoal transition-colors">Privacy</Link>
-            <Link href="/terms"   className="hover:text-ed-charcoal transition-colors">Terms</Link>
+        <footer className="border-t border-surface-600 py-8 text-center text-slate-600 text-sm space-y-2">
+          <p>© {new Date().getFullYear()} GoFancyFont.com — Free Fancy Font & Aesthetic Bio Generator</p>
+          <p className="flex justify-center gap-4 flex-wrap">
+            <Link href="/guide"   className="hover:text-slate-400 transition-colors">Guide</Link>
+            <Link href="/about"   className="hover:text-slate-400 transition-colors">About</Link>
+            <Link href="/contact" className="hover:text-slate-400 transition-colors">Contact</Link>
+            <Link href="/privacy" className="hover:text-slate-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms"   className="hover:text-slate-400 transition-colors">Terms of Service</Link>
           </p>
         </footer>
       </main>

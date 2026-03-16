@@ -725,12 +725,16 @@ export const CATEGORIES = [
 
 // ─── Mood / Vibe Filter ───────────────────────────────────────────────────────
 export const MOOD_TAGS = [
-  { id: "cute",         emoji: "🌸", label: "Cute",     keywords: ["cute", "kawaii", "girly", "romantic", "mini", "playful", "coquette", "fairy"] },
-  { id: "luxury",       emoji: "👑", label: "Luxury",   keywords: ["luxury", "elegant", "sophisticated", "fancy", "formal", "classic"] },
-  { id: "gothic",       emoji: "🖤", label: "Gothic",   keywords: ["gothic", "dark", "medieval", "metal", "heavy", "historical"] },
-  { id: "aesthetic",    emoji: "✨", label: "Aesthetic", keywords: ["aesthetic", "vaporwave", "retro", "instagram", "minimal", "chill", "editorial", "dreamy", "soft"] },
-  { id: "tech",         emoji: "💻", label: "Tech",     keywords: ["tech", "hacker", "developer", "gaming", "code", "retro"] },
-  { id: "fun",          emoji: "😂", label: "Fun",      keywords: ["fun", "funny", "quirky", "weird", "rebel", "unique", "creative", "energetic"] },
-  { id: "creepy",       emoji: "👻", label: "Creepy",   keywords: ["creepy", "cursed", "horror", "scary", "glitch", "edgy", "dramatic"] },
-  { id: "pro",          emoji: "💼", label: "Pro",      keywords: ["professional", "clean", "modern", "formal", "strong", "bold", "readable"] },
-] as const;
+  { id: 'cute',         emoji: '🌸', label: 'Cute',         keywords: ['cute', 'kawaii', 'girly', 'romantic', 'mini', 'playful', 'coquette', 'fairy'] },
+  { id: 'luxury',       emoji: '👑', label: 'Luxury',       keywords: ['luxury', 'elegant', 'sophisticated', 'fancy', 'formal', 'classic'] },
+  { id: 'gothic',       emoji: '🖤', label: 'Gothic',       keywords: ['gothic', 'dark', 'medieval', 'metal', 'heavy', 'historical'] },
+  { id: 'aesthetic',    emoji: '✨', label: 'Aesthetic',    keywords: ['aesthetic', 'vaporwave', 'retro', 'instagram', 'minimal', 'chill', 'editorial', 'dreamy', 'soft'] },
+  { id: 'tech',         emoji: '💻', label: 'Tech',         keywords: ['tech', 'hacker', 'developer', 'gaming', 'code', 'retro'] },
+  { id: 'fun',          emoji: '😂', label: 'Fun',          keywords: ['fun', 'funny', 'quirky', 'weird', 'rebel', 'unique', 'creative', 'energetic'] },
+  { id: 'creepy',       emoji: '👻', label: 'Creepy',       keywords: ['creepy', 'cursed', 'horror', 'scary', 'glitch', 'edgy', 'dramatic'] },
+  { id: 'pro',          emoji: '💼', label: 'Pro',          keywords: ['professional', 'clean', 'modern', 'formal', 'strong', 'bold', 'readable'] },
+  { id: 'softgirl',     emoji: '🎀', label: 'Soft Girl',    keywords: ['cute', 'girly', 'romantic', 'kawaii', 'mini', 'playful'] },
+  { id: 'darkacademia', emoji: '📚', label: 'Dark Academia',keywords: ['gothic', 'vintage', 'elegant', 'sophisticated', 'historical', 'classic'] },
+  { id: 'y2k',          emoji: '💿', label: 'Y2K',          keywords: ['vaporwave', 'retro', 'aesthetic', 'instagram', 'unique'] },
+  { id: 'cottagecore',  emoji: '🌿', label: 'Cottagecore',  keywords: ['aesthetic', 'cute', 'elegant', 'minimal', 'romantic'] },
+  { id: 'coquette',     emoji: '🩷', label: 'Coquette',     keywords: ['luxury', 'elegant', 'fancy', 'girly', 'romantic'] },] as const;
