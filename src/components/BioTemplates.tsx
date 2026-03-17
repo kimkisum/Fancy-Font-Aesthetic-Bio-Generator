@@ -254,7 +254,7 @@ const COLOR_MAP: Record<string, { tab: string; card: string; badge: string }> = 
   purple:  { tab: "bg-purple-500/20 text-purple-400 border-purple-500/40", card: "border-purple-500/30 hover:border-purple-400/60",  badge: "bg-purple-500/15 text-purple-400" },
 };
 
-export default function BioTemplates() {
+export default function BioTemplates({ lang: _lang }: { lang?: string } = {}) {
   const [activeGroup, setActiveGroup] = useState(AESTHETIC_GROUPS[0].id);
   const [selectedId, setSelectedId]   = useState<string | null>(null);
 

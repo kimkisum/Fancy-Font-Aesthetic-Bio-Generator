@@ -52,7 +52,7 @@ function HeartIcon({ filled }: { filled: boolean }) {
   );
 }
 
-export default function Generator() {
+export default function Generator({ lang: _lang }: { lang?: string } = {}) {
   const [inputText, setInputText]           = useState("Fancy Font Generator");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeMood, setActiveMood]         = useState<string>("");
