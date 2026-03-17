@@ -13,7 +13,7 @@ export default function AppleIcon() {
         style={{
           width: 180,
           height: 180,
-          background: "linear-gradient(145deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%)",
+          background: "#0a0a0f",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -21,107 +21,86 @@ export default function AppleIcon() {
           overflow: "hidden",
         }}
       >
-        {/* Outer ambient glow */}
+        {/* Ambient gradient glow */}
         <div
           style={{
             position: "absolute",
-            width: 160,
-            height: 160,
-            borderRadius: "50%",
+            inset: 0,
             background:
-              "radial-gradient(circle at 50% 50%, rgba(139,92,246,0.22) 0%, transparent 65%)",
+              "radial-gradient(ellipse at 60% 30%, rgba(129,96,235,0.4) 0%, rgba(219,86,167,0.2) 55%, transparent 75%)",
           }}
         />
 
-        {/* Inner tight glow orb */}
+        {/* Bottom ambient glow */}
         <div
           style={{
             position: "absolute",
-            width: 90,
-            height: 90,
+            bottom: -20,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 140,
+            height: 80,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(167,139,250,0.28) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)",
           }}
         />
 
-        {/* Sparkle dots — top-left */}
-        <div
-          style={{
-            position: "absolute",
-            top: 22,
-            left: 22,
-            width: 5,
-            height: 5,
-            borderRadius: "50%",
-            background: "rgba(167,139,250,0.5)",
-          }}
-        />
-        {/* Sparkle dots — top-right */}
-        <div
-          style={{
-            position: "absolute",
-            top: 28,
-            right: 25,
-            width: 3,
-            height: 3,
-            borderRadius: "50%",
-            background: "rgba(167,139,250,0.35)",
-          }}
-        />
-        {/* Sparkle dots — bottom-right */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 26,
-            right: 22,
-            width: 5,
-            height: 5,
-            borderRadius: "50%",
-            background: "rgba(167,139,250,0.45)",
-          }}
-        />
-        {/* Sparkle dots — bottom-left */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 22,
-            left: 30,
-            width: 3,
-            height: 3,
-            borderRadius: "50%",
-            background: "rgba(167,139,250,0.3)",
-          }}
-        />
+        {/* Sparkle dots */}
+        <div style={{ position: "absolute", top: 24, right: 28, width: 6, height: 6, borderRadius: "50%", background: "rgba(244,114,182,0.75)", boxShadow: "0 0 6px rgba(244,114,182,0.9)" }} />
+        <div style={{ position: "absolute", top: 38, left: 25, width: 3, height: 3, borderRadius: "50%", background: "rgba(167,139,250,0.6)" }} />
+        <div style={{ position: "absolute", bottom: 32, right: 24, width: 4, height: 4, borderRadius: "50%", background: "rgba(167,139,250,0.55)", boxShadow: "0 0 4px rgba(167,139,250,0.8)" }} />
+        <div style={{ position: "absolute", bottom: 44, left: 22, width: 3, height: 3, borderRadius: "50%", background: "rgba(244,114,182,0.4)" }} />
 
-        {/* Main Letter F */}
-        <span
+        {/* Main Aa mark */}
+        <div
           style={{
-            color: "#c4b5fd",
-            fontSize: 108,
-            fontWeight: 900,
-            lineHeight: 1,
-            letterSpacing: "-0.04em",
-            filter:
-              "drop-shadow(0 0 18px rgba(167,139,250,0.95)) drop-shadow(0 0 40px rgba(139,92,246,0.5))",
+            display: "flex",
+            alignItems: "baseline",
+            position: "relative",
+            gap: 0,
           }}
         >
-          F
-        </span>
+          <span
+            style={{
+              fontSize: 90,
+              fontWeight: 900,
+              color: "#a78bfa",
+              lineHeight: 1,
+              letterSpacing: "-0.04em",
+              filter:
+                "drop-shadow(0 0 16px rgba(167,139,250,0.95)) drop-shadow(0 0 40px rgba(139,92,246,0.55))",
+            }}
+          >
+            A
+          </span>
+          <span
+            style={{
+              fontSize: 58,
+              fontWeight: 700,
+              color: "#f472b6",
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
+              marginLeft: 2,
+              filter:
+                "drop-shadow(0 0 12px rgba(244,114,182,0.9)) drop-shadow(0 0 30px rgba(236,72,153,0.5))",
+            }}
+          >
+            a
+          </span>
+        </div>
 
-        {/* Bottom label: gofancyfont */}
+        {/* Bottom label */}
         <div
           style={{
             position: "absolute",
             bottom: 14,
             display: "flex",
             alignItems: "center",
-            gap: 0,
           }}
         >
           <span
             style={{
-              color: "rgba(167,139,250,0.5)",
+              color: "rgba(167,139,250,0.45)",
               fontSize: 11,
               fontWeight: 500,
               letterSpacing: "0.12em",
@@ -137,8 +116,7 @@ export default function AppleIcon() {
           style={{
             position: "absolute",
             inset: 0,
-            borderRadius: 0,
-            border: "1px solid rgba(139,92,246,0.18)",
+            border: "1px solid rgba(139,92,246,0.15)",
           }}
         />
       </div>

@@ -13,40 +13,73 @@ export default function Icon() {
         style={{
           width: 32,
           height: 32,
-          borderRadius: 7,
-          background: "linear-gradient(145deg, #0f172a, #1e1b4b)",
+          borderRadius: 8,
+          background: "#0a0a0f",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* Glow halo behind F */}
+        {/* Gradient glow background */}
         <div
           style={{
             position: "absolute",
-            width: 18,
-            height: 18,
-            borderRadius: "50%",
+            inset: 0,
             background:
-              "radial-gradient(circle, rgba(139,92,246,0.55) 0%, transparent 70%)",
+              "radial-gradient(ellipse at 60% 30%, rgba(129,96,235,0.35) 0%, rgba(219,86,167,0.15) 60%, transparent 80%)",
           }}
         />
 
-        {/* Letter F */}
-        <span
+        {/* Aa text mark */}
+        <div
           style={{
-            color: "#c4b5fd",
-            fontSize: 21,
-            fontWeight: 900,
+            display: "flex",
+            alignItems: "baseline",
+            gap: 0,
+            position: "relative",
             lineHeight: 1,
-            letterSpacing: "-0.02em",
-            // Satori supports a single box-shadow-like text glow via filter
-            filter: "drop-shadow(0 0 4px rgba(167,139,250,0.9))",
           }}
         >
-          F
-        </span>
+          <span
+            style={{
+              fontSize: 16,
+              fontWeight: 900,
+              color: "#a78bfa",
+              filter: "drop-shadow(0 0 5px rgba(167,139,250,0.9))",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            A
+          </span>
+          <span
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: "#f472b6",
+              filter: "drop-shadow(0 0 4px rgba(244,114,182,0.85))",
+              letterSpacing: "-0.02em",
+              marginLeft: 1,
+            }}
+          >
+            a
+          </span>
+        </div>
+
+        {/* Sparkle top-right */}
+        <div
+          style={{
+            position: "absolute",
+            top: 4,
+            right: 5,
+            width: 3,
+            height: 3,
+            borderRadius: "50%",
+            background: "rgba(244,114,182,0.8)",
+            boxShadow: "0 0 3px rgba(244,114,182,0.9)",
+          }}
+        />
       </div>
     ),
     { ...size }
