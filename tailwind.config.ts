@@ -13,20 +13,40 @@ const config: Config = {
         serif: ["Playfair Display", "Georgia", "serif"],
       },
       colors: {
-        ed: {
-          bg: "#FAF9F6",
-          surface: "#FFFFFF",
-          surfaceMuted: "#FDFDFD",
-          charcoal: "#2C2C2C",
-          muted: "#8E8E8E",
-          border: "#EAEAEA",
-          borderLight: "#F0F0EE",
-          sage: "#C1CFA1",
-          sageMuted: "#D8E2C0",
-          sand: "#E5E0D8",
-          sandLight: "#F0ECE6",
+        // ── Feminine rose palette ───────────────────────────────
+        petal: {
+          50:  "#FEF5F8",
+          100: "#FDE8EF",
+          200: "#FAC8D8",
+          300: "#F4A0BB",
+          400: "#E07898",
+          500: "#C96B8A",
+          600: "#A84D6E",
         },
-        /* Keep surface tokens for sub-pages that still use the dark theme */
+        // ── Soft lavender accent ────────────────────────────────
+        bloom: {
+          50:  "#F8F4FD",
+          100: "#F0E8FB",
+          200: "#DCC8F5",
+          300: "#C2A2EC",
+          400: "#A07FD6",
+          500: "#8060C0",
+        },
+        // ── Warm neutrals ───────────────────────────────────────
+        ed: {
+          bg:           "#FDF7F9",
+          surface:      "#FFFFFF",
+          surfaceMuted: "#FFF9FB",
+          charcoal:     "#2D1F26",
+          muted:        "#9E7E88",
+          border:       "#F0D8E2",
+          borderLight:  "#F7ECF1",
+          sage:         "#A8B88A",
+          sageMuted:    "#C4D4A4",
+          sand:         "#F0E4EA",
+          sandLight:    "#F8F0F4",
+        },
+        /* Keep surface/brand tokens for locale sub-pages */
         surface: {
           900: "#0a0a0f",
           800: "#111118",
@@ -35,7 +55,7 @@ const config: Config = {
           500: "#2e2e3e",
         },
         brand: {
-          50: "#f0f9ff",
+          50:  "#f0f9ff",
           100: "#e0f2fe",
           400: "#38bdf8",
           500: "#0ea5e9",

@@ -65,7 +65,6 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-// ── Structured Data ────────────────────────────────────────────────────────
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -90,65 +89,77 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main className="min-h-screen bg-surface-900 text-white">
-        {/* ── Hero ──────────────────────────────────────────── */}
-        <header className="border-b border-surface-600 bg-surface-800/60 backdrop-blur-sm sticky top-0 z-10">
-          <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">✨</span>
-              <span className="font-bold text-lg tracking-tight">
-                Fancy<span className="text-brand-400">Font</span>
+      <main className="min-h-screen bg-ed-bg text-ed-charcoal">
+
+        {/* ── Header ──────────────────────────────────────── */}
+        <header className="sticky top-0 z-50 bg-ed-bg/95 backdrop-blur-sm border-b border-ed-border">
+          <div className="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <span className="font-serif italic text-xl font-bold text-ed-charcoal tracking-tight">
+                GoFancyFont
               </span>
-            </div>
-            <nav className="hidden sm:flex items-center gap-6 text-sm text-slate-400">
-              <a href="#templates" className="hover:text-white transition-colors">Templates</a>
-              <a href="#generator" className="hover:text-white transition-colors">Generator</a>
-              <a href="#styles"    className="hover:text-white transition-colors">Styles</a>
-              <a href="#faq"       className="hover:text-white transition-colors">FAQ</a>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-petal-100 text-petal-500 font-medium border border-petal-200">
+                ✦ free
+              </span>
+            </Link>
+            <nav className="hidden sm:flex items-center gap-6 text-[13px] text-ed-muted">
+              <a href="#templates" className="hover:text-petal-500 transition-colors duration-200">Templates</a>
+              <a href="#generator" className="hover:text-petal-500 transition-colors duration-200">Generator</a>
+              <a href="#symbols"   className="hover:text-petal-500 transition-colors duration-200">Symbols</a>
+              <a href="#faq"       className="hover:text-petal-500 transition-colors duration-200">FAQ</a>
             </nav>
           </div>
         </header>
 
-        {/* ── Hero Section ─────────────────────────────────── */}
-        <section className="relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px]
-                            bg-brand-500/10 blur-[100px] rounded-full" />
+        {/* ── Hero ────────────────────────────────────────── */}
+        <section className="relative overflow-hidden border-b border-ed-border">
+          {/* Subtle gradient orbs */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px]
+                            bg-gradient-to-b from-petal-100/60 to-transparent rounded-full blur-3xl" />
+            <div className="absolute top-10 right-0 w-64 h-64
+                            bg-bloom-100/40 rounded-full blur-3xl" />
           </div>
 
-          <div className="relative max-w-5xl mx-auto px-4 pt-16 pb-10 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full
-                            bg-brand-500/10 border border-brand-500/20 text-brand-400
-                            text-xs font-medium tracking-widest uppercase mb-6">
-              ✨ 22 Free Font Styles
+          <div className="relative max-w-5xl mx-auto px-5 pt-16 pb-14 text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full
+                            bg-petal-100 border border-petal-200 text-petal-500
+                            text-[11px] font-semibold tracking-[0.18em] uppercase mb-7">
+              ✦ 22+ Free Aesthetic Styles
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight
-                           bg-gradient-to-br from-white via-slate-200 to-slate-400
-                           bg-clip-text text-transparent mb-4 leading-tight">
-              Fancy Font Generator
-              <br />
-              <span className="text-2xl sm:text-3xl font-medium text-brand-400">
-                & Aesthetic Bio Maker
-              </span>
+            {/* Title */}
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-[58px] font-bold
+                           tracking-tight leading-[1.1] text-ed-charcoal mb-4">
+              Fancy Font
+              <span className="block italic text-petal-500"> Generator</span>
             </h1>
 
-            <p className="max-w-2xl mx-auto text-slate-400 text-base sm:text-lg leading-relaxed mb-8">
-              Transform any text into{" "}
-              <strong className="text-slate-200">22+ unique Unicode font styles</strong> — Bold,
-              Cursive, Gothic, Vaporwave, Zalgo Glitch & more. Copy instantly for your{" "}
-              <strong className="text-slate-200">Instagram bio, TikTok, Twitter,</strong> or
-              Discord profile.
+            <p className="max-w-xl mx-auto text-ed-muted text-[15px] sm:text-base
+                          leading-relaxed mb-9">
+              Turn any text into{" "}
+              <span className="text-ed-charcoal font-medium">bold, cursive, gothic, vaporwave</span>{" "}
+              & 18 more styles. Copy instantly for your{" "}
+              <span className="text-petal-500 font-medium">Instagram bio, TikTok</span>, or
+              Twitter profile.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-3 text-sm text-slate-500">
-              {["𝐁𝐨𝐥𝐝", "𝒞𝓊𝓇𝓈𝒾𝓋𝑒", "𝔊𝔬𝔱𝔥𝔦𝔠", "Ａｅｓｔｈｅｔｉｃ", "Z̷a̷l̷g̷o̷", "Ⓒⓘⓡⓒⓛⓔⓓ", "ᴅᴏᴜʙʟᴇ sᴛʀᴜᴄᴋ"].map((s) => (
+            {/* Font preview chips */}
+            <div className="flex flex-wrap justify-center gap-2 text-sm">
+              {[
+                { label: "𝒞𝓊𝓇𝓈𝒾𝓋𝑒",   color: "bg-petal-100 text-petal-600 border-petal-200" },
+                { label: "𝐁𝐨𝐥𝐝",         color: "bg-bloom-100 text-bloom-500 border-bloom-200" },
+                { label: "𝔊𝔬𝔱𝔥𝔦𝔠",       color: "bg-amber-50 text-amber-700 border-amber-200" },
+                { label: "Ａｅｓｔｈｅｔｉｃ",   color: "bg-sky-50 text-sky-600 border-sky-200" },
+                { label: "Ⓒⓘⓡⓒⓛⓔⓓ",     color: "bg-emerald-50 text-emerald-600 border-emerald-200" },
+                { label: "ᴅᴏᴜʙʟᴇ ꜱᴛʀᴜᴄᴋ", color: "bg-petal-50 text-petal-500 border-petal-200" },
+              ].map((s) => (
                 <span
-                  key={s}
-                  className="px-3 py-1.5 rounded-full bg-surface-700 border border-surface-500 text-white"
+                  key={s.label}
+                  className={`px-3.5 py-1.5 rounded-full border text-[13px] font-medium ${s.color}`}
                 >
-                  {s}
+                  {s.label}
                 </span>
               ))}
             </div>
@@ -156,7 +167,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Bio Templates ────────────────────────────────── */}
-        <section id="templates" className="pb-2">
+        <section id="templates" className="py-2">
           <BioTemplates />
         </section>
 
@@ -170,61 +181,40 @@ export default function HomePage() {
           <SymbolPicker />
         </section>
 
-        {/* ── Symbol Library (Kaomoji + Borders) ───────────── */}
+        {/* ── Symbol Library ───────────────────────────────── */}
         <section id="library" className="pb-16">
           <SymbolLibrary />
         </section>
 
-        {/* ── Feature Cards ────────────────────────────────── */}
-        <section id="styles" className="border-t border-surface-600 bg-surface-800/40 py-16">
-          <div className="max-w-5xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-2">
-              Why Use Fancy Font Generator?
+        {/* ── Why section ──────────────────────────────────── */}
+        <section id="styles" className="border-t border-ed-border bg-white py-16">
+          <div className="max-w-5xl mx-auto px-5">
+            <p className="text-[11px] font-semibold text-petal-400 tracking-[0.2em] uppercase text-center mb-2">
+              Why GoFancyFont
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-center text-ed-charcoal mb-2">
+              Made for aesthetic creators
             </h2>
-            <p className="text-slate-400 text-center mb-10 text-sm">
-              The fastest, cleanest fancy text tool on the web.
+            <p className="text-ed-muted text-sm text-center mb-10 max-w-md mx-auto">
+              The fastest, cleanest fancy text tool — built for your vibe.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
-                {
-                  icon: "⚡",
-                  title: "Instant Preview",
-                  desc: "See all 22 styles update in real-time as you type. Zero delay.",
-                },
-                {
-                  icon: "📋",
-                  title: "One-Click Copy",
-                  desc: "Hit Copy and it's on your clipboard. Paste anywhere — Instagram, TikTok, Discord.",
-                },
-                {
-                  icon: "🔒",
-                  title: "No Sign-Up",
-                  desc: "Completely free, forever. No account, no email, no tracking.",
-                },
-                {
-                  icon: "🌐",
-                  title: "Works Everywhere",
-                  desc: "Unicode fonts work on every platform: iOS, Android, PC, Mac.",
-                },
-                {
-                  icon: "🎨",
-                  title: "22+ Styles",
-                  desc: "From elegant cursive to chaotic Zalgo — there's a style for every mood.",
-                },
-                {
-                  icon: "📱",
-                  title: "Mobile-Friendly",
-                  desc: "Perfectly optimized for smartphone use. Type and copy on the go.",
-                },
+                { icon: "⚡", title: "Instant Preview",   desc: "All 22 styles update as you type. Zero delay, zero friction." },
+                { icon: "📋", title: "One-Click Copy",     desc: "Hit Copy — it's on your clipboard. Paste on Instagram, TikTok, Discord." },
+                { icon: "🔒", title: "No Sign-Up Ever",   desc: "100% free, forever. No account, no email, no tracking." },
+                { icon: "🌐", title: "Works Everywhere",  desc: "Unicode fonts work on iOS, Android, PC & Mac — no app needed." },
+                { icon: "🎀", title: "22+ Cute Styles",   desc: "Soft cursive to chaotic Zalgo — find the perfect aesthetic." },
+                { icon: "📱", title: "Mobile First",      desc: "Designed for scrolling on your phone. Type and copy on the go." },
               ].map((f) => (
                 <div
                   key={f.title}
-                  className="p-5 rounded-xl bg-surface-700 border border-surface-600"
+                  className="p-5 rounded-2xl bg-ed-bg border border-ed-border hover:border-petal-200 transition-colors duration-200"
                 >
                   <div className="text-2xl mb-3">{f.icon}</div>
-                  <h3 className="font-semibold text-white mb-1">{f.title}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+                  <h3 className="font-semibold text-ed-charcoal mb-1 text-[15px]">{f.title}</h3>
+                  <p className="text-sm text-ed-muted leading-relaxed">{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -232,12 +222,15 @@ export default function HomePage() {
         </section>
 
         {/* ── FAQ ──────────────────────────────────────────── */}
-        <section id="faq" className="py-16 border-t border-surface-600">
-          <div className="max-w-3xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-10">
+        <section id="faq" className="py-16 border-t border-ed-border bg-ed-bg">
+          <div className="max-w-3xl mx-auto px-5">
+            <p className="text-[11px] font-semibold text-petal-400 tracking-[0.2em] uppercase text-center mb-2">
+              FAQ
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-center text-ed-charcoal mb-10">
               Frequently Asked Questions
             </h2>
-            <div className="space-y-5">
+            <div className="space-y-3">
               {[
                 {
                   q: "How does the fancy font generator work?",
@@ -262,17 +255,19 @@ export default function HomePage() {
               ].map((item) => (
                 <details
                   key={item.q}
-                  className="group bg-surface-700 border border-surface-600 rounded-xl overflow-hidden"
+                  className="group bg-white border border-ed-border rounded-2xl overflow-hidden
+                             hover:border-petal-200 transition-colors duration-200"
                 >
                   <summary className="flex items-center justify-between px-5 py-4 cursor-pointer
-                                       font-medium text-white list-none select-none
-                                       hover:bg-surface-600 transition-colors">
+                                       font-medium text-ed-charcoal text-[15px] list-none select-none
+                                       hover:text-petal-500 transition-colors">
                     {item.q}
-                    <span className="text-slate-500 group-open:rotate-180 transition-transform duration-200 ml-4">
+                    <span className="text-petal-300 group-open:rotate-180 transition-transform duration-200 ml-4 shrink-0">
                       ▾
                     </span>
                   </summary>
-                  <p className="px-5 pb-5 text-slate-400 text-sm leading-relaxed border-t border-surface-500 pt-4">
+                  <p className="px-5 pb-5 text-ed-muted text-sm leading-relaxed
+                                border-t border-ed-borderLight pt-4">
                     {item.a}
                   </p>
                 </details>
@@ -281,21 +276,24 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── HomeContent: SEO Article ─────────────────────── */}
+        {/* ── SEO Article ──────────────────────────────────── */}
         <HomeContent />
-
-        {/* ── FAQ Section (JSON-LD Schema) ──────────────────── */}
         <FAQSection />
 
         {/* ── Footer ───────────────────────────────────────── */}
-        <footer className="border-t border-surface-600 py-8 text-center text-slate-600 text-sm space-y-2">
-          <p>© {new Date().getFullYear()} GoFancyFont.com — Free Fancy Font & Aesthetic Bio Generator</p>
-          <p className="flex justify-center gap-4 flex-wrap">
-            <Link href="/guide"   className="hover:text-slate-400 transition-colors">Guide</Link>
-            <Link href="/about"   className="hover:text-slate-400 transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-slate-400 transition-colors">Contact</Link>
-            <Link href="/privacy" className="hover:text-slate-400 transition-colors">Privacy Policy</Link>
-            <Link href="/terms"   className="hover:text-slate-400 transition-colors">Terms of Service</Link>
+        <footer className="border-t border-ed-border bg-white py-10 text-center space-y-3">
+          <p className="font-serif italic text-ed-charcoal font-semibold text-lg">
+            GoFancyFont
+          </p>
+          <p className="text-ed-muted text-[13px]">
+            © {new Date().getFullYear()} GoFancyFont.com — Free Fancy Font & Aesthetic Bio Generator
+          </p>
+          <p className="flex justify-center gap-5 flex-wrap text-[13px] text-ed-muted">
+            <Link href="/guide"   className="hover:text-petal-500 transition-colors">Guide</Link>
+            <Link href="/about"   className="hover:text-petal-500 transition-colors">About</Link>
+            <Link href="/contact" className="hover:text-petal-500 transition-colors">Contact</Link>
+            <Link href="/privacy" className="hover:text-petal-500 transition-colors">Privacy</Link>
+            <Link href="/terms"   className="hover:text-petal-500 transition-colors">Terms</Link>
           </p>
         </footer>
       </main>

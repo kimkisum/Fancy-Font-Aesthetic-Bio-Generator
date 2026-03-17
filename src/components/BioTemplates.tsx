@@ -244,14 +244,14 @@ const AESTHETIC_GROUPS: AestheticGroup[] = [
 ];
 
 const COLOR_MAP: Record<string, { tab: string; card: string; badge: string }> = {
-  pink:    { tab: "bg-pink-500/20 text-pink-400 border-pink-500/40",    card: "border-pink-500/30 hover:border-pink-400/60",    badge: "bg-pink-500/15 text-pink-400" },
-  rose:    { tab: "bg-rose-500/20 text-rose-400 border-rose-500/40",    card: "border-rose-500/30 hover:border-rose-400/60",    badge: "bg-rose-500/15 text-rose-400" },
-  amber:   { tab: "bg-amber-500/20 text-amber-400 border-amber-500/40", card: "border-amber-500/30 hover:border-amber-400/60",  badge: "bg-amber-500/15 text-amber-400" },
-  emerald: { tab: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40", card: "border-emerald-500/30 hover:border-emerald-400/60", badge: "bg-emerald-500/15 text-emerald-400" },
-  violet:  { tab: "bg-violet-500/20 text-violet-400 border-violet-500/40", card: "border-violet-500/30 hover:border-violet-400/60",  badge: "bg-violet-500/15 text-violet-400" },
-  sky:     { tab: "bg-sky-500/20 text-sky-400 border-sky-500/40",       card: "border-sky-500/30 hover:border-sky-400/60",       badge: "bg-sky-500/15 text-sky-400" },
-  orange:  { tab: "bg-orange-500/20 text-orange-400 border-orange-500/40", card: "border-orange-500/30 hover:border-orange-400/60",  badge: "bg-orange-500/15 text-orange-400" },
-  purple:  { tab: "bg-purple-500/20 text-purple-400 border-purple-500/40", card: "border-purple-500/30 hover:border-purple-400/60",  badge: "bg-purple-500/15 text-purple-400" },
+  pink:    { tab: "bg-pink-100 text-pink-600 border-pink-300",          card: "border-pink-200 hover:border-pink-400",          badge: "bg-pink-50 text-pink-600 border border-pink-200" },
+  rose:    { tab: "bg-rose-100 text-rose-600 border-rose-300",          card: "border-rose-200 hover:border-rose-400",          badge: "bg-rose-50 text-rose-600 border border-rose-200" },
+  amber:   { tab: "bg-amber-100 text-amber-700 border-amber-300",       card: "border-amber-200 hover:border-amber-400",        badge: "bg-amber-50 text-amber-700 border border-amber-200" },
+  emerald: { tab: "bg-emerald-100 text-emerald-700 border-emerald-300", card: "border-emerald-200 hover:border-emerald-400",    badge: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
+  violet:  { tab: "bg-violet-100 text-violet-600 border-violet-300",    card: "border-violet-200 hover:border-violet-400",      badge: "bg-violet-50 text-violet-600 border border-violet-200" },
+  sky:     { tab: "bg-sky-100 text-sky-600 border-sky-300",             card: "border-sky-200 hover:border-sky-400",            badge: "bg-sky-50 text-sky-600 border border-sky-200" },
+  orange:  { tab: "bg-orange-100 text-orange-600 border-orange-300",    card: "border-orange-200 hover:border-orange-400",      badge: "bg-orange-50 text-orange-600 border border-orange-200" },
+  purple:  { tab: "bg-purple-100 text-purple-600 border-purple-300",    card: "border-purple-200 hover:border-purple-400",      badge: "bg-purple-50 text-purple-600 border border-purple-200" },
 };
 
 export default function BioTemplates({ lang: _lang }: { lang?: string } = {}) {
@@ -270,15 +270,15 @@ export default function BioTemplates({ lang: _lang }: { lang?: string } = {}) {
   }, []);
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 pb-2">
-      <div className="rounded-2xl bg-surface-700 border border-surface-600 overflow-hidden">
+    <section className="w-full max-w-5xl mx-auto px-4 py-6">
+      <div className="rounded-2xl bg-white border border-ed-border overflow-hidden shadow-sm shadow-petal-100/30">
 
         {/* Header */}
-        <div className="px-5 py-4 border-b border-surface-600">
-          <h2 className="text-sm font-bold text-white tracking-tight">
+        <div className="px-5 py-4 border-b border-ed-borderLight bg-ed-bg">
+          <h2 className="text-[13px] font-semibold text-ed-charcoal tracking-tight">
             ✦ Aesthetic Bio Templates
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-ed-muted mt-0.5">
             Pick a template · it loads into your text box below · then choose a font style
           </p>
         </div>
@@ -295,7 +295,7 @@ export default function BioTemplates({ lang: _lang }: { lang?: string } = {}) {
                             text-xs font-medium border transition-all duration-150
                   ${activeGroup === g.id
                     ? c.tab
-                    : "bg-surface-600 text-slate-400 border-transparent hover:bg-surface-500 hover:text-white"
+                    : "bg-ed-bg text-ed-muted border-ed-border hover:border-petal-200 hover:text-ed-charcoal"
                   }`}
               >
                 <span>{g.emoji}</span>
@@ -317,19 +317,19 @@ export default function BioTemplates({ lang: _lang }: { lang?: string } = {}) {
                             text-left transition-all duration-150 active:scale-95
                   ${isSelected
                     ? `${colors.badge} border-current`
-                    : `bg-surface-800 ${colors.card} hover:bg-surface-700`
+                    : `bg-ed-bg ${colors.card}`
                   }`}
               >
                 {isSelected && (
-                  <span className="absolute top-2 right-2 text-[10px] font-bold uppercase tracking-wider opacity-80">
+                  <span className="absolute top-2 right-2 text-[10px] font-bold uppercase tracking-wider opacity-70">
                     ✓ Used
                   </span>
                 )}
                 <span className="text-lg leading-none">{group.emoji}</span>
-                <span className="text-xs text-slate-300 leading-snug line-clamp-2">
+                <span className="text-xs text-ed-charcoal leading-snug line-clamp-2">
                   {t.preview}
                 </span>
-                <span className="text-[10px] text-slate-600 mt-auto pt-1">
+                <span className="text-[10px] text-ed-muted mt-auto pt-1">
                   tap to use →
                 </span>
               </button>
