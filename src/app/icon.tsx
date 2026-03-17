@@ -14,7 +14,7 @@ export default function Icon() {
           width: 32,
           height: 32,
           borderRadius: 8,
-          background: "#0a0a0f",
+          background: "linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #ede9fe 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -22,13 +22,13 @@ export default function Icon() {
           overflow: "hidden",
         }}
       >
-        {/* Gradient glow background */}
+        {/* Soft glow background */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse at 60% 30%, rgba(129,96,235,0.35) 0%, rgba(219,86,167,0.15) 60%, transparent 80%)",
+              "radial-gradient(ellipse at 65% 35%, rgba(244,114,182,0.25) 0%, rgba(167,139,250,0.15) 60%, transparent 85%)",
           }}
         />
 
@@ -46,8 +46,7 @@ export default function Icon() {
             style={{
               fontSize: 16,
               fontWeight: 900,
-              color: "#a78bfa",
-              filter: "drop-shadow(0 0 5px rgba(167,139,250,0.9))",
+              color: "#c026d3",
               letterSpacing: "-0.03em",
             }}
           >
@@ -57,8 +56,7 @@ export default function Icon() {
             style={{
               fontSize: 11,
               fontWeight: 700,
-              color: "#f472b6",
-              filter: "drop-shadow(0 0 4px rgba(244,114,182,0.85))",
+              color: "#ec4899",
               letterSpacing: "-0.02em",
               marginLeft: 1,
             }}
@@ -76,8 +74,7 @@ export default function Icon() {
             width: 3,
             height: 3,
             borderRadius: "50%",
-            background: "rgba(244,114,182,0.8)",
-            boxShadow: "0 0 3px rgba(244,114,182,0.9)",
+            background: "rgba(236,72,153,0.6)",
           }}
         />
       </div>
